@@ -7,8 +7,7 @@ public class Desafio {
     private Jugador jugadorDesafiado;
     private Jugador jugadorDesafiante;
     private List<Observador> observadores;
-
-    //Constructor
+    private Jugador ganador;
 
     //Constructor
     public Desafio(int id, int oroApostado, Jugador jugadorDesafiado, Jugador jugadorDesafiante, List<Observador> observadores) {
@@ -23,31 +22,48 @@ public class Desafio {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public int getOroApostado() {
         return oroApostado;
     }
+
     public void setOroApostado(int oroApostado) {
         this.oroApostado = oroApostado;
     }
+
     public Jugador getJugadorDesafiado() {
         return jugadorDesafiado;
     }
+
     public void setJugadorDesafiado(Jugador jugadorDesafiado) {
         this.jugadorDesafiado = jugadorDesafiado;
     }
+
     public Jugador getJugadorDesafiante() {
         return jugadorDesafiante;
     }
+
     public void setJugadorDesafiante(Jugador jugadorDesafiante) {
         this.jugadorDesafiante = jugadorDesafiante;
     }
+
     public List<Observador> getObservadores() {
         return observadores;
     }
+
     public void setObservadores(List<Observador> observadores) {
         this.observadores = observadores;
+    }
+
+    public Jugador getGanador() {
+        return ganador;
+    }
+
+    public void setGanador(Jugador ganador) {
+        this.ganador = ganador;
     }
 }

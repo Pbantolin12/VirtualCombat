@@ -7,7 +7,7 @@ public class Licantropo extends Personaje{
     private String dones;
 
     //Constructor
-    public Licantropo(int rabia, String dones, String nombre, String habilidad, List<Armas> conjuntoArmas,
+    public Licantropo(int rabia, String dones, String nombre, String habilidad, List<Arma> conjuntoArmas,
                       List<Armadura> conjuntoArmaduras, Esbirros conjuntoEsbirros, int oro, int salud, int poder,
                       HashMap<String, String> fortalezas, HashMap<String, String> debilidades) {
         super(nombre, habilidad, conjuntoArmas, conjuntoArmaduras, conjuntoEsbirros, oro, salud, poder, fortalezas,

@@ -5,7 +5,7 @@ public class Personaje {
     //Atributos
     private String nombre;
     private String habilidad;
-    private List<Armas> conjuntoArmas;
+    private List<Arma> conjuntoArmas;
     private List<Armadura> conjuntoArmaduras;
     private Arma armaActiva;
     private Armadura armaduraActiva;
@@ -19,7 +19,7 @@ public class Personaje {
     private int potencialDefensa;
     
     //Constructor
-    public Personaje(String nombre, String habilidad, List<Armas> conjuntoArmas, List<Armadura> conjuntoArmaduras,
+    public Personaje(String nombre, String habilidad, List<Arma> conjuntoArmas, List<Armadura> conjuntoArmaduras,
                      Esbirros conjuntoEsbirros, int oro, int salud, int poder, HashMap<String, String> fortalezas,
                      HashMap<String, String> debilidades){
         this.nombre = nombre;
@@ -50,11 +50,11 @@ public class Personaje {
         this.habilidad = habilidad;
     }
 
-    public List<Armas> getConjuntoArmas() {
+    public List<Arma> getConjuntoArmas() {
         return conjuntoArmas;
     }
 
-    public void setConjuntoArmas(List<Armas> conjuntoArmas) {
+    public void setConjuntoArmas(List<Arma> conjuntoArmas) {
         this.conjuntoArmas = conjuntoArmas;
     }
 

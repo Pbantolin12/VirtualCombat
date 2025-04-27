@@ -2,13 +2,13 @@ public class Usuario {
     //Atributos
     private String nombre;
     private String nick;
-    private String contraseña;
+    private String contrasena;
 
     //Constructor
-    public Usuario(String nombre, String nick, String contraseña){
+    public Usuario(String nombre, String nick, String contrasena){
         this.nombre = nombre;
         this.nick = nick;
-        this.contraseña = contraseña;
+        this.contrasena = contrasena;
     }
 
     public Usuario(){}
@@ -32,11 +32,11 @@ public class Usuario {
         this.nick = nick;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 }

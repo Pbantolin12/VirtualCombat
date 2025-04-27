@@ -9,7 +9,7 @@ public class Vampiro extends Personaje{
 
     //Constructor
     public Vampiro(int puntosSangre, String disciplinas, int edad, String nombre, String habilidad,
-                      List<Armas> conjuntoArmas, List<Armadura> conjuntoArmaduras, Esbirros conjuntoEsbirros, int oro,
+                      List<Arma> conjuntoArmas, List<Armadura> conjuntoArmaduras, Esbirros conjuntoEsbirros, int oro,
                       int salud, int poder, HashMap<String, String> fortalezas, HashMap<String, String> debilidades) {
         super(nombre, habilidad, conjuntoArmas, conjuntoArmaduras, conjuntoEsbirros, oro, salud, poder, fortalezas,
                 debilidades);
