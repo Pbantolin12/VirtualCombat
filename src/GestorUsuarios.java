@@ -96,7 +96,7 @@ public class GestorUsuarios {
                 terminal.error("La contraseña debe tener entre 8 y 12 caracteres");
             }
         }
-        return Jugador.registrar(nombre, nick, contrasena);
+        return Jugador.registrar(nombre, nick, contrasena, GestorUsuarios.this);
     }
 
     //Método para iniciar sesión como jugador

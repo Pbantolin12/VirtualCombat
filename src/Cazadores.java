@@ -10,8 +10,7 @@ public class Cazadores extends Personaje{
     public Cazadores(int voluntad, String talentos, String nombre, String habilidad, List<Arma> conjuntoArmas,
                       List<Armadura> conjuntoArmaduras, Esbirros conjuntoEsbirros, int oro, int salud, int poder,
                       HashMap<String, String> fortalezas, HashMap<String, String> debilidades) {
-        super(nombre, habilidad, conjuntoArmas, conjuntoArmaduras, conjuntoEsbirros, oro, salud, poder, fortalezas,
-                debilidades);
+        super(nombre);
         this.voluntad = voluntad;
         this.talentos = talentos;
     }

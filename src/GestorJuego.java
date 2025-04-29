@@ -37,6 +37,18 @@ public class GestorJuego {
 
     public void modoJugador(Jugador jugador) {
         int opt;
+        int optDesafio;
+
+        do {
+            if (jugador.getDesafioPendiente()){
+                optDesafio = menuDesafio(jugador);
+                switch (optDesafio){
+                    case 1 -> jugador.aceptarDesafio();
+                    case 2 -> jugador.rechazarDesafio();
+                    default -> terminalTexto.error("Opción incorrecta");
+                }
+            }
+        } while (jugador.getDesafioPendiente());
 
         do {
             opt = menuJugador();
@@ -83,6 +95,19 @@ public class GestorJuego {
         terminalTexto.showln("| 8. Consultar historial partidas |");
         terminalTexto.showln("| 9. Volver                       |");
         terminalTexto.showln("|_________________________________|");
+        terminalTexto.show("Introduce una opción: ");
+        return terminalTexto.readInt();
+    }
+
+    public int menuDesafio(Jugador jugador){
+        terminalTexto.show("|---Desafio_Pendiente---|");
+        terminalTexto.show("| - Desafiado por: " + jugador.getDesafio().getJugadorDesafiante());
+        terminalTexto.show("| - Oro apostado: " + jugador.getDesafio().getOroApostado());
+        terminalTexto.show("| - Penalización por no aceptar: " + jugador.getDesafio().getOroApostado() * 0.1);
+        terminalTexto.show("|------------------------|");
+        terminalTexto.show("| 1. Aceptar desafio     |");
+        terminalTexto.show("| 2. Rechazar desafio    |");
+        terminalTexto.show("|------------------------|");
         terminalTexto.show("Introduce una opción: ");
         return terminalTexto.readInt();
     }

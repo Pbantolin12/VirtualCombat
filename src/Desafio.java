@@ -8,10 +8,11 @@ public class Desafio {
     private Jugador jugadorDesafiante;
     private List<Observador> observadores;
     private Jugador ganador;
+    private boolean desafioAceptado;
 
     //Constructor
-    public Desafio(int id, int oroApostado, Jugador jugadorDesafiado, Jugador jugadorDesafiante, List<Observador> observadores) {
-        this.id = id;
+    public Desafio(int oroApostado, Jugador jugadorDesafiado, Jugador jugadorDesafiante, List<Observador> observadores) {
+        this.id = generarId();
         this.oroApostado = oroApostado;
         this.jugadorDesafiado = jugadorDesafiado;
         this.jugadorDesafiante = jugadorDesafiante;
@@ -65,5 +66,17 @@ public class Desafio {
 
     public void setGanador(Jugador ganador) {
         this.ganador = ganador;
+    }
+
+    public boolean getDesafioAceptado() {
+        return desafioAceptado;
+    }
+
+    public void setDesafioAceptado(boolean estado) {
+        this.desafioAceptado = estado;
+    }
+
+    private int generarId() {
+        return (int) (Math.random() * 1000);
     }
 }

@@ -4,18 +4,17 @@ import java.util.List;
 public class Vampiro extends Personaje{
     //Atributos
     private int puntosSangre;
-    private String disciplinas;
     private int edad;
+    private TerminalTexto terminalTexto= TerminalTexto.getInstance();
 
     //Constructor
-    public Vampiro(int puntosSangre, String disciplinas, int edad, String nombre, String habilidad,
-                      List<Arma> conjuntoArmas, List<Armadura> conjuntoArmaduras, Esbirros conjuntoEsbirros, int oro,
-                      int salud, int poder, HashMap<String, String> fortalezas, HashMap<String, String> debilidades) {
-        super(nombre, habilidad, conjuntoArmas, conjuntoArmaduras, conjuntoEsbirros, oro, salud, poder, fortalezas,
-                debilidades);
-        this.puntosSangre = puntosSangre;
-        this.disciplinas = disciplinas;
-        this.edad = edad;
+    public Vampiro(String nombre) {
+        super(nombre);
+        this.puntosSangre = 10;
+        this.setHabilidad("Disciplinas");
+        terminalTexto.askInfo("Introduce la  edad del vampiro: ");
+        this.edad = terminalTexto.readInt();
+
     }
 
     //Métodos

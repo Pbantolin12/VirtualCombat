@@ -8,16 +8,24 @@ public class Jugador extends Usuario implements Observador {
     private Personaje personaje;
     private List<Desafio> desafiosCompletados;
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private Boolean desafioPendiente;
+    private Desafio desafio;
+    private int partidasGanadas;
+    private GestorUsuarios gestorUsuarios;
 
-    public Jugador(String nombre, String nick, String contrasena) {
+    public Jugador(String nombre, String nick, String contrasena, GestorUsuarios gestorUsuarios) {
         super(nombre, nick, contrasena);
         setNumeroRegistro(generarNumeroRegistro());
-        this.personaje = crearPersonaje();
+        crearPersonaje();
         this.desafiosCompletados = new ArrayList<Desafio>();
+        this.desafioPendiente = false;
+        this.desafio = null;
+        this.partidasGanadas = 0;
+        this.gestorUsuarios = gestorUsuarios;
     }
 
     //Factory Method
-    public static Jugador registrar(String nombre, String nick, String contrasena) {
+    public static Jugador registrar(String nombre, String nick, String contrasena, GestorUsuarios gestorUsuarios) {
         if (nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacío");
         }
@@ -27,7 +35,7 @@ public class Jugador extends Usuario implements Observador {
         if (contrasena.length() < 8 || contrasena.length() > 12) {
             throw new IllegalArgumentException("La contraseña debe tener entre 8 y 12 caracteres");
         }
-        return new Jugador(nombre, nick, contrasena);
+        return new Jugador(nombre, nick, contrasena, gestorUsuarios);
     }
 
     //Métodos
@@ -44,8 +52,99 @@ public class Jugador extends Usuario implements Observador {
         return codigo;
     }
 
-    public Personaje crearPersonaje() {
-        return null;
+    public void crearPersonaje() {
+        terminalTexto.askInfo("Introduce el nombre del personaje: ");
+        String nombre = terminalTexto.readStr();
+        int opt = menuPersonaje();
+        switch (opt) {
+            case 1 -> {
+                terminalTexto.askInfo("Introduce el número de debilidades que tendrá del personaje: ");
+                int numDebilidades = terminalTexto.readInt();
+                int j = 0;
+                for (int i = 0; i < numDebilidades; i++) {
+                    terminalTexto.askInfo("Introduce el nombre de la debilidad " + ++j + ": ");
+                    String nombreDebilidad = terminalTexto.readStr();
+                    terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
+                    String descripcionDebilidad = terminalTexto.readStr();
+                    personaje.setDebilidad(nombreDebilidad, descripcionDebilidad);
+                }
+
+                terminalTexto.askInfo("Introduce el número de fortalezas que tendrá del personaje: ");
+                int numFortalezas = terminalTexto.readInt();
+                j = 0;
+                for (int i = 0; i < numFortalezas; i++) {
+                    this.personaje = new Vampiro(nombre);
+                    terminalTexto.askInfo("Introduce el nombre de la fortaleza " + ++j + ": ");
+                    String nombreFortaleza = terminalTexto.readStr();
+                    terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
+                    String descripcionFortaleza = terminalTexto.readStr();
+                    personaje.setFortaleza(nombreFortaleza, descripcionFortaleza);
+                }
+            }
+            case 2 -> {
+                terminalTexto.askInfo("Introduce el número de debilidades que tendrá del personaje: ");
+                int numDebilidades = terminalTexto.readInt();
+                int j = 0;
+                for (int i = 0; i < numDebilidades; i++) {
+                    terminalTexto.askInfo("Introduce el nombre de la debilidad " + ++j + ": ");
+                    String nombreDebilidad = terminalTexto.readStr();
+                    terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
+                    String descripcionDebilidad = terminalTexto.readStr();
+                    personaje.setDebilidad(nombreDebilidad, descripcionDebilidad);
+                }
+
+                terminalTexto.askInfo("Introduce el número de fortalezas que tendrá del personaje: ");
+                int numFortalezas = terminalTexto.readInt();
+                j = 0;
+                for (int i = 0; i < numFortalezas; i++) {
+                    this.personaje = new Licantropo(nombre);
+                    terminalTexto.askInfo("Introduce el nombre de la fortaleza " + ++j + ": ");
+                    String nombreFortaleza = terminalTexto.readStr();
+                    terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
+                    String descripcionFortaleza = terminalTexto.readStr();
+                    personaje.setFortaleza(nombreFortaleza, descripcionFortaleza);
+                }
+            }
+            case 3 -> {
+                terminalTexto.askInfo("Introduce el número de debilidades que tendrá del personaje: ");
+                int numDebilidades = terminalTexto.readInt();
+                int j = 0;
+                for (int i = 0; i < numDebilidades; i++) {
+                    terminalTexto.askInfo("Introduce el nombre de la debilidad " + ++j + ": ");
+                    String nombreDebilidad = terminalTexto.readStr();
+                    terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
+                    String descripcionDebilidad = terminalTexto.readStr();
+                    personaje.setDebilidad(nombreDebilidad, descripcionDebilidad);
+                }
+
+                terminalTexto.askInfo("Introduce el número de fortalezas que tendrá del personaje: ");
+                int numFortalezas = terminalTexto.readInt();
+                j = 0;
+                for (int i = 0; i < numFortalezas; i++) {
+                    this.personaje = new Cazador(nombre);
+                    terminalTexto.askInfo("Introduce el nombre de la fortaleza " + ++j + ": ");
+                    String nombreFortaleza = terminalTexto.readStr();
+                    terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
+                    String descripcionFortaleza = terminalTexto.readStr();
+                    personaje.setFortaleza(nombreFortaleza, descripcionFortaleza);
+                }
+            }
+            default -> {
+                terminalTexto.error("Opción incorrecta");
+            }
+        }
+
+    }
+
+    private int menuPersonaje(){
+        terminalTexto.show(" ________________________________");
+        terminalTexto.show("|_____Personajes_disponibles_____|");
+        terminalTexto.show("| 1. Vampiro                     |");
+        terminalTexto.show("| 2. Licántropo                  |");
+        terminalTexto.show("| 3. Cazador                     |");
+        terminalTexto.show("|________________________________|");
+        terminalTexto.askInfo("Introduce una opción: ");
+        return terminalTexto.readInt();
     }
 
     public void eliminarPersonaje(Personaje personaje) {
@@ -58,17 +157,47 @@ public class Jugador extends Usuario implements Observador {
     }
 
     public void desafiarJugador() {
+        String nombreDesafiado;
+
+        terminalTexto.askInfo("Introduce el nombre del jugador a desafiar: ");
+        nombreDesafiado = terminalTexto.readStr();
+        Jugador jugadorDesafiado = gestorUsuarios.getJugador(nombreDesafiado);
+        if (jugadorDesafiado != null) {
+            if (jugadorDesafiado.getDesafioPendiente()) {
+                terminalTexto.error("El jugador ya tiene un desafío pendiente");
+            } else {
+                terminalTexto.askInfo("Introduce la cantidad de oro a apostar: ");
+                int oroApostado = terminalTexto.readInt();
+
+                if (this.apostarOro(oroApostado)) {
+                    Desafio desafio = new Desafio(oroApostado, jugadorDesafiado, this, null); //CAMBIAR NULL
+                    this.desafio = desafio;
+                    this.desafioPendiente = false;
+                    jugadorDesafiado.setDesafioPendiente(true);
+                    jugadorDesafiado.setDesafio(desafio);
+                    terminalTexto.showln("|---Desafio_enviado---|");
+                    terminalTexto.showln("| - Jugador desafiado: " + jugadorDesafiado.getNombre());
+                    terminalTexto.showln("| - Oro apostado: " + desafio.getOroApostado());
+                }
+            }
+        } else {
+            terminalTexto.error("El jugador no existe");
+        }
     }
 
     public void consultarRanking() {
+        Ranking ranking = Ranking.getInstance();
+        ranking.mostrarRanking();
     }
 
-    private void apostarOro(int cantidad) {
+    private boolean apostarOro(int cantidad) {
         if (cantidad > 0 && cantidad <= personaje.getOro()) {
             personaje.setOro(personaje.getOro() - cantidad);
             terminalTexto.showln("Apuesta de " + cantidad + " oro realizada");
+            return true;
         } else {
             terminalTexto.error("No tienes suficiente oro para realizar la apuesta");
+            return false;
         }
     }
 
@@ -76,14 +205,14 @@ public class Jugador extends Usuario implements Observador {
         return false;
     }
 
-    public boolean rechazarDesafio() {
-        return false;
+    public void rechazarDesafio() {
+        this.desafioPendiente = false;
+        this.desafio.setDesafioAceptado(false);
+        this.personaje.setOro(personaje.getOro() - this.calcularPorcentajeApuestas(this.desafio.getOroApostado()));
     }
 
-    private void bloquearAcciones() { }
-
     private int calcularPorcentajeApuestas(int apuesta) {
-        return 0;
+        return (int) (apuesta * 0.1);
     }
 
     public void consultarOro() {
@@ -176,5 +305,29 @@ public class Jugador extends Usuario implements Observador {
 
     public void setDesafiosCompletados(List<Desafio> desafiosCompletados) {
         this.desafiosCompletados = desafiosCompletados;
+    }
+
+    public void setDesafioPendiente(Boolean desafioPendiente) {
+        this.desafioPendiente = desafioPendiente;
+    }
+
+    public Boolean getDesafioPendiente() {
+        return desafioPendiente;
+    }
+
+    public Desafio getDesafio() {
+        return desafio;
+    }
+
+    public void setDesafio(Desafio desafio) {
+        this.desafio = desafio;
+    }
+
+    public int getPartidasGanadas() {
+        return partidasGanadas;
+    }
+
+    public void setPartidasGanadas(int partidasGanadas) {
+        this.partidasGanadas = partidasGanadas;
     }
 }

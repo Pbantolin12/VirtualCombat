@@ -65,6 +65,6 @@ public class TerminalTexto {
 
     //Muestra un "prompt" para pedir al usuario que introduzca información
     public void askInfo(String text){
-        System.out.print(">>" + text + ": ");
+        System.out.print(">>" + text);
     }
 }
