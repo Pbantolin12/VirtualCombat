@@ -4,27 +4,27 @@ import java.util.List;
 public class Licantropo extends Personaje{
     //Atributos
     private int rabia;
-    private String dones;
 
     //Constructor
     public Licantropo(String nombre) {
         super(nombre);
-        this.rabia = rabia;
-        this.dones = dones;
+        this.setRabia(0);
+        this.setHabilidad("Dones");
     }
-
 
     //Métodos
     public int getRabia() {
         return rabia;
     }
+
     public void setRabia(int rabia) {
-        this.rabia = rabia;
+        if (rabia < 0){
+            this.rabia = 0;
+        } else if (rabia > 3){
+            this.rabia = 3;
+        } else {
+            this.rabia = rabia;
+        }
     }
-    public String getDones() {
-        return dones;
-    }
-    public void setDones(String dones) {
-        this.dones = dones;
-    }
+
 }

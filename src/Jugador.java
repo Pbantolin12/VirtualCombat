@@ -58,76 +58,13 @@ public class Jugador extends Usuario implements Observador {
         int opt = menuPersonaje();
         switch (opt) {
             case 1 -> {
-                terminalTexto.askInfo("Introduce el número de debilidades que tendrá del personaje: ");
-                int numDebilidades = terminalTexto.readInt();
-                int j = 0;
-                for (int i = 0; i < numDebilidades; i++) {
-                    terminalTexto.askInfo("Introduce el nombre de la debilidad " + ++j + ": ");
-                    String nombreDebilidad = terminalTexto.readStr();
-                    terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
-                    String descripcionDebilidad = terminalTexto.readStr();
-                    personaje.setDebilidad(nombreDebilidad, descripcionDebilidad);
-                }
-
-                terminalTexto.askInfo("Introduce el número de fortalezas que tendrá del personaje: ");
-                int numFortalezas = terminalTexto.readInt();
-                j = 0;
-                for (int i = 0; i < numFortalezas; i++) {
-                    this.personaje = new Vampiro(nombre);
-                    terminalTexto.askInfo("Introduce el nombre de la fortaleza " + ++j + ": ");
-                    String nombreFortaleza = terminalTexto.readStr();
-                    terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
-                    String descripcionFortaleza = terminalTexto.readStr();
-                    personaje.setFortaleza(nombreFortaleza, descripcionFortaleza);
-                }
+                this.personaje = new Vampiro(nombre);
             }
             case 2 -> {
-                terminalTexto.askInfo("Introduce el número de debilidades que tendrá del personaje: ");
-                int numDebilidades = terminalTexto.readInt();
-                int j = 0;
-                for (int i = 0; i < numDebilidades; i++) {
-                    terminalTexto.askInfo("Introduce el nombre de la debilidad " + ++j + ": ");
-                    String nombreDebilidad = terminalTexto.readStr();
-                    terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
-                    String descripcionDebilidad = terminalTexto.readStr();
-                    personaje.setDebilidad(nombreDebilidad, descripcionDebilidad);
-                }
-
-                terminalTexto.askInfo("Introduce el número de fortalezas que tendrá del personaje: ");
-                int numFortalezas = terminalTexto.readInt();
-                j = 0;
-                for (int i = 0; i < numFortalezas; i++) {
-                    this.personaje = new Licantropo(nombre);
-                    terminalTexto.askInfo("Introduce el nombre de la fortaleza " + ++j + ": ");
-                    String nombreFortaleza = terminalTexto.readStr();
-                    terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
-                    String descripcionFortaleza = terminalTexto.readStr();
-                    personaje.setFortaleza(nombreFortaleza, descripcionFortaleza);
-                }
+                this.personaje = new Licantropo(nombre);
             }
             case 3 -> {
-                terminalTexto.askInfo("Introduce el número de debilidades que tendrá del personaje: ");
-                int numDebilidades = terminalTexto.readInt();
-                int j = 0;
-                for (int i = 0; i < numDebilidades; i++) {
-                    terminalTexto.askInfo("Introduce el nombre de la debilidad " + ++j + ": ");
-                    String nombreDebilidad = terminalTexto.readStr();
-                    terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
-                    String descripcionDebilidad = terminalTexto.readStr();
-                    personaje.setDebilidad(nombreDebilidad, descripcionDebilidad);
-                }
-
-                terminalTexto.askInfo("Introduce el número de fortalezas que tendrá del personaje: ");
-                int numFortalezas = terminalTexto.readInt();
-                j = 0;
-                for (int i = 0; i < numFortalezas; i++) {
-                    this.personaje = new Cazador(nombre);
-                    terminalTexto.askInfo("Introduce el nombre de la fortaleza " + ++j + ": ");
-                    String nombreFortaleza = terminalTexto.readStr();
-                    terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
-                    String descripcionFortaleza = terminalTexto.readStr();
-                    personaje.setFortaleza(nombreFortaleza, descripcionFortaleza);
-                }
+                this.personaje = new Cazador(nombre);
             }
             default -> {
                 terminalTexto.error("Opción incorrecta");

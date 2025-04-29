@@ -27,7 +27,11 @@ public class Personaje {
         this.setConjuntoArmaduras(this.conjuntoArmadurasInicial());
         this.elegirArmaActiva();
         this.elegirArmaduraActiva();
-
+        this.oro = 1000;
+        this.salud = 5;
+        this.poder = 2;
+        inicializarDebilidades();
+        inicializarFortalezas();
     }
 
     public String getNombre() {
@@ -215,5 +219,33 @@ public class Personaje {
         conjuntoArmadurasIni.add(new Armadura("Piel", 3, 1));
         conjuntoArmadurasIni.add(new Armadura("Metal", 0, 3));
         return conjuntoArmadurasIni;
+    }
+
+    private void inicializarDebilidades(){
+        this.debilidades = new HashMap<String, String>();
+        terminalTexto.askInfo("Introduce el número de debilidades que tendrá del personaje: ");
+        int numDebilidades = terminalTexto.readInt();
+        int j = 0;
+        for (int i = 0; i < numDebilidades; i++) {
+            terminalTexto.askInfo("Introduce el nombre de la debilidad " + ++j + ": ");
+            String nombreDebilidad = terminalTexto.readStr();
+            terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
+            String descripcionDebilidad = terminalTexto.readStr();
+            this.setDebilidad(nombreDebilidad, descripcionDebilidad);
+        }
+    }
+
+    private void inicializarFortalezas(){
+        this.fortalezas = new HashMap<String, String>();
+        terminalTexto.askInfo("Introduce el número de fortalezas que tendrá del personaje: ");
+        int numFortalezas = terminalTexto.readInt();
+        int j = 0;
+        for (int i = 0; i < numFortalezas; i++) {
+            terminalTexto.askInfo("Introduce el nombre de la fortaleza " + ++j + ": ");
+            String nombreFortaleza = terminalTexto.readStr();
+            terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
+            String descripcionFortaleza = terminalTexto.readStr();
+            this.setFortaleza(nombreFortaleza, descripcionFortaleza);
+        }
     }
 }

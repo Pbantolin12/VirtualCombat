@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -5,16 +6,15 @@ public class Vampiro extends Personaje{
     //Atributos
     private int puntosSangre;
     private int edad;
-    private TerminalTexto terminalTexto= TerminalTexto.getInstance();
+    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
 
     //Constructor
     public Vampiro(String nombre) {
         super(nombre);
-        this.puntosSangre = 10;
+        this.setPuntosSangre(puntosSangre);
         this.setHabilidad("Disciplinas");
         terminalTexto.askInfo("Introduce la  edad del vampiro: ");
-        this.edad = terminalTexto.readInt();
-
+        this.setEdad(terminalTexto.readInt());
     }
 
     //Métodos
@@ -22,12 +22,14 @@ public class Vampiro extends Personaje{
         return puntosSangre;
     }
 
-    public void setPuntosSangre(){
-        this.puntosSangre = puntosSangre;
-    }
-
-    public String getDisciplinas(){
-        return disciplinas;
+    public void setPuntosSangre(int puntosSangre){
+        if (puntosSangre < 0){
+            this.puntosSangre = 0;
+        } else if (puntosSangre > 10){
+            this.puntosSangre = 10;
+        } else {
+            this.puntosSangre = puntosSangre;
+        }
     }
 
     public int getEdad(){
@@ -35,6 +37,10 @@ public class Vampiro extends Personaje{
     }
 
     public void setEdad(int edad){
-        this.edad = edad;
+        if (edad < 0) {
+            terminalTexto.error("La edad no puede ser negativa");
+        } else  {
+            this.edad = edad;
+        }
     }
 }
