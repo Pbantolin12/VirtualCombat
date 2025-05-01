@@ -12,12 +12,13 @@ public class Jugador extends Usuario implements Observador {
     private Desafio desafio;
     private int partidasGanadas;
     private GestorUsuarios gestorUsuarios;
+    private Random random = new Random();
 
     public Jugador(String nombre, String nick, String contrasena, GestorUsuarios gestorUsuarios) {
         super(nombre, nick, contrasena);
         setNumeroRegistro(generarNumeroRegistro());
         crearPersonaje();
-        this.desafiosCompletados = new ArrayList<Desafio>();
+        this.desafiosCompletados = new ArrayList<>();
         this.desafioPendiente = false;
         this.desafio = null;
         this.partidasGanadas = 0;
@@ -40,14 +41,13 @@ public class Jugador extends Usuario implements Observador {
 
     //Métodos
     private String generarNumeroRegistro() {
-        Random random = new Random();
         String codigo;
 
-        char letra1 = (char) (random.nextInt(26) + 'A');
-        int numero1 = random.nextInt(10);
-        int numero2 = random.nextInt(10);
-        char letra2 = (char) (random.nextInt(26) + 'A');
-        char letra3 = (char) (random.nextInt(26) + 'A');
+        char letra1 = (char) (this.random.nextInt(26) + 'A');
+        int numero1 = this.random.nextInt(10);
+        int numero2 = this.random.nextInt(10);
+        char letra2 = (char) (this.random.nextInt(26) + 'A');
+        char letra3 = (char) (this.random.nextInt(26) + 'A');
         codigo = "" + letra1 + numero1 + numero2 + letra2 + letra3;
         return codigo;
     }
@@ -55,22 +55,17 @@ public class Jugador extends Usuario implements Observador {
     public void crearPersonaje() {
         terminalTexto.askInfo("Introduce el nombre del personaje: ");
         String nombre = terminalTexto.readStr();
+        if (nombre == null) {
+            terminalTexto.error("El nombre no puede estar vacío");
+            return;
+        }
         int opt = menuPersonaje();
         switch (opt) {
-            case 1 -> {
-                this.personaje = new Vampiro(nombre);
-            }
-            case 2 -> {
-                this.personaje = new Licantropo(nombre);
-            }
-            case 3 -> {
-                this.personaje = new Cazador(nombre);
-            }
-            default -> {
-                terminalTexto.error("Opción incorrecta");
-            }
+            case 1 -> this.personaje = new Vampiro(nombre);
+            case 2 -> this.personaje = new Licantropo(nombre);
+            case 3 -> this.personaje = new Cazador(nombre);
+            default -> terminalTexto.error("Opción incorrecta");
         }
-
     }
 
     private int menuPersonaje(){
@@ -107,8 +102,7 @@ public class Jugador extends Usuario implements Observador {
                 int oroApostado = terminalTexto.readInt();
 
                 if (this.apostarOro(oroApostado)) {
-                    Desafio desafio = new Desafio(oroApostado, jugadorDesafiado, this, null); //CAMBIAR NULL
-                    this.desafio = desafio;
+                    this.desafio = new Desafio(oroApostado, jugadorDesafiado, this, null); //CAMBIAR NULL
                     this.desafioPendiente = false;
                     jugadorDesafiado.setDesafioPendiente(true);
                     jugadorDesafiado.setDesafio(desafio);
@@ -138,8 +132,33 @@ public class Jugador extends Usuario implements Observador {
         }
     }
 
-    public boolean aceptarDesafio() {
-        return false;
+    public void aceptarDesafio() {
+        this.desafioPendiente = false;
+        int opt;
+        do {
+            opt = menuDesafio();
+            switch (opt) {
+                case 1 -> {
+                    this.personaje.getArmaActiva().mostrarCaracteristicas();
+                    this.personaje.getArmaduraActiva().mostrarCaracteristicas();
+                }
+                case 2 -> this.modificarEquipo();
+                case 3 -> this.desafio.setDesafioAceptado(true);
+                default -> terminalTexto.error("Opción incorrecta");
+            }
+        } while (!this.desafio.getDesafioAceptado());
+        this.desafio.iniciarDesafio();
+    }
+
+    private int menuDesafio(){
+        terminalTexto.showln(" __________________________");
+        terminalTexto.showln("|_______Menu_Desafio_______|");
+        terminalTexto.showln("| 1. Mostrar equipo activo |");
+        terminalTexto.showln("| 2. Cambiar equipo        |");
+        terminalTexto.showln("| 3. Confirmar             |");
+        terminalTexto.showln("|__________________________|");
+        terminalTexto.show("Introduce una opción: ");
+        return terminalTexto.readInt();
     }
 
     public void rechazarDesafio() {
@@ -158,33 +177,64 @@ public class Jugador extends Usuario implements Observador {
 
     public void consultarHistorialPartidas() {
         terminalTexto.showln("Historial de partidas:");
-        for (Desafio desafio : desafiosCompletados) {
-            terminalTexto.showln(desafio.toString() + " - Ganador: " + desafio.getGanador() +
-                    " - Apostado: " + desafio.getOroApostado());
+        for (Desafio desafioC : this.desafiosCompletados) {
+            terminalTexto.showln(desafioC.toString() + " - Ganador: " + desafioC.getGanador() +
+                    " - Apostado: " + desafioC.getOroApostado());
         }
     }
 
-    public void modificarEquipo() {}
-
-    public void modificarPersonaje() {
+    public void modificarEquipo() {
         int opt;
         do {
             opt = menuModificarEquipo();
             switch (opt) {
-                case 1 -> terminalTexto.showln("Arma activa: " + getPersonaje().getArmaActiva().toString());
-                case 2 -> terminalTexto.showln("Armadura activa: " + getPersonaje().getArmaduraActiva().toString());
+                case 1 -> {
+                    terminalTexto.showln("Arma activa: " + getPersonaje().getArmaActiva().getNombre());
+                    getPersonaje().getArmaActiva().mostrarCaracteristicas();
+                }
+                case 2 -> {
+                    terminalTexto.showln("Armadura activa: " + getPersonaje().getArmaduraActiva().getNombre());
+                    getPersonaje().getArmaduraActiva().mostrarCaracteristicas();
+                }
                 case 3 -> cambiarArma();
                 case 4 -> cambiarArmadura();
+                default -> terminalTexto.error("Opción incorrecta");
             }
+        } while (opt != 5);
+    }
+
+    public void modificarPersonaje() {
+        int opt;
+        do {
+            opt = menuModificarPersonaje();
+            switch (opt) {
+                case 1 -> {
+                    terminalTexto.showln("Nombre actual: " + getPersonaje().getNombre());
+                    terminalTexto.askInfo("Introduce el nuevo nombre: ");
+                    String nuevoNombre = terminalTexto.readStr();
+                    if (nuevoNombre != null) {
+                        getPersonaje().setNombre(nuevoNombre);
+                    } else {
+                        terminalTexto.error("El nombre no puede estar vacío");
+                    }
+                }
+                case 2 -> this.personaje.modificarEsbirros();
+                case 3 -> this.personaje.modificarDebilidades();
+                case 4 -> this.personaje.modificarFortalezas();
+                default -> terminalTexto.error("Opción incorrecta");
+            }
+
         } while (opt != 5);
     }
 
     private void cambiarArma(){
         int i = 0;
-        terminalTexto.showln("Arma activa: " + getPersonaje().getArmaActiva().toString());
+        terminalTexto.showln("Arma activa: " + getPersonaje().getArmaActiva().getNombre());
         terminalTexto.show("Armas disponibles: ");
         for (Arma arma : getPersonaje().getConjuntoArmas()) {
-            terminalTexto.show(i++ + ". " + arma.toString());
+            terminalTexto.show(i++ + ". " + arma.getNombre());
+            arma.mostrarCaracteristicas();
+            terminalTexto.nextLine();
         }
         terminalTexto.askInfo("Introduce el número del arma que quieres equipar: ");
         int armaEquipar = terminalTexto.readInt();
@@ -193,10 +243,12 @@ public class Jugador extends Usuario implements Observador {
 
     private void cambiarArmadura(){
         int i = 0;
-        terminalTexto.showln("Armadura activa: " + getPersonaje().getArmaduraActiva().toString());
+        terminalTexto.showln("Armadura activa: " + getPersonaje().getArmaduraActiva().getNombre());
         terminalTexto.show("Armaduras disponibles: ");
         for (Armadura armadura : getPersonaje().getConjuntoArmaduras()) {
-            terminalTexto.show(i++ + ". " + armadura.toString());
+            terminalTexto.show(i++ + ". " + armadura.getNombre());
+            armadura.mostrarCaracteristicas();
+            terminalTexto.nextLine();
         }
         terminalTexto.askInfo("Introduce el número de la armadura que quieres equipar: ");
         int armaduraEquipar = terminalTexto.readInt();
@@ -217,7 +269,9 @@ public class Jugador extends Usuario implements Observador {
     }
 
     @Override
-    public void actualizar() {
+    public void actualizar() { //TODO: Implementar lógica de actualización
+        // Aquí se puede implementar la lógica para actualizar el jugador
+        // cuando se produzca un evento en el juego.
     }
 
     public String getNumeroRegistro() {
@@ -266,5 +320,18 @@ public class Jugador extends Usuario implements Observador {
 
     public void setPartidasGanadas(int partidasGanadas) {
         this.partidasGanadas = partidasGanadas;
+    }
+
+    public int menuModificarPersonaje(){
+        terminalTexto.showln(" _________________________________");
+        terminalTexto.showln("|_____Menu_Modificar_Personaje____|");
+        terminalTexto.showln("| 1. Cambiar nombre               |");
+        terminalTexto.showln("| 2. Cambiar esbirros             |");
+        terminalTexto.showln("| 3. Cambiar debilidades          |");
+        terminalTexto.showln("| 4. Cambiar fortalezas           |");
+        terminalTexto.showln("| 5. Volver                       |");
+        terminalTexto.showln("|_________________________________|");
+        terminalTexto.show("Introduce una opción: ");
+        return terminalTexto.readInt();
     }
 }

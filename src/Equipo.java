@@ -5,15 +5,27 @@ public class Equipo {
     private int modificadorDefensa;
 
     //Constructor
-    public Equipo(){}
+    public Equipo(String nombre, int modificadorDefensa, int modificadorAtaque){
+        this.nombre = nombre;
+        this.modificadorAtaque = modificadorDefensa;
+        this.modificadorDefensa = modificadorAtaque;
+    }
 
     //Métodos
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public int getModificadorDefensa() {
+        return modificadorDefensa;
+    }
+
+    public void setModificadorDefensa(int modificadorDefensa){
+        this.modificadorDefensa = modificadorDefensa;
     }
 
     public int getModificadorAtaque() {
@@ -22,13 +34,5 @@ public class Equipo {
 
     public void setModificadorAtaque(int modificadorAtaque) {
         this.modificadorAtaque = modificadorAtaque;
-    }
-
-    public int getModificadorDefensa() {
-        return modificadorDefensa;
-    }
-
-    public void setModificadorDefensa(int modificadorDefensa) {
-        this.modificadorDefensa = modificadorDefensa;
     }
 }

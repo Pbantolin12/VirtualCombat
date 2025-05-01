@@ -11,11 +11,15 @@ public class GestorUsuarios {
 
     //Constructor
     public GestorUsuarios() {
-        int opcion = 0;  //Opción
-
-        this.jugadores = new ArrayList<Jugador>();
-        this.administradores = new ArrayList<Administrador>();
+        this.jugadores = new ArrayList<>();
+        this.administradores = new ArrayList<>();
         this.gestorJuego = new GestorJuego(GestorUsuarios.this);
+    }
+
+    //Métodos
+
+    public void iniciar() {
+        int opcion = 0;
         while (opcion < 1 || opcion > 3) {
             opcion = menuPrincipal();
             switch (opcion) {
@@ -32,9 +36,7 @@ public class GestorUsuarios {
                                 setJugadores(registrarJugador());
                                 opcion = 0;
                             }
-                            case 3 -> {
-                                opcion = 0;
-                            }
+                            case 3 -> opcion = 0;
                             default -> terminalTexto.error("Opción incorrecta");
                         }
                     } while (opcionIni != 3);
@@ -44,15 +46,9 @@ public class GestorUsuarios {
                     while (opcionReg != 3) {
                         opcionReg = menuInicioSesion();
                         switch (opcionReg) {
-                            case 1 -> {
-                                iniciarSesionAdministrador();
-                            }
-                            case 2 -> {
-                                iniciarSesionJugador();
-                            }
-                            case 3 -> {
-                                opcion = 0;
-                            }
+                            case 1 -> iniciarSesionAdministrador();
+                            case 2 -> iniciarSesionJugador();
+                            case 3 -> opcion = 0;
                             default -> terminalTexto.error("Opción incorrecta");
                         }
                     }
@@ -65,8 +61,6 @@ public class GestorUsuarios {
             }
         }
     }
-
-    //Métodos
 
     //Método para registrar un jugador o administrador
     private Jugador registrarJugador() {

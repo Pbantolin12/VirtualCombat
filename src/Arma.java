@@ -3,14 +3,12 @@ public class Arma extends Equipo{
     private TipoArma tipo;
     private int modificadorDefensa;
     private int modificadorAtaque;
-    private String nombre;
+    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
 
     //Constructor
-    public Arma(String nombre, TipoArma tipo, int modificadorDefensa, int modificadorAtaque) {
-        this.nombre = nombre;
+    public Arma(String nombre, int modificadorDefensa, int modificadorAtaque, TipoArma tipo) {
+        super(nombre, modificadorDefensa, modificadorAtaque);
         this.tipo = tipo;
-        this.modificadorDefensa = modificadorDefensa;
-        this.modificadorAtaque = modificadorAtaque;
     }
 
     //Métodos
@@ -22,27 +20,12 @@ public class Arma extends Equipo{
         this.tipo = tipo;
     }
 
-    public int getModificadorDefensa() {
-        return modificadorDefensa;
-    }
-
-    public void setModificadorDefensa(int modificadorDefensa){
-        this.modificadorDefensa = modificadorDefensa;
-    }
-
-    public int getModificadorAtaque() {
-        return modificadorAtaque;
-    }
-
-    public void setModificadorAtaque(int modificadorAtaque) {
-        this.modificadorAtaque = modificadorAtaque;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void mostrarCaracteristicas(){
+        terminalTexto.showln("|---Características del arma---|");
+        terminalTexto.showln("| Arma: " + this.getNombre());
+        terminalTexto.showln("| Tipo: " + this.getTipo());
+        terminalTexto.showln("| Modificador de defensa: " + this.modificadorDefensa);
+        terminalTexto.showln("| Modificador de ataque: " + this.modificadorAtaque);
+        terminalTexto.showln("|-------------------------------|");
     }
 }

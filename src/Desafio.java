@@ -79,4 +79,10 @@ public class Desafio {
     private int generarId() {
         return (int) (Math.random() * 1000);
     }
+
+    public void iniciarDesafio() {
+        // Lógica para iniciar el desafío
+        // Aquí puedes implementar la lógica del desafío entre los jugadores
+        // y notificar a los observadores sobre el resultado.
+    }
 }
