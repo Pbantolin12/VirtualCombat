@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.List;
-
 public class Cazador extends Personaje{
     //Atributos
     private int voluntad;

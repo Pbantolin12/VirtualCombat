@@ -1,4 +1,4 @@
-public class HumanosStrategy implements EsbirrosStrategy {
+public class HumanoStrategy implements EsbirrosStrategy {
     @Override
     public int calcularAtaque() {
         return 0;

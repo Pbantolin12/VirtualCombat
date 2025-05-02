@@ -37,8 +37,9 @@ public class Personaje {
         this.fortalezas = new HashMap<>();
         this.debilidadesActivas = new HashMap<>();
         this.fortalezasActivas = new HashMap<>();
-        añadirDebilidad();
-        añadirFortaleza();
+        anadirDebilidad();
+        anadirFortaleza();
+        anadirEsbirros();
     }
 
     public String getNombre() {
@@ -228,7 +229,7 @@ public class Personaje {
         return conjuntoArmadurasIni;
     }
 
-    private void añadirDebilidad(){
+    private void anadirDebilidad(){
         terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
         String descripcionDebilidad = terminalTexto.readStr();
         int valorDebilidad = 0;
@@ -242,7 +243,7 @@ public class Personaje {
         this.setDebilidad(descripcionDebilidad, valorDebilidad);
     }
 
-    private void añadirFortaleza(){
+    private void anadirFortaleza(){
         terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
         String descripcionFortaleza = terminalTexto.readStr();
         int valorFortaleza = 0;
@@ -263,7 +264,7 @@ public class Personaje {
         do {
             opt = menuDebilidades();
             switch (opt){
-                case 1 -> this.añadirDebilidad();
+                case 1 -> this.anadirDebilidad();
                 case 2 -> this.eliminarDebilidad();
                 case 3 -> this.mostrarDebilidades();
                 default -> terminalTexto.error("Opción incorrecta");
@@ -306,7 +307,7 @@ public class Personaje {
         do {
             opt = menuFortalezas();
             switch (opt){
-                case 1 -> this.añadirFortaleza();
+                case 1 -> this.anadirFortaleza();
                 case 2 -> this.eliminarFortaleza();
                 case 3 -> this.mostrarFortalezas();
                 default -> terminalTexto.error("Opción incorrecta");
@@ -345,17 +346,14 @@ public class Personaje {
     }
 
     public void setdebilidadesActivas(){
-        int i = 1;
-        terminalTexto.showln("|--------Seleccionar debilidades-------|");
-        for (Map.Entry<String, Integer> debilidad : this.debilidades.entrySet()) {
-            String status = debilidadesActivas.containsKey(debilidad.getKey()) ? "[activa]" : "[inactiva]";
-            terminalTexto.showln(i++ + ". " +  debilidad.getKey() + "Valor: " + debilidad.getValue() + " [" + status + "]");
-        }
-        terminalTexto.askInfo("Elige las debilidades activas (introduce los números con espacio entre ellos): ");
-        String[] debilidadesActivas = terminalTexto.readStr().split(" ");
-
         int opt;
         do {
+            int i = 1;
+            terminalTexto.showln("|--------Seleccionar debilidades-------|");
+            for (Map.Entry<String, Integer> debilidad : this.debilidades.entrySet()) {
+                String status = debilidadesActivas.containsKey(debilidad.getKey()) ? "[activa]" : "[inactiva]";
+                terminalTexto.showln(i++ + ". " +  debilidad.getKey() + "Valor: " + debilidad.getValue() + " [" + status + "]");
+            }
             opt = menuActivarDesactivarDebFort("debilidad");
             if (opt >= 1 && opt <= this.debilidades.size()){
                 String debilidad = this.debilidades.keySet().toArray()[opt - 1].toString();
@@ -373,17 +371,14 @@ public class Personaje {
     }
 
     public void setfortalezasActivas(){
-        int i = 1;
-        terminalTexto.showln("|--------Seleccionar fortalezas-------|");
-        for (Map.Entry<String, Integer> fortaleza : this.fortalezas.entrySet()) {
-            String status = fortalezasActivas.containsKey(fortaleza.getKey()) ? "[activa]" : "[inactiva]";
-            terminalTexto.showln(i++ + ". " +  fortaleza.getKey() + "Valor: " + fortaleza.getValue() + " [" + status + "]");
-        }
-        terminalTexto.askInfo("Elige las fortalezas activas (introduce los números con espacio entre ellos): ");
-        String[] fortalezasActivas = terminalTexto.readStr().split(" ");
-
         int opt;
         do {
+            int i = 1;
+            terminalTexto.showln("|--------Seleccionar fortalezas-------|");
+            for (Map.Entry<String, Integer> fortaleza : this.fortalezas.entrySet()) {
+                String status = fortalezasActivas.containsKey(fortaleza.getKey()) ? "[activa]" : "[inactiva]";
+                terminalTexto.showln(i++ + ". " +  fortaleza.getKey() + "Valor: " + fortaleza.getValue() + " [" + status + "]");
+            }
             opt = menuActivarDesactivarDebFort("fortaleza");
             if (opt >= 1 && opt <= this.fortalezas.size()){
                 String fortaleza = this.fortalezas.keySet().toArray()[opt - 1].toString();
@@ -404,6 +399,100 @@ public class Personaje {
         terminalTexto.showln("Opciones");
         terminalTexto.showln("- Introduce el número de una " + tipo + " debilidad para activarla/desactivarla");
         terminalTexto.showln("- Introduce 0 para confirmar");
+        terminalTexto.askInfo("Elige una opción: ");
+        return terminalTexto.readInt();
+    }
+
+    public void anadirEsbirros(){
+        int opt;
+        do {
+            opt = menuEsbirros();
+            if (opt == 4 && this.conjuntoEsbirros == null){
+                terminalTexto.error("No has añadido ningun esbirro");
+            }
+            switch (opt){
+                case 1 -> {
+                    do {
+                        terminalTexto.askInfo("Introduce el nombre del esbirro: ");
+                        String nombre = terminalTexto.readStr();
+                        if (nombre.isEmpty()){
+                            terminalTexto.error("El nombre no puede ser vacío");
+                        }
+                    } while (nombre.isEmpty());
+                    int dependencia;
+                    do {
+                        terminalTexto.askInfo("Introduce la dependencia del esbirro (entre 1 y 5): ");
+                        dependencia = terminalTexto.readInt();
+                        if (dependencia < 1 || dependencia > 3){
+                            terminalTexto.error("Valor incorrecto");
+                        }
+                    } while (opt < 1 || opt > 3);
+                    this.conjuntoEsbirros = new Ghoul(nombre, dependencia);
+                }
+                case 2 -> {
+                    do {
+                        terminalTexto.askInfo("Introduce el nombre del esbirro: ");
+                        String nombre = terminalTexto.readStr();
+                        if (nombre.isEmpty()){
+                            terminalTexto.error("El nombre no puede estar vacío");
+                        }
+                    } while (nombre.isEmpty());
+                    String pacto;
+                    do {
+                        terminalTexto.askInfo("Introduce la descripción el pacto del demonio con el amo: ");
+                        pacto = terminalTexto.readStr();
+                        if (pacto.isEmpty()){
+                            terminalTexto.error("El pacto no puede estar vacío");
+                        }
+                    } while (pacto.isEmpty());
+                    this.conjuntoEsbirros = new Demonio(nombre, pacto);
+                }
+                case 3 -> {
+                    if (this instanceof Vampiro){
+                        terminalTexto.error("Los vampiros no pueden tener esbirros humanos");
+                    } else {
+                        do {
+                            terminalTexto.askInfo("Introduce el nombre del esbirro: ");
+                            String nombre = terminalTexto.readStr();
+                            if (nombre.isEmpty()){
+                                terminalTexto.error("El nombre no puede estar vacío");
+                            }
+                        } while (nombre.isEmpty());
+                        for (Grado grado : Grado.values()) {
+                            terminalTexto.showln(grado.toString());
+                        }
+                        String grado;
+                        Boolean gradoAux = false;
+                        do {
+                            terminalTexto.askInfo("Introduce la lealtad del esbirro: ");
+                            grado = terminalTexto.readStr();
+                            if (grado.isEmpty()){
+                                terminalTexto.error("El grado no puede estar vacío");
+                            }
+                            for (Grado g : Grado.values()) {
+                                if (g.name().equals(grado)){
+                                    gradoAux = true;
+                                }
+                            }
+                            if (!gradoAux){
+                                terminalTexto.error("El grado introducido no es correcto");
+                            }
+                        } while (grado.isEmpty() && !gradoAux);
+                        this.conjuntoEsbirros = new Humano(nombre, Grado.valueOf(grado));
+                    }
+                }
+                default -> terminalTexto.error("Opción incorrecta");
+            }
+        } while (this.conjuntoEsbirros != null);
+    }
+
+    private int menuEsbirros(){
+        terminalTexto.showln(" __________________________");
+        terminalTexto.showln("|____Escoger esbirros______|");
+        terminalTexto.showln("| 1. Ghoul                 |");
+        terminalTexto.showln("| 2. Demonio               |");
+        terminalTexto.showln("| 3. Humano                |");
+        terminalTexto.showln("|--------------------------|");
         terminalTexto.askInfo("Elige una opción: ");
         return terminalTexto.readInt();
     }

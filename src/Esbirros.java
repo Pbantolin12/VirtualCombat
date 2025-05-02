@@ -6,9 +6,9 @@ public class Esbirros {
     private int defensa;
 
     //Constructor
-    public Esbirros(String nombre, int salud, int ataque, int defensa){
+    public Esbirros(String nombre){
         this.nombre = nombre;
-        this.salud = salud;
+        this.salud = 3;
         this.ataque = ataque;
         this.defensa = defensa;
     }

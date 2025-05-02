@@ -1,10 +1,10 @@
-public class Humanos extends Esbirros {
+public class Humano extends Esbirros {
     //Atributos
     private Grado lealtad;
     
     //Constructor
-    public Humanos(Grado lealtad, String nombre, int salud, int ataque, int defensa) {
-        super(nombre, salud, ataque, defensa);
+    public Humano(String nombre, Grado lealtad) {
+        super(nombre);
         this.lealtad = lealtad;
     }
 

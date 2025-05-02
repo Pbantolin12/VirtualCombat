@@ -1,4 +1,4 @@
-public class GhoulsStrategy implements EsbirrosStrategy {
+public class GhoulStrategy implements EsbirrosStrategy {
     @Override
     public int calcularAtaque() {
         return 0;

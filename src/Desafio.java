@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 
 public class Desafio {
     //Atributos
@@ -9,6 +10,7 @@ public class Desafio {
     private List<Observador> observadores;
     private Jugador ganador;
     private boolean desafioAceptado;
+    private static final Random random = new Random();
 
     //Constructor
     public Desafio(int oroApostado, Jugador jugadorDesafiado, Jugador jugadorDesafiante, List<Observador> observadores) {
@@ -77,7 +79,7 @@ public class Desafio {
     }
 
     private int generarId() {
-        return (int) (Math.random() * 1000);
+        return random.nextInt(1000); // Genera un ID aleatorio entre 0 y 999
     }
 
     public void iniciarDesafio() { //TODO

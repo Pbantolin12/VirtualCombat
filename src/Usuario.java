@@ -14,8 +14,6 @@ public class Usuario {
     public Usuario(){}
 
     //Métodos
-    public void registrarse(){}
-
     public String getNombre() {
         return nombre;
     }
