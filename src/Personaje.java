@@ -66,8 +66,33 @@ public class Personaje {
         this.conjuntoArmas = conjuntoArmas;
     }
 
+    public void setArma(Arma arma){
+        this.conjuntoArmas.add(arma);
+    }
+    public Arma getArma(String name){
+        for (Arma arma : conjuntoArmas) {
+            if (arma.getNombre().equals(name)){
+                return arma;
+            }
+        }
+        return null;
+    }
+
     public List<Armadura> getConjuntoArmaduras() {
         return conjuntoArmaduras;
+    }
+
+    public void setArmadura(Armadura armadura){
+        this.conjuntoArmaduras.add(armadura);
+    }
+
+    public Armadura getArmadura(String name){
+        for (Armadura armadura : conjuntoArmaduras) {
+            if (armadura.getNombre().equals(name)){
+                return armadura;
+            }
+        }
+        return null;
     }
 
     public void setConjuntoArmaduras(List<Armadura> conjuntoArmaduras) {

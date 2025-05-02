@@ -11,6 +11,8 @@ public class Desafio {
     private Jugador ganador;
     private boolean desafioAceptado;
     private static final Random random = new Random();
+    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private boolean validado;
 
     //Constructor
     public Desafio(int oroApostado, Jugador jugadorDesafiado, Jugador jugadorDesafiante, List<Observador> observadores) {
@@ -19,6 +21,9 @@ public class Desafio {
         this.jugadorDesafiado = jugadorDesafiado;
         this.jugadorDesafiante = jugadorDesafiante;
         this.observadores = observadores;
+        this.ganador = null;
+        this.desafioAceptado = false;
+        this.validado = false;
     }
 
     //Métodos
@@ -82,9 +87,24 @@ public class Desafio {
         return random.nextInt(1000); // Genera un ID aleatorio entre 0 y 999
     }
 
+    public void setValidado(boolean validado) {
+        this.validado = validado;
+    }
+
+    public boolean getValidado() {
+        return validado;
+    }
+
     public void iniciarDesafio() { //TODO
         // Lógica para iniciar el desafío
         // Aquí puedes implementar la lógica del desafío entre los jugadores
         // y notificar a los observadores sobre el resultado.
+    }
+
+    public void mostrarDesafio(){
+        terminalTexto.info("Desafío: " + this.id);
+        terminalTexto.info("Oro Apostado: " + this.oroApostado);
+        terminalTexto.info("Jugador Desafiado: " + this.jugadorDesafiado.getNombre());
+        terminalTexto.info("Jugador Desafiante: " + this.jugadorDesafiante.getNombre());
     }
 }

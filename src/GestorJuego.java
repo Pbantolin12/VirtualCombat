@@ -1,12 +1,17 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class GestorJuego {
     //Atributos
     private TerminalTexto terminalTexto;
     private GestorUsuarios gestorUsuarios;
+    private List<Desafio> desafiosPendientes;
 
     //Constructor
     public GestorJuego(GestorUsuarios gestorUsuarios) {
         this.terminalTexto = TerminalTexto.getInstance();
         this.gestorUsuarios = gestorUsuarios;
+        this.desafiosPendientes = new ArrayList<>();
     }
 
     //Métodos
@@ -14,7 +19,7 @@ public class GestorJuego {
         int opt;
         String nombreJugador;
 
-        terminalTexto.askInfo("Introduce el nombre del jugador para reaizar operaciones: ");
+        terminalTexto.askInfo("Introduce el nombre del jugador para realizar operaciones: ");
         nombreJugador = terminalTexto.readStr();
         if (gestorUsuarios.getJugador(nombreJugador) == null) {
             terminalTexto.error("El jugador no existe");
@@ -24,15 +29,13 @@ public class GestorJuego {
             opt = menuAdmin();
             switch (opt) {
                 case 1 -> administrador.modificarPersonaje(gestorUsuarios.getJugador(nombreJugador).getPersonaje());
-                case 2 -> administrador.eliminarPersonaje(gestorUsuarios.getJugador(nombreJugador).getPersonaje());
-                case 3 -> administrador.modificarEquipo();
-                case 4 -> administrador.añadirEsbirros();
-                case 5 -> administrador.validarDesafio();
-                case 6 -> administrador.bloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
-                case 7 -> administrador.desbloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
+                case 2 -> administrador.eliminarPersonaje(gestorUsuarios.getJugador(nombreJugador));
+                case 3 -> administrador.validarDesafio(this.desafiosPendientes);
+                case 4 -> administrador.bloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
+                case 5 -> administrador.desbloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
                 default -> terminalTexto.error("Opción incorrecta");
             }
-        } while (opt !=9);
+        } while (opt !=6);
     }
 
     public void modoJugador(Jugador jugador) {
@@ -49,19 +52,29 @@ public class GestorJuego {
                 }
             }
         } while (jugador.getDesafioPendiente());
-
         do {
             opt = menuJugador();
-            switch (opt){
-                case 1 -> jugador.crearPersonaje();
-                case 2 -> jugador.modificarPersonaje();
-                case 3 -> jugador.eliminarPersonaje(jugador.getPersonaje());
-                case 4 -> jugador.modificarEquipo();
-                case 5 -> jugador.desafiarJugador();
-                case 6 -> jugador.consultarOro();
-                case 7 -> jugador.consultarRanking();
-                case 8 -> jugador.consultarHistorialPartidas();
-                default -> terminalTexto.error("Opción incorrecta");
+            if (jugador.getPersonaje() == null && opt != 1 && opt != 9) {
+                // Si no tiene personaje y no eligió crear uno o salir
+                terminalTexto.error("Primero debes crear un personaje (opción 1)");
+            } else {
+                switch (opt) {
+                    case 1 -> {
+                        if (jugador.getPersonaje() != null) {
+                            terminalTexto.error("Ya tienes un personaje creado");
+                        } else {
+                            jugador.crearPersonaje();
+                        }
+                    }
+                    case 2 -> jugador.modificarPersonaje();
+                    case 3 -> jugador.eliminarPersonaje(jugador.getPersonaje());
+                    case 4 -> jugador.modificarEquipo();
+                    case 5 -> jugador.desafiarJugador();
+                    case 6 -> jugador.consultarOro();
+                    case 7 -> jugador.consultarRanking();
+                    case 8 -> jugador.consultarHistorialPartidas();
+                    default -> terminalTexto.error("Opción incorrecta");
+                }
             }
         } while (opt != 9);
     }
@@ -71,12 +84,10 @@ public class GestorJuego {
         terminalTexto.showln("|____Menu_administrador____|");
         terminalTexto.showln("| 1. Modificar personaje   |");
         terminalTexto.showln("| 2. Eliminar personaje    |");
-        terminalTexto.showln("| 3. Modificar equipo      |");
-        terminalTexto.showln("| 4. Añadir esbirros       |");
-        terminalTexto.showln("| 5. Validar desafio       |");
-        terminalTexto.showln("| 6. Bloquear usuario      |");
-        terminalTexto.showln("| 7. Desbloquear usuario   |");
-        terminalTexto.showln("| 8. Volver                |");
+        terminalTexto.showln("| 3. Validar desafio       |");
+        terminalTexto.showln("| 4. Bloquear usuario      |");
+        terminalTexto.showln("| 5. Desbloquear usuario   |");
+        terminalTexto.showln("| 6. Volver                |");
         terminalTexto.showln("|__________________________");
         terminalTexto.show("Introduce una opción: ");
         return terminalTexto.readInt();
@@ -110,5 +121,13 @@ public class GestorJuego {
         terminalTexto.show("|------------------------|");
         terminalTexto.show("Introduce una opción: ");
         return terminalTexto.readInt();
+    }
+
+    public List<Desafio> getDesafiosPendientes() {
+        return desafiosPendientes;
+    }
+
+    public void setDesafiosPendientes(Desafio desafio) {
+        this.desafiosPendientes.add(desafio);
     }
 }

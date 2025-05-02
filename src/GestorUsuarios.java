@@ -111,8 +111,13 @@ public class GestorUsuarios {
         for (Jugador jugador : jugadores) {
             if (jugador.getNombre().equals(nombre)) {
                 if (jugador.getContrasena().equals(contrasena)) {
-                    terminal.info("Iniciando sesión...");
-                    gestorJuego.modoJugador(jugador);
+                    if (jugador.getBloqueado()) {
+                        terminal.error("El usuario ha sido bloqueado");
+                        return;
+                    } else {
+                        terminal.info("Iniciando sesión...");
+                        gestorJuego.modoJugador(jugador);
+                    }
                 } else {
                     terminal.error("Contraseña incorrecta: ");
                 }
