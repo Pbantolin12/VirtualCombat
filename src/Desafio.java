@@ -80,7 +80,7 @@ public class Desafio {
         return (int) (Math.random() * 1000);
     }
 
-    public void iniciarDesafio() {
+    public void iniciarDesafio() { //TODO
         // Lógica para iniciar el desafío
         // Aquí puedes implementar la lógica del desafío entre los jugadores
         // y notificar a los observadores sobre el resultado.

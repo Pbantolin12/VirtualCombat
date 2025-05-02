@@ -17,6 +17,8 @@ public class Personaje {
     private int poder;
     private Map<String, Integer> fortalezas;
     private Map<String, Integer> debilidades;
+    private Map<String, Boolean> debilidadesActivas;
+    private Map<String, Boolean> fortalezasActivas;
     private int potencialAtaque;
     private int potencialDefensa;
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();
@@ -33,6 +35,8 @@ public class Personaje {
         this.poder = 2;
         this.debilidades = new HashMap<>();
         this.fortalezas = new HashMap<>();
+        this.debilidadesActivas = new HashMap<>();
+        this.fortalezasActivas = new HashMap<>();
         añadirDebilidad();
         añadirFortaleza();
     }
@@ -331,11 +335,75 @@ public class Personaje {
     private int menuFortalezas(){
         terminalTexto.showln(" ___________________________");
         terminalTexto.showln("|____Menú de fortalezas_____|");
-        terminalTexto.showln("| 1. Añadir fortaleza      |");
-        terminalTexto.showln("| 2. Eliminar fortaleza    |");
+        terminalTexto.showln("| 1. Añadir fortaleza       |");
+        terminalTexto.showln("| 2. Eliminar fortaleza     |");
         terminalTexto.showln("| 3. Mostrar fortalezas     |");
-        terminalTexto.showln("| 4. Confirmar             |");
+        terminalTexto.showln("| 4. Confirmar              |");
         terminalTexto.showln("|---------------------------|");
+        terminalTexto.askInfo("Elige una opción: ");
+        return terminalTexto.readInt();
+    }
+
+    public void setdebilidadesActivas(){
+        int i = 1;
+        terminalTexto.showln("|--------Seleccionar debilidades-------|");
+        for (Map.Entry<String, Integer> debilidad : this.debilidades.entrySet()) {
+            String status = debilidadesActivas.containsKey(debilidad.getKey()) ? "[activa]" : "[inactiva]";
+            terminalTexto.showln(i++ + ". " +  debilidad.getKey() + "Valor: " + debilidad.getValue() + " [" + status + "]");
+        }
+        terminalTexto.askInfo("Elige las debilidades activas (introduce los números con espacio entre ellos): ");
+        String[] debilidadesActivas = terminalTexto.readStr().split(" ");
+
+        int opt;
+        do {
+            opt = menuActivarDesactivarDebFort("debilidad");
+            if (opt >= 1 && opt <= this.debilidades.size()){
+                String debilidad = this.debilidades.keySet().toArray()[opt - 1].toString();
+                if (this.debilidadesActivas.containsKey(debilidad)){
+                    this.debilidadesActivas.remove(debilidad);
+                    terminalTexto.info("Debilidad [" + debilidad + "] desactivada");
+                } else {
+                    this.debilidadesActivas.put(debilidad, true);
+                    terminalTexto.info("Debilidad [" + debilidad + "] activada");
+                }
+            } else if (opt != 0){
+                terminalTexto.error("Opción incorrecta");
+            }
+        } while (opt != 0);
+    }
+
+    public void setfortalezasActivas(){
+        int i = 1;
+        terminalTexto.showln("|--------Seleccionar fortalezas-------|");
+        for (Map.Entry<String, Integer> fortaleza : this.fortalezas.entrySet()) {
+            String status = fortalezasActivas.containsKey(fortaleza.getKey()) ? "[activa]" : "[inactiva]";
+            terminalTexto.showln(i++ + ". " +  fortaleza.getKey() + "Valor: " + fortaleza.getValue() + " [" + status + "]");
+        }
+        terminalTexto.askInfo("Elige las fortalezas activas (introduce los números con espacio entre ellos): ");
+        String[] fortalezasActivas = terminalTexto.readStr().split(" ");
+
+        int opt;
+        do {
+            opt = menuActivarDesactivarDebFort("fortaleza");
+            if (opt >= 1 && opt <= this.fortalezas.size()){
+                String fortaleza = this.fortalezas.keySet().toArray()[opt - 1].toString();
+                if (this.fortalezasActivas.containsKey(fortaleza)){
+                    this.fortalezasActivas.remove(fortaleza);
+                    terminalTexto.info("Fortaleza [" + fortaleza + "] desactivada");
+                } else {
+                    this.fortalezasActivas.put(fortaleza, true);
+                    terminalTexto.info("Fortaleza [" + fortaleza + "] activada");
+                }
+            } else if (opt != 0){
+                terminalTexto.error("Opción incorrecta");
+            }
+        } while (opt != 0);
+    }
+
+    private int menuActivarDesactivarDebFort(String tipo){
+        terminalTexto.showln("Opciones");
+        terminalTexto.showln("- Introduce el número de una " + tipo + " debilidad para activarla/desactivarla");
+        terminalTexto.showln("- Introduce 0 para confirmar");
         terminalTexto.askInfo("Elige una opción: ");
         return terminalTexto.readInt();
     }

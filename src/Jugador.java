@@ -42,7 +42,6 @@ public class Jugador extends Usuario implements Observador {
     //Métodos
     private String generarNumeroRegistro() {
         String codigo;
-
         char letra1 = (char) (this.random.nextInt(26) + 'A');
         int numero1 = this.random.nextInt(10);
         int numero2 = this.random.nextInt(10);
@@ -90,7 +89,6 @@ public class Jugador extends Usuario implements Observador {
 
     public void desafiarJugador() {
         String nombreDesafiado;
-
         terminalTexto.askInfo("Introduce el nombre del jugador a desafiar: ");
         nombreDesafiado = terminalTexto.readStr();
         Jugador jugadorDesafiado = gestorUsuarios.getJugador(nombreDesafiado);
@@ -223,7 +221,6 @@ public class Jugador extends Usuario implements Observador {
                 case 4 -> this.personaje.modificarFortalezas();
                 default -> terminalTexto.error("Opción incorrecta");
             }
-
         } while (opt != 5);
     }
 

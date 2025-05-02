@@ -70,21 +70,21 @@ public class GestorUsuarios {
 
         terminal.nextLine();
         while (nombre.isEmpty()) {
-            terminal.askInfo("Introduzca su nombre");
+            terminal.askInfo("Introduzca su nombre: ");
             nombre = terminal.readStr();
             if (nombre.isEmpty()) {
                 terminal.error("El nombre no puede estar vacío");
             }
         }
         while (nick.isEmpty()) {
-            terminal.askInfo("Introduzca su nick");
+            terminal.askInfo("Introduzca su nick: ");
             nick = terminal.readStr();
             if (nick.isEmpty()) {
                 terminal.error("El nick no puede estar vacío");
             }
         }
         while (contrasena.length() < 8 || contrasena.length() > 12) {
-            terminal.askInfo("Introduzca su contraseña");
+            terminal.askInfo("Introduzca su contraseña: ");
             contrasena = terminal.readStr();
             if (contrasena.length() < 8 || contrasena.length() > 12) {
                 terminal.error("La contraseña debe tener entre 8 y 12 caracteres");
@@ -98,9 +98,9 @@ public class GestorUsuarios {
         String nombre = "";
         String contrasena = "";
 
-        terminal.askInfo("Introduzca su nombre");
+        terminal.askInfo("Introduzca su nombre: ");
         nombre = terminal.readStr();
-        terminal.askInfo("Introduzca su contraseña");
+        terminal.askInfo("Introduzca su contraseña: ");
         contrasena = terminal.readStr();
 
         if (jugadores.isEmpty()) {
@@ -114,7 +114,7 @@ public class GestorUsuarios {
                     terminal.info("Iniciando sesión...");
                     gestorJuego.modoJugador(jugador);
                 } else {
-                    terminal.error("Contraseña incorrecta");
+                    terminal.error("Contraseña incorrecta: ");
                 }
             } else {
                 terminal.error("Usuario no encontrado");
@@ -127,9 +127,9 @@ public class GestorUsuarios {
         String nombre = "";
         String contrasena = "";
 
-        terminal.askInfo("Introduzca su nombre");
+        terminal.askInfo("Introduzca su nombre: ");
         nombre = terminal.readStr();
-        terminal.askInfo("Introduzca su contraseña");
+        terminal.askInfo("Introduzca su contraseña: ");
         contrasena = terminal.readStr();
         if (administradores.isEmpty()) {
             terminal.error("No hay administradores registrados");
@@ -157,21 +157,21 @@ public class GestorUsuarios {
 
         terminal.nextLine();
         while (nombre.isEmpty()) {
-            terminal.askInfo("Introduzca su nombre");
+            terminal.askInfo("Introduzca su nombre: ");
             nombre = terminal.readStr();
             if (nombre.isEmpty()) {
                 terminal.error("El nombre no puede estar vacío");
             }
         }
         while (nick.isEmpty()) {
-            terminal.askInfo("Introduzca su nick");
+            terminal.askInfo("Introduzca su nick: ");
             nick = terminal.readStr();
             if (nick.isEmpty()) {
                 terminal.error("El nick no puede estar vacío");
             }
         }
         while (contrasena.length() < 8 || contrasena.length() > 12) {
-            terminal.askInfo("Introduzca su contraseña");
+            terminal.askInfo("Introduzca su contraseña: ");
             contrasena = terminal.readStr();
             if (contrasena.length() < 8 || contrasena.length() > 12) {
                 terminal.error("La contraseña debe tener entre 8 y 12 caracteres");
@@ -245,7 +245,7 @@ public class GestorUsuarios {
         terminal.showln("| 2.Iniciar sesión            |");
         terminal.showln("| 3.Salir                     |");
         terminal.showln("|_____________________________|");
-        terminal.askInfo("Introduzca una opción");
+        terminal.askInfo("Introduzca una opción: ");
         return terminal.readInt();
     }
 
@@ -257,7 +257,7 @@ public class GestorUsuarios {
         terminal.showln("| 2. Crear cuenta como jugador        |");
         terminal.showln("| 3. Volver                           |");
         terminal.showln("|_____________________________________|");
-        terminal.askInfo("Introduzca una opción");
+        terminal.askInfo("Introduzca una opción: ");
         return terminal.readInt();
     }
 
@@ -269,7 +269,7 @@ public class GestorUsuarios {
         terminal.showln("| 2. Inciar sesion como jugador       |");
         terminal.showln("| 3. Volver                           |");
         terminal.showln("|_____________________________________|");
-        terminal.askInfo("Introduzca una opción");
+        terminal.askInfo("Introduzca una opción: ");
         return terminal.readInt();
     }
 }

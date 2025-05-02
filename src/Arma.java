@@ -1,8 +1,6 @@
 public class Arma extends Equipo{
     //Atributos
     private TipoArma tipo;
-    private int modificadorDefensa;
-    private int modificadorAtaque;
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();
 
     //Constructor
@@ -24,8 +22,8 @@ public class Arma extends Equipo{
         terminalTexto.showln("|---Características del arma---|");
         terminalTexto.showln("| Arma: " + this.getNombre());
         terminalTexto.showln("| Tipo: " + this.getTipo());
-        terminalTexto.showln("| Modificador de defensa: " + this.modificadorDefensa);
-        terminalTexto.showln("| Modificador de ataque: " + this.modificadorAtaque);
+        terminalTexto.showln("| Modificador de defensa: " + this.getModificadorDefensa());
+        terminalTexto.showln("| Modificador de ataque: " + this.getModificadorAtaque());
         terminalTexto.showln("|-------------------------------|");
     }
 }
