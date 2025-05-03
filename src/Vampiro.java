@@ -12,7 +12,7 @@ public class Vampiro extends Personaje{
     public Vampiro(String nombre) {
         super(nombre);
         this.setPuntosSangre(puntosSangre);
-        this.setHabilidad("Disciplinas");
+        this.setHabilidad(2);
         terminalTexto.askInfo("Introduce la  edad del vampiro: ");
         this.setEdad(terminalTexto.readInt());
     }
@@ -43,4 +43,54 @@ public class Vampiro extends Personaje{
             this.edad = edad;
         }
     }
+
+    public int calcularAtaque() {
+        if(this.puntosSangre >= 5){
+            if(this.puntosSangre > this.getHabilidad()) {
+                this.puntosSangre -= this.getHabilidad();
+                return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
+                        this.getArmaduraActiva().getModificadorAtaque() + this.getHabilidad() + 2 +
+                        this.getPotencialFortalezas() - this.getPotencialDebilidades();
+            } else {
+                return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
+                        this.getArmaduraActiva().getModificadorAtaque() + 2 + this.getPotencialFortalezas() -
+                        this.getPotencialDebilidades();
+            }
+        }
+        if(this.puntosSangre > this.getHabilidad()){
+            return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
+                    this.getArmaduraActiva().getModificadorAtaque() + this.getHabilidad() +
+                    this.getPotencialFortalezas() - this.getPotencialDebilidades();
+        } else {
+            return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
+                    this.getArmaduraActiva().getModificadorAtaque() + this.getPotencialFortalezas()
+                    - this.getPotencialDebilidades();
+        }
+    }//TODO: Si el ataque tiene éxito recupera 4 puntos de sangre
+
+    public int calcularDefensa() {
+        if (this.puntosSangre >= 5) {
+            if (this.puntosSangre > this.getHabilidad()) {
+                this.puntosSangre -= this.getHabilidad();
+                return this.getPoder() + this.getArmaActiva().getModificadorDefensa() +
+                        this.getArmaduraActiva().getModificadorDefensa() + 2 + this.getPotencialFortalezas() -
+                        this.getPotencialDebilidades();
+            } else {
+                return this.getPoder() + this.getArmaActiva().getModificadorDefensa() +
+                        this.getArmaduraActiva().getModificadorDefensa() + 2 + this.getPotencialFortalezas() -
+                        this.getPotencialDebilidades();
+            }
+        }
+        if (this.puntosSangre > this.getHabilidad()) {
+            return this.getPoder() + this.getArmaActiva().getModificadorDefensa() +
+                    this.getArmaduraActiva().getModificadorDefensa() +
+                    this.getHabilidad() + this.getPotencialFortalezas() - this.getPotencialDebilidades();
+        } else {
+            return this.getPoder() + this.getArmaActiva().getModificadorDefensa() +
+                    this.getArmaduraActiva().getModificadorDefensa() + this.getPotencialFortalezas() -
+                    this.getPotencialDebilidades();
+        }
+    }
 }
+
+

@@ -1,4 +1,6 @@
-public class Arma extends Equipo{
+import java.io.Serializable;
+
+public class Arma extends Equipo {
     //Atributos
     private TipoArma tipo;
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();

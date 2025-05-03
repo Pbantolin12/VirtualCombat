@@ -1,12 +1,13 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Personaje {
+public class Personaje implements Serializable {
     //Atributos
     private String nombre;
-    private String habilidad;
+    private int habilidad;
     private List<Arma> conjuntoArmas;
     private List<Armadura> conjuntoArmaduras;
     private Arma armaActiva;
@@ -22,6 +23,8 @@ public class Personaje {
     private int potencialAtaque;
     private int potencialDefensa;
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private int potencialFortalezas;
+    private int potencialDebilidades;
     
     //Constructor
     public Personaje(String nombre){
@@ -50,11 +53,11 @@ public class Personaje {
         this.nombre = nombre;
     }
 
-    public String getHabilidad() {
+    public int getHabilidad() {
         return habilidad;
     }
 
-    public void setHabilidad(String habilidad) {
+    public void setHabilidad(int habilidad) {
         this.habilidad = habilidad;
     }
 
@@ -520,5 +523,39 @@ public class Personaje {
         terminalTexto.showln("|--------------------------|");
         terminalTexto.askInfo("Elige una opción: ");
         return terminalTexto.readInt();
+    }
+
+    public int getPotencialFortalezas() {
+        return potencialFortalezas;
+    }
+
+    public void setPotencialFortalezas(int potencialFortalezas) {
+        this.potencialFortalezas = potencialFortalezas;
+    }
+
+    private void calcularPotencialFortalezas(){
+        this.potencialFortalezas = 0;
+        for (Map.Entry<String, Integer> fortaleza : this.fortalezas.entrySet()) {
+            if (this.fortalezasActivas.containsKey(fortaleza.getKey())){
+                this.potencialFortalezas += fortaleza.getValue();
+            }
+        }
+    }
+
+    public int getPotencialDebilidades() {
+        return potencialDebilidades;
+    }
+
+    public void setPotencialDebilidades(int potencialDebilidades) {
+        this.potencialDebilidades = potencialDebilidades;
+    }
+
+    private void calcularPotencialDebilidades(){
+        this.potencialDebilidades = 0;
+        for (Map.Entry<String, Integer> debilidad : this.debilidades.entrySet()) {
+            if (this.debilidadesActivas.containsKey(debilidad.getKey())){
+                this.potencialDebilidades += debilidad.getValue();
+            }
+        }
     }
 }

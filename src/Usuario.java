@@ -1,4 +1,6 @@
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
     //Atributos
     private String nombre;
     private String nick;

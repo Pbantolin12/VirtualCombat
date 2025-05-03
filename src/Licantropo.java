@@ -9,7 +9,7 @@ public class Licantropo extends Personaje{
     public Licantropo(String nombre) {
         super(nombre);
         this.setRabia(0);
-        this.setHabilidad("Dones");
+        this.setHabilidad(2);
     }
 
     //Métodos
@@ -27,4 +27,26 @@ public class Licantropo extends Personaje{
         }
     }
 
+    public int calcularAtaque() {
+        if (this.rabia > this.getHabilidad()){
+            return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
+                    this.getArmaduraActiva().getModificadorAtaque() + this.getHabilidad() +
+                    this.getPotencialFortalezas() - this.getPotencialDebilidades();
+        } else {
+            return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
+                    this.getArmaduraActiva().getModificadorAtaque() + this.getPotencialFortalezas()
+                    - this.getPotencialDebilidades();
+        }
+    } //TODO: al perder vida la rabia aumenta 1 punto
+
+    public int calcularDefensa() {
+        if (this.rabia > this.getHabilidad()) {
+            return this.getPoder() + this.getArmaActiva().getModificadorDefensa() +
+                    this.getArmaduraActiva().getModificadorDefensa() + this.getHabilidad() +
+                    this.getPotencialFortalezas() - this.getPotencialDebilidades();
+        } else {
+            return this.getPoder() + this.getArmaActiva().getModificadorDefensa() +
+                    this.getArmaduraActiva().getModificadorDefensa() + this.getPotencialFortalezas() - this.getPotencialDebilidades();
+        }
+    }
 }

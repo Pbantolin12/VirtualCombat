@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
-public class Ranking implements Observador {
+public class Ranking implements Observador, Serializable {
     //Atributos
     private List<Jugador> jugadores;
     private static Ranking instancia = null;

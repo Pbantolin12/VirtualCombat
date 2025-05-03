@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GestorJuego {
+public class GestorJuego implements Serializable {
     //Atributos
     private TerminalTexto terminalTexto;
     private GestorUsuarios gestorUsuarios;
@@ -43,21 +44,21 @@ public class GestorJuego {
         int optDesafio;
 
         do {
-            if (jugador.getDesafioPendiente()){
-                optDesafio = menuDesafio(jugador);
-                switch (optDesafio){
-                    case 1 -> jugador.aceptarDesafio();
-                    case 2 -> jugador.rechazarDesafio();
-                    default -> terminalTexto.error("Opción incorrecta");
-                }
-            }
-        } while (jugador.getDesafioPendiente());
-        do {
             opt = menuJugador();
             if (jugador.getPersonaje() == null && opt != 1 && opt != 9) {
                 // Si no tiene personaje y no eligió crear uno o salir
                 terminalTexto.error("Primero debes crear un personaje (opción 1)");
             } else {
+                do {
+                    if (jugador.getDesafioPendiente()){
+                        optDesafio = menuDesafio(jugador);
+                        switch (optDesafio){
+                            case 1 -> jugador.aceptarDesafio();
+                            case 2 -> jugador.rechazarDesafio();
+                            default -> terminalTexto.error("Opción incorrecta");
+                        }
+                    }
+                } while (jugador.getDesafioPendiente());
                 switch (opt) {
                     case 1 -> {
                         if (jugador.getPersonaje() != null) {

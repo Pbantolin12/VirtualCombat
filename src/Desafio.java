@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
-public class Desafio {
+public class Desafio implements Serializable {
     //Atributos
     private int id;
     private int oroApostado;
@@ -13,6 +14,7 @@ public class Desafio {
     private static final Random random = new Random();
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();
     private boolean validado;
+    private Random rand = new Random();
 
     //Constructor
     public Desafio(int oroApostado, Jugador jugadorDesafiado, Jugador jugadorDesafiante, List<Observador> observadores) {
@@ -95,10 +97,77 @@ public class Desafio {
         return validado;
     }
 
-    public void iniciarDesafio() { //TODO
-        // Lógica para iniciar el desafío
-        // Aquí puedes implementar la lógica del desafío entre los jugadores
-        // y notificar a los observadores sobre el resultado.
+    public void iniciarDesafio() {
+        int ronda = 1;
+
+        while (this.jugadorDesafiante.getPersonaje().getSalud() != 0 || this.jugadorDesafiado.getPersonaje().getSalud() != 0) {
+            int ataqueDesafiante = calcularPotencialAtaque(this.jugadorDesafiante);
+            int defensaDesafiado = calcularPotencialDefensa(this.jugadorDesafiado);
+            int ataqueDesafiado = calcularPotencialAtaque(this.jugadorDesafiado);
+            int defensaDesafiante = calcularPotencialDefensa(this.jugadorDesafiante);
+            int saludEsbirrosDesafiante = calcularSaludEsbirros(this.jugadorDesafiante);
+            int saludEsbirrosDesafiado = calcularSaludEsbirros(this.jugadorDesafiado);
+
+            terminalTexto.info("|---RONDA " + ronda + "---|");
+            ataqueDesafiante(ataqueDesafiante, defensaDesafiado, saludEsbirrosDesafiante, saludEsbirrosDesafiado);
+            ataqueDesafiado(ataqueDesafiado, defensaDesafiante, saludEsbirrosDesafiante, saludEsbirrosDesafiado);
+        }
+        if (this.jugadorDesafiante.getPersonaje().getSalud() == 0) {
+            this.ganador = this.jugadorDesafiado;
+            terminalTexto.info("El ganador es: " + this.jugadorDesafiado.getNombre());
+        } else if (this.jugadorDesafiado.getPersonaje().getSalud() == 0) {
+            this.ganador = this.jugadorDesafiante;
+            terminalTexto.info("El ganador es: " + this.jugadorDesafiante.getNombre());
+        } else  {
+            this.ganador = null;
+            terminalTexto.info("El desafío ha terminado en empate");
+        }
+    }
+
+    private void ataqueDesafiante(int ataqueDesafiante, int defensaDesafiado, int saludEsbirrosDesafiante,
+                                  int saludEsbirrosDesafiado){
+        int res;
+        res = ataqueDesafiante - defensaDesafiado;
+        if(res >= 0){
+            terminalTexto.info("Ataque [" + this.jugadorDesafiante.getNombre() + "] exitoso");
+            if (saludEsbirrosDesafiado > 0){
+                saludEsbirrosDesafiado--;
+                this.jugadorDesafiado.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiado);
+            } else {
+                this.jugadorDesafiado.getPersonaje().setSalud(this.jugadorDesafiado.getPersonaje().getSalud() - 1);
+            }
+        } else if(res < 0){
+            terminalTexto.info("Ataque [" + this.jugadorDesafiado.getNombre() + "] exitoso");
+            if (saludEsbirrosDesafiante > 0){
+                saludEsbirrosDesafiante--;
+                this.jugadorDesafiante.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiante);
+            } else {
+                this.jugadorDesafiante.getPersonaje().setSalud(this.jugadorDesafiante.getPersonaje().getSalud() - 1);
+            }
+        }
+    }
+
+    private void ataqueDesafiado(int ataqueDesafiado, int defensaDesafiante,
+                                  int saludEsbirrosDesafiante, int saludEsbirrosDesafiado){
+        int res;
+        res = ataqueDesafiado - defensaDesafiante;
+        if(res >= 0){
+            terminalTexto.info("Ataque [" + this.jugadorDesafiado.getNombre() + "] exitoso");
+            if (saludEsbirrosDesafiante > 0){
+                saludEsbirrosDesafiante--;
+                this.jugadorDesafiante.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiante);
+            } else {
+                this.jugadorDesafiante.getPersonaje().setSalud(this.jugadorDesafiante.getPersonaje().getSalud() - 1);
+            }
+        } else if(res < 0){
+            terminalTexto.info("Ataque [" + this.jugadorDesafiante.getNombre() + "] exitoso");
+            if (saludEsbirrosDesafiado > 0){
+                saludEsbirrosDesafiado--;
+                this.jugadorDesafiado.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiado);
+            } else {
+                this.jugadorDesafiado.getPersonaje().setSalud(this.jugadorDesafiado.getPersonaje().getSalud() - 1);
+            }
+        }
     }
 
     public void mostrarDesafio(){
@@ -106,5 +175,56 @@ public class Desafio {
         terminalTexto.info("Oro Apostado: " + this.oroApostado);
         terminalTexto.info("Jugador Desafiado: " + this.jugadorDesafiado.getNombre());
         terminalTexto.info("Jugador Desafiante: " + this.jugadorDesafiante.getNombre());
+    }
+
+    private int calcularPotencialAtaque(Jugador jugador){
+        int potencial = 0;
+        int potencialDevuelto = 0;
+        if (jugador.getPersonaje() instanceof Licantropo){
+            potencial =  ((Licantropo) jugador.getPersonaje()).calcularAtaque();
+        } else if (jugador.getPersonaje() instanceof Vampiro){
+            potencial = ((Vampiro) jugador.getPersonaje()).calcularAtaque();
+        } else if (jugador.getPersonaje() instanceof Cazador){
+            potencial = ((Cazador) jugador.getPersonaje()).calcularAtaque();
+        }
+        for(int i = 0; i < potencial; i++){
+            if (rand.nextInt(6) + 1 >= 5){
+                potencialDevuelto++;
+            }
+        }
+        return potencialDevuelto;
+    }
+
+    private int calcularPotencialDefensa(Jugador jugador){
+        int potencial = 0;
+        int potencialDevuelto = 0;
+        if (jugador.getPersonaje() instanceof Licantropo){
+            potencial = ((Licantropo) jugador.getPersonaje()).calcularDefensa();
+        } else if (jugador.getPersonaje() instanceof Vampiro){
+            potencial = ((Vampiro) jugador.getPersonaje()).calcularDefensa();
+        } else if (jugador.getPersonaje() instanceof Cazador){
+            potencial = ((Cazador) jugador.getPersonaje()).calcularDefensa();
+        }
+        for(int i = 0; i < potencial; i++){
+            if (rand.nextInt(6) + 1 >= 5){
+                potencialDevuelto++;
+            }
+        }
+        return potencialDevuelto;
+    }
+
+    private int calcularSaludEsbirros(Jugador jugador){
+        int saludEsbirros;
+        if(jugador.getPersonaje().getConjuntoEsbirros() == null){
+            return 0;
+        } else {
+            saludEsbirros = jugador.getPersonaje().getConjuntoEsbirros().getSalud();
+            if (jugador.getPersonaje().getConjuntoEsbirros() instanceof Demonio) {
+                if (((Demonio) jugador.getPersonaje().getConjuntoEsbirros()).getConjuntoEsbirros() != null) {
+                    saludEsbirros += ((Demonio) jugador.getPersonaje().getConjuntoEsbirros()).getConjuntoEsbirros().getSalud();
+                }
+            }
+        }
+        return saludEsbirros;
     }
 }

@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GestorUsuarios {
+public class GestorUsuarios implements Serializable {
     //Atributos
     private List<Jugador> jugadores;
     private List<Administrador> administradores;

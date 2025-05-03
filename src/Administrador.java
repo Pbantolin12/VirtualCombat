@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.List;
 
-public class Administrador extends Usuario implements Observador{
+public class Administrador extends Usuario implements Observador {
 
     //Atributos
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();
