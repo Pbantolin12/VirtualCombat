@@ -6,9 +6,8 @@ public class Usuario implements Serializable {
     private String nick;
     private String contrasena;
     private boolean bloqueado;
-
     //Constructor
-    public Usuario(String nombre, String nick, String contrasena){
+    public Usuario(String nombre, String nick, String contrasena) {
         this.nombre = nombre;
         this.nick = nick;
         this.contrasena = contrasena;

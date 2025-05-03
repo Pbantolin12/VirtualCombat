@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -7,6 +8,11 @@ public class Ranking implements Observador, Serializable {
     private List<Jugador> jugadores;
     private static Ranking instancia = null;
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+
+    //Constructor
+    private Ranking() {
+        this.jugadores = new ArrayList<>();
+    }
 
     //Métodos
     public static Ranking getInstance() {
@@ -26,8 +32,10 @@ public class Ranking implements Observador, Serializable {
     }
 
     @Override
-    public void actualizar() {
-
+    public void actualizar(Desafio desafio) {
+        this.setJugadores(desafio.getGanador());
+        jugadores.sort(Comparator.comparingInt(Jugador::getPartidasGanadas).reversed());
+        terminalTexto.info("Ranking actualizado");
     }
 
     public void mostrarRanking() {

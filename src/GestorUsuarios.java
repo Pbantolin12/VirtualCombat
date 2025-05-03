@@ -4,17 +4,24 @@ import java.util.List;
 
 public class GestorUsuarios implements Serializable {
     //Atributos
+    private static GestorUsuarios instance;
     private List<Jugador> jugadores;
     private List<Administrador> administradores;
     private transient TerminalTexto terminal = TerminalTexto.getInstance();
-    private GestorJuego gestorJuego;
+    private GestorJuego gestorJuego = GestorJuego.getInstance();
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();
 
     //Constructor
-    public GestorUsuarios() {
+    private GestorUsuarios() {
         this.jugadores = new ArrayList<>();
         this.administradores = new ArrayList<>();
-        this.gestorJuego = new GestorJuego(GestorUsuarios.this);
+    }
+
+    public static GestorUsuarios getInstance() {
+        if (instance == null) {
+            instance = new GestorUsuarios();
+        }
+        return instance;
     }
 
     //Métodos
@@ -277,5 +284,13 @@ public class GestorUsuarios implements Serializable {
         terminal.showln("|_____________________________________|");
         terminal.askInfo("Introduzca una opción: ");
         return terminal.readInt();
+    }
+
+    public GestorJuego getGestorJuego() {
+        return gestorJuego;
+    }
+
+    public void setGestorJuego(GestorJuego gestorJuego) {
+        this.gestorJuego = gestorJuego;
     }
 }

@@ -101,13 +101,10 @@ public class Jugador extends Usuario implements Observador {
                 int oroApostado = terminalTexto.readInt();
 
                 if (this.apostarOro(oroApostado)) {
-                    this.desafio = new Desafio(oroApostado, jugadorDesafiado, this, null); //CAMBIAR NULL
+                    this.desafio = new Desafio(oroApostado, jugadorDesafiado, this, this.gestorUsuarios.getAdministradores());
                     this.desafioPendiente = false;
                     jugadorDesafiado.setDesafioPendiente(true);
                     jugadorDesafiado.setDesafio(desafio);
-                    terminalTexto.showln("|---Desafio_enviado---|");
-                    terminalTexto.showln("| - Jugador desafiado: " + jugadorDesafiado.getNombre());
-                    terminalTexto.showln("| - Oro apostado: " + desafio.getOroApostado());
                 }
             }
         } else {
@@ -147,6 +144,11 @@ public class Jugador extends Usuario implements Observador {
             }
         } while (!this.desafio.getDesafioAceptado());
         this.desafio.iniciarDesafio();
+        //Agregar el desafío a la lista de desafíos completados
+        this.desafiosCompletados.add(this.desafio);
+        if (this.desafio.getJugadorDesafiante() != this) {
+            this.desafio.getJugadorDesafiante().getDesafiosCompletados().add(this.desafio);
+        }
     }
 
     private int menuDesafio(){
@@ -267,9 +269,15 @@ public class Jugador extends Usuario implements Observador {
     }
 
     @Override
-    public void actualizar() { //TODO: Implementar lógica de actualización
-        // Aquí se puede implementar la lógica para actualizar el jugador
-        // cuando se produzca un evento en el juego.
+    public void actualizar(Desafio desafio) {
+        if (desafio.getJugadorDesafiado() == this) {
+            terminalTexto.info("Has sido desafiado por " + desafio.getJugadorDesafiante().getNombre());
+        } else if (desafio.getJugadorDesafiante() == this) {
+            terminalTexto.info("Tu desafío a " + desafio.getJugadorDesafiado().getNombre() + " ha sido " +
+                    (desafio.getDesafioAceptado() ? "aceptado" : "enviado"));
+        } else if(desafio.getDesafioAceptado() && desafio.getGanador() != null) {
+            terminalTexto.info("El desafío finalizado --> Ganador: " + desafio.getGanador().getNombre());
+        }
     }
 
     public String getNumeroRegistro() {

@@ -1,24 +1,34 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GestorEventos {
     //Atributos
-    private List<Observador> observadores;
+    private Map<String, List<Observador>> observadores;
 
     //Constructor
-    public GestorEventos(){}
+    public GestorEventos(){
+        this.observadores = new HashMap<>();
+    }
 
     //Métodos
-    public void añadirObservador(Observador o){
-        observadores.add(o);
+    public void anadirObservador(String tipoEvento, Observador observador){
+        this.observadores.putIfAbsent(tipoEvento, new ArrayList<>());
+        this.observadores.get(tipoEvento).add(observador);
     }
 
-    public void eliminarObservador(Observador o){
-        observadores.remove(o);
+    public void eliminarObservador(String tipoEvento, Observador observador){
+        if (this.observadores.containsKey(tipoEvento)) {
+            this.observadores.get(tipoEvento).remove(observador);
+        }
     }
 
-    public void notificarObservadores(){
-        for(Observador o: observadores){
-            o.actualizar();
+    public void notificar(String tipoEvento, Desafio desafio) {
+        if (this.observadores.containsKey(tipoEvento)) {
+            for (Observador observador : this.observadores.get(tipoEvento)) {
+                observador.actualizar(desafio);
+            }
         }
     }
 }

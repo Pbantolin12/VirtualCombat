@@ -6,6 +6,7 @@ public class Administrador extends Usuario implements Observador {
     //Atributos
     private TerminalTexto terminalTexto = TerminalTexto.getInstance();
     private Personaje personajeModificar;
+    private GestorUsuarios gestorUsuarios = GestorUsuarios.getInstance();
 
     //Constructor
     public Administrador(String nombre, String nick, String contrasena){
@@ -106,11 +107,12 @@ public class Administrador extends Usuario implements Observador {
                     case 3 -> {
                         desafio.setValidado(true);
                         terminalTexto.info("Desafío validado");
+                        desafios.remove(desafio);
                     }
                     default -> terminalTexto.error("Opción incorrecta");
                 }
             } while (opt != 3);
-            desafios.remove(desafio);
+            this.gestorUsuarios.getGestorJuego().setDesafiosPendientes(desafio);
         }
     }
 
@@ -261,5 +263,10 @@ public class Administrador extends Usuario implements Observador {
     }
 
     @Override
-    public void actualizar(){}
+    public void actualizar(Desafio desafio) {
+        if (!desafio.getValidado()) {
+            terminalTexto.info("Nuevo desafio a validar");
+            this.gestorUsuarios.getGestorJuego().setDesafiosPendientes(desafio);
+        }
+    }
 }

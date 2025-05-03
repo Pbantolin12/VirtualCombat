@@ -4,15 +4,24 @@ import java.util.List;
 
 public class GestorJuego implements Serializable {
     //Atributos
+    private static GestorJuego instancia;
     private TerminalTexto terminalTexto;
     private GestorUsuarios gestorUsuarios;
     private List<Desafio> desafiosPendientes;
 
+
     //Constructor
-    public GestorJuego(GestorUsuarios gestorUsuarios) {
+    private GestorJuego(GestorUsuarios gestorUsuarios) {
         this.terminalTexto = TerminalTexto.getInstance();
         this.gestorUsuarios = gestorUsuarios;
         this.desafiosPendientes = new ArrayList<>();
+    }
+
+    public static GestorJuego getInstance() {
+        if (instancia == null) {
+            instancia = new GestorJuego(GestorUsuarios.getInstance());
+        }
+        return instancia;
     }
 
     //Métodos

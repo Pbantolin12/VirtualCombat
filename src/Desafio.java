@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -8,24 +9,33 @@ public class Desafio implements Serializable {
     private int oroApostado;
     private Jugador jugadorDesafiado;
     private Jugador jugadorDesafiante;
-    private List<Observador> observadores;
     private Jugador ganador;
     private boolean desafioAceptado;
     private static final Random random = new Random();
-    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
     private boolean validado;
-    private Random rand = new Random();
+    private static final Random rand = new Random();
+    private GestorEventos gestorEventos;
+    private static final String dCreado = "Desafio_Creado";
+    private static final String dAceptado = "Desafio_Aceptado";
+    private static final String dTerminado = "Desafio_Terminado";
 
     //Constructor
-    public Desafio(int oroApostado, Jugador jugadorDesafiado, Jugador jugadorDesafiante, List<Observador> observadores) {
+    public Desafio(int oroApostado, Jugador jugadorDesafiado, Jugador jugadorDesafiante, List<Administrador> administradores) {
         this.id = generarId();
         this.oroApostado = oroApostado;
         this.jugadorDesafiado = jugadorDesafiado;
         this.jugadorDesafiante = jugadorDesafiante;
-        this.observadores = observadores;
         this.ganador = null;
         this.desafioAceptado = false;
         this.validado = false;
+        this.gestorEventos = new GestorEventos();
+        this.gestorEventos.anadirObservador(dCreado, this.jugadorDesafiado);
+        this.gestorEventos.anadirObservador(dCreado, this.jugadorDesafiante);
+        for (Administrador admin : administradores) {
+            this.gestorEventos.anadirObservador(dCreado, admin);
+        }
+        this.gestorEventos.notificar(dCreado, this);
     }
 
     //Métodos
@@ -61,20 +71,16 @@ public class Desafio implements Serializable {
         this.jugadorDesafiante = jugadorDesafiante;
     }
 
-    public List<Observador> getObservadores() {
-        return observadores;
-    }
-
-    public void setObservadores(List<Observador> observadores) {
-        this.observadores = observadores;
-    }
-
     public Jugador getGanador() {
         return ganador;
     }
 
     public void setGanador(Jugador ganador) {
+        boolean cambio = this.ganador != ganador;
         this.ganador = ganador;
+        if (cambio) {
+            this.gestorEventos.notificar(dTerminado, this);
+        }
     }
 
     public boolean getDesafioAceptado() {
@@ -82,7 +88,11 @@ public class Desafio implements Serializable {
     }
 
     public void setDesafioAceptado(boolean estado) {
+        boolean cambio = this.desafioAceptado != estado;
         this.desafioAceptado = estado;
+        if (cambio) {
+            this.gestorEventos.notificar(dAceptado, this);
+        }
     }
 
     private int generarId() {
@@ -100,7 +110,7 @@ public class Desafio implements Serializable {
     public void iniciarDesafio() {
         int ronda = 1;
 
-        while (this.jugadorDesafiante.getPersonaje().getSalud() != 0 || this.jugadorDesafiado.getPersonaje().getSalud() != 0) {
+        while (this.jugadorDesafiante.getPersonaje().getSalud() != 0 && this.jugadorDesafiado.getPersonaje().getSalud() != 0) {
             int ataqueDesafiante = calcularPotencialAtaque(this.jugadorDesafiante);
             int defensaDesafiado = calcularPotencialDefensa(this.jugadorDesafiado);
             int ataqueDesafiado = calcularPotencialAtaque(this.jugadorDesafiado);
@@ -113,32 +123,34 @@ public class Desafio implements Serializable {
             ataqueDesafiado(ataqueDesafiado, defensaDesafiante, saludEsbirrosDesafiante, saludEsbirrosDesafiado);
         }
         if (this.jugadorDesafiante.getPersonaje().getSalud() == 0) {
-            this.ganador = this.jugadorDesafiado;
+            this.setGanador(this.jugadorDesafiado);
             terminalTexto.info("El ganador es: " + this.jugadorDesafiado.getNombre());
+            this.jugadorDesafiado.setPartidasGanadas(this.jugadorDesafiado.getPartidasGanadas() + 1);
         } else if (this.jugadorDesafiado.getPersonaje().getSalud() == 0) {
-            this.ganador = this.jugadorDesafiante;
+            this.setGanador(this.jugadorDesafiante);
             terminalTexto.info("El ganador es: " + this.jugadorDesafiante.getNombre());
-        } else  {
+            this.jugadorDesafiante.setPartidasGanadas(this.jugadorDesafiante.getPartidasGanadas() + 1);
+        } else {
             this.ganador = null;
             terminalTexto.info("El desafío ha terminado en empate");
         }
     }
 
     private void ataqueDesafiante(int ataqueDesafiante, int defensaDesafiado, int saludEsbirrosDesafiante,
-                                  int saludEsbirrosDesafiado){
+                                  int saludEsbirrosDesafiado) {
         int res;
         res = ataqueDesafiante - defensaDesafiado;
-        if(res >= 0){
+        if (res >= 0) {
             terminalTexto.info("Ataque [" + this.jugadorDesafiante.getNombre() + "] exitoso");
-            if (saludEsbirrosDesafiado > 0){
+            if (saludEsbirrosDesafiado > 0) {
                 saludEsbirrosDesafiado--;
                 this.jugadorDesafiado.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiado);
             } else {
                 this.jugadorDesafiado.getPersonaje().setSalud(this.jugadorDesafiado.getPersonaje().getSalud() - 1);
             }
-        } else if(res < 0){
+        } else if (res < 0) {
             terminalTexto.info("Ataque [" + this.jugadorDesafiado.getNombre() + "] exitoso");
-            if (saludEsbirrosDesafiante > 0){
+            if (saludEsbirrosDesafiante > 0) {
                 saludEsbirrosDesafiante--;
                 this.jugadorDesafiante.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiante);
             } else {
@@ -148,20 +160,20 @@ public class Desafio implements Serializable {
     }
 
     private void ataqueDesafiado(int ataqueDesafiado, int defensaDesafiante,
-                                  int saludEsbirrosDesafiante, int saludEsbirrosDesafiado){
+                                 int saludEsbirrosDesafiante, int saludEsbirrosDesafiado) {
         int res;
         res = ataqueDesafiado - defensaDesafiante;
-        if(res >= 0){
+        if (res >= 0) {
             terminalTexto.info("Ataque [" + this.jugadorDesafiado.getNombre() + "] exitoso");
-            if (saludEsbirrosDesafiante > 0){
+            if (saludEsbirrosDesafiante > 0) {
                 saludEsbirrosDesafiante--;
                 this.jugadorDesafiante.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiante);
             } else {
                 this.jugadorDesafiante.getPersonaje().setSalud(this.jugadorDesafiante.getPersonaje().getSalud() - 1);
             }
-        } else if(res < 0){
+        } else if (res < 0) {
             terminalTexto.info("Ataque [" + this.jugadorDesafiante.getNombre() + "] exitoso");
-            if (saludEsbirrosDesafiado > 0){
+            if (saludEsbirrosDesafiado > 0) {
                 saludEsbirrosDesafiado--;
                 this.jugadorDesafiado.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiado);
             } else {
@@ -170,52 +182,52 @@ public class Desafio implements Serializable {
         }
     }
 
-    public void mostrarDesafio(){
+    public void mostrarDesafio() {
         terminalTexto.info("Desafío: " + this.id);
         terminalTexto.info("Oro Apostado: " + this.oroApostado);
         terminalTexto.info("Jugador Desafiado: " + this.jugadorDesafiado.getNombre());
         terminalTexto.info("Jugador Desafiante: " + this.jugadorDesafiante.getNombre());
     }
 
-    private int calcularPotencialAtaque(Jugador jugador){
+    private int calcularPotencialAtaque(Jugador jugador) {
         int potencial = 0;
         int potencialDevuelto = 0;
-        if (jugador.getPersonaje() instanceof Licantropo){
-            potencial =  ((Licantropo) jugador.getPersonaje()).calcularAtaque();
-        } else if (jugador.getPersonaje() instanceof Vampiro){
+        if (jugador.getPersonaje() instanceof Licantropo) {
+            potencial = ((Licantropo) jugador.getPersonaje()).calcularAtaque();
+        } else if (jugador.getPersonaje() instanceof Vampiro) {
             potencial = ((Vampiro) jugador.getPersonaje()).calcularAtaque();
-        } else if (jugador.getPersonaje() instanceof Cazador){
+        } else if (jugador.getPersonaje() instanceof Cazador) {
             potencial = ((Cazador) jugador.getPersonaje()).calcularAtaque();
         }
-        for(int i = 0; i < potencial; i++){
-            if (rand.nextInt(6) + 1 >= 5){
+        for (int i = 0; i < potencial; i++) {
+            if (rand.nextInt(6) + 1 >= 5) {
                 potencialDevuelto++;
             }
         }
         return potencialDevuelto;
     }
 
-    private int calcularPotencialDefensa(Jugador jugador){
+    private int calcularPotencialDefensa(Jugador jugador) {
         int potencial = 0;
         int potencialDevuelto = 0;
-        if (jugador.getPersonaje() instanceof Licantropo){
+        if (jugador.getPersonaje() instanceof Licantropo) {
             potencial = ((Licantropo) jugador.getPersonaje()).calcularDefensa();
-        } else if (jugador.getPersonaje() instanceof Vampiro){
+        } else if (jugador.getPersonaje() instanceof Vampiro) {
             potencial = ((Vampiro) jugador.getPersonaje()).calcularDefensa();
-        } else if (jugador.getPersonaje() instanceof Cazador){
+        } else if (jugador.getPersonaje() instanceof Cazador) {
             potencial = ((Cazador) jugador.getPersonaje()).calcularDefensa();
         }
-        for(int i = 0; i < potencial; i++){
-            if (rand.nextInt(6) + 1 >= 5){
+        for (int i = 0; i < potencial; i++) {
+            if (rand.nextInt(6) + 1 >= 5) {
                 potencialDevuelto++;
             }
         }
         return potencialDevuelto;
     }
 
-    private int calcularSaludEsbirros(Jugador jugador){
+    private int calcularSaludEsbirros(Jugador jugador) {
         int saludEsbirros;
-        if(jugador.getPersonaje().getConjuntoEsbirros() == null){
+        if (jugador.getPersonaje().getConjuntoEsbirros() == null) {
             return 0;
         } else {
             saludEsbirros = jugador.getPersonaje().getConjuntoEsbirros().getSalud();

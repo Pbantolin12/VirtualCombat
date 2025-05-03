@@ -1,4 +1,4 @@
 public interface Observador {
 
-    public void actualizar();
+    void actualizar(Desafio desafio);
 }
