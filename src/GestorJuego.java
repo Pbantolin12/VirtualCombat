@@ -33,27 +33,36 @@ public class GestorJuego implements Serializable {
         this.usuarioLogeado = administrador;
         this.gestorUsuarios = GestorUsuarios.getInstance();
         int opt;
+        int optPersonaje;
         String nombreJugador;
 
         terminalTexto.showln("Bienvenido " + administrador.getNombre());
-        terminalTexto.askInfo("Introduce el nombre del jugador para realizar operaciones: ");
-        nombreJugador = terminalTexto.readStr();
-        if (gestorUsuarios.getJugador(nombreJugador) == null) {
-            terminalTexto.error("El jugador no existe");
-            return;
-        }
         do {
             opt = menuAdmin();
             switch (opt) {
-                case 1 -> administrador.modificarPersonaje(gestorUsuarios.getJugador(nombreJugador).getPersonaje());
-                case 2 -> administrador.eliminarPersonaje(gestorUsuarios.getJugador(nombreJugador));
-                case 3 -> administrador.validarDesafio(this.desafiosPendientes);
-                case 4 -> administrador.bloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
-                case 5 -> administrador.desbloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
-                case 6 -> terminalTexto.info("Cerrando sesión...");
+                case 1 -> {
+                    terminalTexto.askInfo("Introduce el nombre del jugador para realizar operaciones: ");
+                    nombreJugador = terminalTexto.readStr();
+                    if (gestorUsuarios.getJugador(nombreJugador) == null) {
+                        terminalTexto.error("El jugador no existe");
+                        break;
+                    }
+                    do {
+                        optPersonaje = menuAdminPersonaje();
+                        switch (optPersonaje) {
+                            case 1 -> administrador.modificarPersonaje(gestorUsuarios.getJugador(nombreJugador).getPersonaje());
+                            case 2 -> administrador.eliminarPersonaje(gestorUsuarios.getJugador(nombreJugador));
+                            case 3 -> administrador.bloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
+                            case 4 -> administrador.desbloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
+                            default -> terminalTexto.error("Opción incorrecta");
+                        }
+                    } while (optPersonaje !=5);
+                }
+                case 2 -> administrador.validarDesafio(this.desafiosPendientes);
+                case 3 -> terminalTexto.info("Cerrando sesión...");
                 default -> terminalTexto.error("Opción incorrecta");
             }
-        } while (opt !=6);
+        } while (opt != 3);
     }
 
     public void modoJugador(Jugador jugador) {
@@ -101,16 +110,26 @@ public class GestorJuego implements Serializable {
         } while (opt != 9);
     }
 
-    public int menuAdmin() {
-        terminalTexto.showln(" __________________________");
-        terminalTexto.showln("|____Menu_administrador____|");
-        terminalTexto.showln("| 1. Modificar personaje   |");
-        terminalTexto.showln("| 2. Eliminar personaje    |");
-        terminalTexto.showln("| 3. Validar desafio       |");
-        terminalTexto.showln("| 4. Bloquear usuario      |");
-        terminalTexto.showln("| 5. Desbloquear usuario   |");
-        terminalTexto.showln("| 6. Cerrar sesión         |");
-        terminalTexto.showln("|__________________________|");
+    public int menuAdmin(){
+        terminalTexto.showln(" ____________________________");
+        terminalTexto.showln("|___________Menu_admin_______|");
+        terminalTexto.showln("| 1. Acciones personaje      |");
+        terminalTexto.showln("| 2. Validar desafíos        |");
+        terminalTexto.showln("| 3. Cerrar sesión           |");
+        terminalTexto.showln("|____________________________|");
+        terminalTexto.show("Introduce una opción: ");
+        return terminalTexto.readInt();
+    }
+
+    public int menuAdminPersonaje() {
+        terminalTexto.showln(" ____________________________");
+        terminalTexto.showln("|____Menu_admin_personaje____|");
+        terminalTexto.showln("| 1. Modificar personaje     |");
+        terminalTexto.showln("| 2. Eliminar personaje      |");
+        terminalTexto.showln("| 3. Bloquear usuario        |");
+        terminalTexto.showln("| 4. Desbloquear usuario     |");
+        terminalTexto.showln("| 5. Volver                  |");
+        terminalTexto.showln("|____________________________|");
         terminalTexto.show("Introduce una opción: ");
         return terminalTexto.readInt();
     }

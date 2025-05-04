@@ -10,5 +10,5 @@ public class VirtualCombat {
     }
 }
 
-//TODO: Revisar el tema del combate, cuando se quita salud y eso)
+//TODO: Revisar el tema del combate, cuando se quita salud y eso
 

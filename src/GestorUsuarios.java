@@ -114,6 +114,7 @@ public class GestorUsuarios implements Serializable {
     private void iniciarSesionJugador() {
         String nombre = "";
         String contrasena = "";
+        Boolean encontrado = false;
 
         terminalTexto.askInfo("Introduzca su nombre: ");
         nombre = terminalTexto.readStr();
@@ -132,16 +133,19 @@ public class GestorUsuarios implements Serializable {
                         terminalTexto.error("El usuario ha sido bloqueado");
                         return;
                     } else {
+                        encontrado = true;
                         terminalTexto.info("Iniciando sesión...");
                         this.gestorJuego.modoJugador(jugador);
                         this.getGestorJuego().setUsuarioLogeado(null);
+                        break;
                     }
                 } else {
                     terminalTexto.error("Contraseña incorrecta: ");
                 }
-            } else {
-                terminalTexto.error("Usuario no encontrado");
             }
+        }
+        if (!encontrado) {
+            terminalTexto.error("Usuario no encontrado");
         }
     }
 
@@ -149,6 +153,7 @@ public class GestorUsuarios implements Serializable {
     private void iniciarSesionAdministrador() {
         String nombre = "";
         String contrasena = "";
+        Boolean encontrado = false;
 
         terminalTexto.askInfo("Introduzca su nombre: ");
         nombre = terminalTexto.readStr();
@@ -161,15 +166,18 @@ public class GestorUsuarios implements Serializable {
         for (Administrador admin : administradores) {
             if (admin.getNombre().equals(nombre)) {
                 if (admin.getContrasena().equals(contrasena)) {
+                    encontrado = true;
                     terminalTexto.info("Iniciando sesión...");
                     this.gestorJuego.modoAdmin(admin);
                     this.getGestorJuego().setUsuarioLogeado(null);
+                    break;
                 } else {
                     terminalTexto.error("Contraseña incorrecta");
                 }
-            } else {
-                terminalTexto.error("Usuario no encontrado");
             }
+        }
+        if (!encontrado) {
+            terminalTexto.error("Usuario no encontrado");
         }
     }
 
