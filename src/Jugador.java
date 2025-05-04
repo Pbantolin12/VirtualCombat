@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -168,11 +170,6 @@ public class Jugador extends Usuario implements Observador {
     public void rechazarDesafio() {
         this.desafioPendiente = false;
         this.desafio.setDesafioAceptado(false);
-        this.personaje.setOro(personaje.getOro() - this.calcularPorcentajeApuestas(this.desafio.getOroApostado()));
-    }
-
-    private int calcularPorcentajeApuestas(int apuesta) {
-        return (int) (apuesta * 0.1);
     }
 
     public void consultarOro() {
@@ -342,5 +339,10 @@ public class Jugador extends Usuario implements Observador {
         terminalTexto.showln("|_________________________________|");
         terminalTexto.askInfo("Introduce una opción: ");
         return terminalTexto.readInt();
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
     }
 }

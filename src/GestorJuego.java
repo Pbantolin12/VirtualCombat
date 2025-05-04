@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +110,7 @@ public class GestorJuego implements Serializable {
         terminalTexto.showln("| 4. Bloquear usuario      |");
         terminalTexto.showln("| 5. Desbloquear usuario   |");
         terminalTexto.showln("| 6. Cerrar sesión         |");
-        terminalTexto.showln("|__________________________");
+        terminalTexto.showln("|__________________________|");
         terminalTexto.show("Introduce una opción: ");
         return terminalTexto.readInt();
     }
@@ -131,14 +133,13 @@ public class GestorJuego implements Serializable {
     }
 
     public int menuDesafio(Jugador jugador){
-        terminalTexto.showln("|---Desafio_Pendiente---|");
-        terminalTexto.showln("| - Desafiado por: " + jugador.getDesafio().getJugadorDesafiante());
-        terminalTexto.showln("| - Oro apostado: " + jugador.getDesafio().getOroApostado());
-        terminalTexto.showln("| - Penalización por no aceptar: " + jugador.getDesafio().getOroApostado() * 0.1);
-        terminalTexto.showln("|------------------------|");
-        terminalTexto.showln("| 1. Aceptar desafio     |");
-        terminalTexto.showln("| 2. Rechazar desafio    |");
-        terminalTexto.showln("|------------------------|");
+        terminalTexto.showln("---Desafio_Pendiente---");
+        terminalTexto.showln(" - Desafiado por: " + jugador.getDesafio().getJugadorDesafiante().getNombre());
+        terminalTexto.showln(" - Oro apostado: " + jugador.getDesafio().getOroApostado());
+        terminalTexto.showln(" - Penalización por no aceptar: " + jugador.getDesafio().getOroApostado() * 0.1);
+        terminalTexto.showln("------------------------");
+        terminalTexto.showln("| 1. Aceptar desafio");
+        terminalTexto.showln("| 2. Rechazar desafio");
         terminalTexto.showln("Introduce una opción: ");
         return terminalTexto.readInt();
     }
@@ -162,5 +163,16 @@ public class GestorJuego implements Serializable {
     public void consultarRanking() {
         Ranking ranking = Ranking.getInstance();
         ranking.mostrarRanking();
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
+        this.gestorUsuarios = GestorUsuarios.getInstance();
+    }
+
+    private Object readResolve() {
+        instancia = this;
+        return instancia;
     }
 }

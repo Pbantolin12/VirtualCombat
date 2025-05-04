@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -269,5 +271,10 @@ public class Administrador extends Usuario implements Observador {
             terminalTexto.info("Nuevo desafio a validar");
             this.gestorUsuarios.getGestorJuego().setDesafiosPendientes(desafio);
         }
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
     }
 }

@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -278,7 +280,7 @@ public class Personaje implements Serializable {
         } while (descripcionFortaleza.isEmpty());
         int valorFortaleza = 0;
         while (valorFortaleza > 5 || valorFortaleza < 1){
-            terminalTexto.askInfo("Introduce el valor de la debilidad (De 1 a 5): ");
+            terminalTexto.askInfo("Introduce el valor de la fortaleza (De 1 a 5): ");
             valorFortaleza = terminalTexto.readInt();
             if (valorFortaleza > 5 || valorFortaleza < 1){
                 terminalTexto.error("El valor debe estar entre 1 y 5");
@@ -615,5 +617,10 @@ public class Personaje implements Serializable {
                 this.potencialDebilidades += debilidad.getValue();
             }
         }
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
     }
 }

@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 public class Demonio extends Esbirros {
     //Atributos
     private String pacto;
@@ -127,5 +130,10 @@ public class Demonio extends Esbirros {
         terminalTexto.showln("|--------------------------|");
         terminalTexto.askInfo("Elige una opción: ");
         return terminalTexto.readInt();
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
     }
 }

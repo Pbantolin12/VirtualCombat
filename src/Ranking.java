@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -46,5 +48,10 @@ public class Ranking implements Observador, Serializable {
             Jugador jugador = jugadores.get(i);
             terminalTexto.showln(++pos + ". " + jugador.getNombre() + " - Partidas ganadas: " + jugador.getPartidasGanadas());
         }
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
     }
 }

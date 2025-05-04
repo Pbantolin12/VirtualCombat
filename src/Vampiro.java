@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 public class Vampiro extends Personaje{
     //Atributos
     private int puntosSangre;
@@ -86,6 +89,11 @@ public class Vampiro extends Personaje{
                     this.getArmaduraActiva().getModificadorDefensa() + this.getPotencialFortalezas() -
                     this.getPotencialDebilidades();
         }
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
     }
 }
 

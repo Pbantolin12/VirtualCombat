@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +9,8 @@ public class GestorUsuarios implements Serializable {
     private static GestorUsuarios instance;
     private List<Jugador> jugadores;
     private List<Administrador> administradores;
-    private transient TerminalTexto terminal = TerminalTexto.getInstance();
-    private GestorJuego gestorJuego = GestorJuego.getInstance();
     private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private GestorJuego gestorJuego = GestorJuego.getInstance();
 
     //Constructor
     private GestorUsuarios() {
@@ -38,13 +39,16 @@ public class GestorUsuarios implements Serializable {
                         switch (opcionReg) {
                             case 1 -> {
                                 setAdministradores(registrarAdministrador());
+                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);
                                 opcionReg = 3;
                             }
                             case 2 -> {
                                 setJugadores(registrarJugador());
-                                opcionReg = 3;
+                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                                opcionReg = 3;
                             }
-                            case 3 -> opcion = 0;
+                            case 3 -> {
+                                opcion = 0;
+                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                            }
                             default -> terminalTexto.error("Opción incorrecta");
                         }
                     } while (opcionReg != 3);
@@ -56,18 +60,18 @@ public class GestorUsuarios implements Serializable {
                         switch (opcionIni) {
                             case 1 -> {
                                 iniciarSesionAdministrador();
-                                opcionIni = 3;
+                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                                opcionIni = 3;
                             }
                             case 2 ->{
                                 iniciarSesionJugador();
-                                opcionIni = 3;
+                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                                opcionIni = 3;
                             }
                             default -> terminalTexto.error("Opción incorrecta");
                         }
                     } while (opcionIni != 3);
                 }
                 case 3 -> {
-                    terminal.showln("Saliendo...");
+                    GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                    terminalTexto.showln("Saliendo...");
                     System.exit(0);
                 }
                 default -> terminalTexto.error("Opción incorrecta");
@@ -81,26 +85,26 @@ public class GestorUsuarios implements Serializable {
         String nick = "";
         String contrasena = "";
 
-        terminal.nextLine();
+        terminalTexto.nextLine();
         while (nombre.isEmpty()) {
-            terminal.askInfo("Introduzca su nombre: ");
-            nombre = terminal.readStr();
+            terminalTexto.askInfo("Introduzca su nombre: ");
+            nombre = terminalTexto.readStr();
             if (nombre.isEmpty()) {
-                terminal.error("El nombre no puede estar vacío");
+                terminalTexto.error("El nombre no puede estar vacío");
             }
         }
         while (nick.isEmpty()) {
-            terminal.askInfo("Introduzca su nick: ");
-            nick = terminal.readStr();
+            terminalTexto.askInfo("Introduzca su nick: ");
+            nick = terminalTexto.readStr();
             if (nick.isEmpty()) {
-                terminal.error("El nick no puede estar vacío");
+                terminalTexto.error("El nick no puede estar vacío");
             }
         }
         while (contrasena.length() < 8 || contrasena.length() > 12) {
-            terminal.askInfo("Introduzca su contraseña: ");
-            contrasena = terminal.readStr();
+            terminalTexto.askInfo("Introduzca su contraseña: ");
+            contrasena = terminalTexto.readStr();
             if (contrasena.length() < 8 || contrasena.length() > 12) {
-                terminal.error("La contraseña debe tener entre 8 y 12 caracteres");
+                terminalTexto.error("La contraseña debe tener entre 8 y 12 caracteres");
             }
         }
         return Jugador.registrar(nombre, nick, contrasena, GestorUsuarios.this);
@@ -111,13 +115,13 @@ public class GestorUsuarios implements Serializable {
         String nombre = "";
         String contrasena = "";
 
-        terminal.askInfo("Introduzca su nombre: ");
-        nombre = terminal.readStr();
-        terminal.askInfo("Introduzca su contraseña: ");
-        contrasena = terminal.readStr();
+        terminalTexto.askInfo("Introduzca su nombre: ");
+        nombre = terminalTexto.readStr();
+        terminalTexto.askInfo("Introduzca su contraseña: ");
+        contrasena = terminalTexto.readStr();
 
         if (jugadores.isEmpty()) {
-            terminal.error("No hay jugadores registrados");
+            terminalTexto.error("No hay jugadores registrados");
             return;
         }
 
@@ -125,18 +129,18 @@ public class GestorUsuarios implements Serializable {
             if (jugador.getNombre().equals(nombre)) {
                 if (jugador.getContrasena().equals(contrasena)) {
                     if (jugador.getBloqueado()) {
-                        terminal.error("El usuario ha sido bloqueado");
+                        terminalTexto.error("El usuario ha sido bloqueado");
                         return;
                     } else {
-                        terminal.info("Iniciando sesión...");
+                        terminalTexto.info("Iniciando sesión...");
                         this.gestorJuego.modoJugador(jugador);
                         this.getGestorJuego().setUsuarioLogeado(null);
                     }
                 } else {
-                    terminal.error("Contraseña incorrecta: ");
+                    terminalTexto.error("Contraseña incorrecta: ");
                 }
             } else {
-                terminal.error("Usuario no encontrado");
+                terminalTexto.error("Usuario no encontrado");
             }
         }
     }
@@ -146,25 +150,25 @@ public class GestorUsuarios implements Serializable {
         String nombre = "";
         String contrasena = "";
 
-        terminal.askInfo("Introduzca su nombre: ");
-        nombre = terminal.readStr();
-        terminal.askInfo("Introduzca su contraseña: ");
-        contrasena = terminal.readStr();
+        terminalTexto.askInfo("Introduzca su nombre: ");
+        nombre = terminalTexto.readStr();
+        terminalTexto.askInfo("Introduzca su contraseña: ");
+        contrasena = terminalTexto.readStr();
         if (administradores.isEmpty()) {
-            terminal.error("No hay administradores registrados");
+            terminalTexto.error("No hay administradores registrados");
             return;
         }
         for (Administrador admin : administradores) {
             if (admin.getNombre().equals(nombre)) {
                 if (admin.getContrasena().equals(contrasena)) {
-                    terminal.info("Iniciando sesión...");
+                    terminalTexto.info("Iniciando sesión...");
                     this.gestorJuego.modoAdmin(admin);
                     this.getGestorJuego().setUsuarioLogeado(null);
                 } else {
-                    terminal.error("Contraseña incorrecta");
+                    terminalTexto.error("Contraseña incorrecta");
                 }
             } else {
-                terminal.error("Usuario no encontrado");
+                terminalTexto.error("Usuario no encontrado");
             }
         }
     }
@@ -175,26 +179,26 @@ public class GestorUsuarios implements Serializable {
         String nick = "";
         String contrasena = "";
 
-        terminal.nextLine();
+        terminalTexto.nextLine();
         while (nombre.isEmpty()) {
-            terminal.askInfo("Introduzca su nombre: ");
-            nombre = terminal.readStr();
+            terminalTexto.askInfo("Introduzca su nombre: ");
+            nombre = terminalTexto.readStr();
             if (nombre.isEmpty()) {
-                terminal.error("El nombre no puede estar vacío");
+                terminalTexto.error("El nombre no puede estar vacío");
             }
         }
         while (nick.isEmpty()) {
-            terminal.askInfo("Introduzca su nick: ");
-            nick = terminal.readStr();
+            terminalTexto.askInfo("Introduzca su nick: ");
+            nick = terminalTexto.readStr();
             if (nick.isEmpty()) {
-                terminal.error("El nick no puede estar vacío");
+                terminalTexto.error("El nick no puede estar vacío");
             }
         }
         while (contrasena.length() < 8 || contrasena.length() > 12) {
-            terminal.askInfo("Introduzca su contraseña: ");
-            contrasena = terminal.readStr();
+            terminalTexto.askInfo("Introduzca su contraseña: ");
+            contrasena = terminalTexto.readStr();
             if (contrasena.length() < 8 || contrasena.length() > 12) {
-                terminal.error("La contraseña debe tener entre 8 y 12 caracteres");
+                terminalTexto.error("La contraseña debe tener entre 8 y 12 caracteres");
             }
         }
         return Administrador.registrar(nombre, nick, contrasena);
@@ -203,15 +207,15 @@ public class GestorUsuarios implements Serializable {
     //Método para dar de baja a un jugador
     public void darBajaJugador(Jugador jugador) {
         if (jugadores.isEmpty()) {
-            terminal.error("No hay jugadores registrados");
+            terminalTexto.error("No hay jugadores registrados");
             return;
         }
         for (Jugador j : jugadores) {
             if (j.getNumeroRegistro().equals(jugador.getNumeroRegistro())) {
-                terminal.info("Jugador" + jugador.getNombre() + "dado de baja");
+                terminalTexto.info("Jugador" + jugador.getNombre() + "dado de baja");
                 jugadores.remove(j);
             } else {
-                terminal.error("Jugador no encontrado");
+                terminalTexto.error("Jugador no encontrado");
             }
         }
     }
@@ -219,15 +223,15 @@ public class GestorUsuarios implements Serializable {
     //Método para dar de baja a un administrador
     public void darBajaAdministrador(Administrador admin) {
         if (administradores.isEmpty()) {
-            terminal.error("No hay administradores registrados");
+            terminalTexto.error("No hay administradores registrados");
             return;
         }
         for (Administrador a : administradores) {
             if (a.getNombre().equals(admin.getNombre())) {
-                terminal.info("Administrador" + admin.getNombre() + "dado de baja");
+                terminalTexto.info("Administrador" + admin.getNombre() + "dado de baja");
                 administradores.remove(a);
             } else {
-                terminal.error("Administrador no encontrado");
+                terminalTexto.error("Administrador no encontrado");
             }
         }
     }
@@ -259,38 +263,38 @@ public class GestorUsuarios implements Serializable {
 
     //Método para mostrar el menú principal
     private int menuPrincipal() {
-        terminal.showln(" _____________________________");
-        terminal.showln("|_Bienvenido_a_Virtual_Combat_|");
-        terminal.showln("| 1.Crear una cuenta          |");
-        terminal.showln("| 2.Iniciar sesión            |");
-        terminal.showln("| 3.Salir                     |");
-        terminal.showln("|_____________________________|");
-        terminal.askInfo("Introduzca una opción: ");
-        return terminal.readInt();
+        terminalTexto.showln(" _____________________________");
+        terminalTexto.showln("|_Bienvenido_a_Virtual_Combat_|");
+        terminalTexto.showln("| 1.Crear una cuenta          |");
+        terminalTexto.showln("| 2.Iniciar sesión            |");
+        terminalTexto.showln("| 3.Salir                     |");
+        terminalTexto.showln("|_____________________________|");
+        terminalTexto.askInfo("Introduzca una opción: ");
+        return terminalTexto.readInt();
     }
 
     //Método para mostrar el menú de registro
     private int menuRegistro() {
-        terminal.showln(" _____________________________________");
-        terminal.showln("|____________Crear_cuenta_____________|");
-        terminal.showln("| 1. Crear cuenta como administrador  |");
-        terminal.showln("| 2. Crear cuenta como jugador        |");
-        terminal.showln("| 3. Volver                           |");
-        terminal.showln("|_____________________________________|");
-        terminal.askInfo("Introduzca una opción: ");
-        return terminal.readInt();
+        terminalTexto.showln(" _____________________________________");
+        terminalTexto.showln("|____________Crear_cuenta_____________|");
+        terminalTexto.showln("| 1. Crear cuenta como administrador  |");
+        terminalTexto.showln("| 2. Crear cuenta como jugador        |");
+        terminalTexto.showln("| 3. Volver                           |");
+        terminalTexto.showln("|_____________________________________|");
+        terminalTexto.askInfo("Introduzca una opción: ");
+        return terminalTexto.readInt();
     }
 
     //Método para mostrar el menú de inicio de sesión
     private int menuInicioSesion() {
-        terminal.showln(" _____________________________________");
-        terminal.showln("|___________Iniciar_sesion____________|");
-        terminal.showln("| 1. Inciar sesion como administrador |");
-        terminal.showln("| 2. Inciar sesion como jugador       |");
-        terminal.showln("| 3. Volver                           |");
-        terminal.showln("|_____________________________________|");
-        terminal.askInfo("Introduzca una opción: ");
-        return terminal.readInt();
+        terminalTexto.showln(" _____________________________________");
+        terminalTexto.showln("|___________Iniciar_sesion____________|");
+        terminalTexto.showln("| 1. Inciar sesion como administrador |");
+        terminalTexto.showln("| 2. Inciar sesion como jugador       |");
+        terminalTexto.showln("| 3. Volver                           |");
+        terminalTexto.showln("|_____________________________________|");
+        terminalTexto.askInfo("Introduzca una opción: ");
+        return terminalTexto.readInt();
     }
 
     public GestorJuego getGestorJuego() {
@@ -299,5 +303,15 @@ public class GestorUsuarios implements Serializable {
 
     public void setGestorJuego(GestorJuego gestorJuego) {
         this.gestorJuego = gestorJuego;
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
+    }
+
+    private Object readResolve() {
+        instance = this;
+        return instance;
     }
 }

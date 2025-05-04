@@ -1,9 +1,11 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 public class Arma extends Equipo implements Serializable {
     //Atributos
     private TipoArma tipo;
-    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
 
     //Constructor
     public Arma(String nombre, int modificadorDefensa, int modificadorAtaque, TipoArma tipo) {
@@ -27,5 +29,10 @@ public class Arma extends Equipo implements Serializable {
         terminalTexto.showln("| Modificador de defensa: " + this.getModificadorDefensa());
         terminalTexto.showln("| Modificador de ataque: " + this.getModificadorAtaque());
         terminalTexto.showln("|-------------------------------|");
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
     }
 }

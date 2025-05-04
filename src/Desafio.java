@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
@@ -89,9 +91,17 @@ public class Desafio implements Serializable {
     public void setDesafioAceptado(boolean estado) {
         boolean cambio = this.desafioAceptado != estado;
         this.desafioAceptado = estado;
+        this.jugadorDesafiado.getPersonaje().setOro(this.jugadorDesafiado.getPersonaje().getOro() -
+                this.calcularPorcentajeApuestas(this.oroApostado));
+        this.jugadorDesafiante.getPersonaje().setOro(this.jugadorDesafiado.getPersonaje().getOro() +
+                this.calcularPorcentajeApuestas(this.oroApostado));
         if (cambio) {
             this.gestorEventos.notificar(dAceptado, this);
         }
+    }
+
+    public int calcularPorcentajeApuestas(int apuesta) {
+        return (int) (apuesta * 0.1);
     }
 
     private int generarId() {
@@ -237,5 +247,10 @@ public class Desafio implements Serializable {
             }
         }
         return saludEsbirros;
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.terminalTexto = TerminalTexto.getInstance();
     }
 }
