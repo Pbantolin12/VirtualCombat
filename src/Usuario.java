@@ -6,6 +6,7 @@ public class Usuario implements Serializable {
     private String nick;
     private String contrasena;
     private boolean bloqueado;
+
     //Constructor
     public Usuario(String nombre, String nick, String contrasena) {
         this.nombre = nombre;
@@ -14,7 +15,8 @@ public class Usuario implements Serializable {
         this.bloqueado = false;
     }
 
-    public Usuario(){}
+    public Usuario() {
+    }
 
     //Métodos
     public String getNombre() {

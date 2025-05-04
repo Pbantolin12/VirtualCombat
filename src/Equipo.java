@@ -7,7 +7,7 @@ public class Equipo implements Serializable {
     private int modificadorDefensa;
 
     //Constructor
-    public Equipo(String nombre, int modificadorDefensa, int modificadorAtaque){
+    public Equipo(String nombre, int modificadorDefensa, int modificadorAtaque) {
         this.nombre = nombre;
         this.modificadorAtaque = modificadorDefensa;
         this.modificadorDefensa = modificadorAtaque;
@@ -26,7 +26,7 @@ public class Equipo implements Serializable {
         return modificadorDefensa;
     }
 
-    public void setModificadorDefensa(int modificadorDefensa){
+    public void setModificadorDefensa(int modificadorDefensa) {
         this.modificadorDefensa = modificadorDefensa;
     }
 

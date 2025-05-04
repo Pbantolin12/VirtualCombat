@@ -39,16 +39,18 @@ public class GestorUsuarios implements Serializable {
                         switch (opcionReg) {
                             case 1 -> {
                                 setAdministradores(registrarAdministrador());
-                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);
+                                GestorPersistencia.guardarObjeto("gestorUsuarios.dat", this);
                                 opcionReg = 3;
                             }
                             case 2 -> {
                                 setJugadores(registrarJugador());
-                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                                opcionReg = 3;
+                                GestorPersistencia.guardarObjeto("gestorUsuarios.dat", this);
+                                opcionReg = 3;
                             }
                             case 3 -> {
                                 opcion = 0;
-                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                            }
+                                GestorPersistencia.guardarObjeto("gestorUsuarios.dat", this);
+                            }
                             default -> terminalTexto.error("Opción incorrecta");
                         }
                     } while (opcionReg != 3);
@@ -60,18 +62,21 @@ public class GestorUsuarios implements Serializable {
                         switch (opcionIni) {
                             case 1 -> {
                                 iniciarSesionAdministrador();
-                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                                opcionIni = 3;
+                                GestorPersistencia.guardarObjeto("gestorUsuarios.dat", this);
+                                opcionIni = 3;
                             }
-                            case 2 ->{
+                            case 2 -> {
                                 iniciarSesionJugador();
-                                GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                                opcionIni = 3;
+                                GestorPersistencia.guardarObjeto("gestorUsuarios.dat", this);
+                                opcionIni = 3;
                             }
                             default -> terminalTexto.error("Opción incorrecta");
                         }
                     } while (opcionIni != 3);
                 }
                 case 3 -> {
-                    GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", this);                    terminalTexto.showln("Saliendo...");
+                    GestorPersistencia.guardarObjeto("gestorUsuarios.dat", this);
+                    terminalTexto.showln("Saliendo...");
                     System.exit(0);
                 }
                 default -> terminalTexto.error("Opción incorrecta");

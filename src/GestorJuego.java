@@ -50,18 +50,19 @@ public class GestorJuego implements Serializable {
                     do {
                         optPersonaje = menuAdminPersonaje();
                         switch (optPersonaje) {
-                            case 1 -> administrador.modificarPersonaje(gestorUsuarios.getJugador(nombreJugador).getPersonaje());
+                            case 1 ->
+                                    administrador.modificarPersonaje(gestorUsuarios.getJugador(nombreJugador).getPersonaje());
                             case 2 -> administrador.eliminarPersonaje(gestorUsuarios.getJugador(nombreJugador));
                             case 3 -> administrador.bloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
                             case 4 -> administrador.desbloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
                             default -> terminalTexto.error("Opción incorrecta");
                         }
-                    } while (optPersonaje !=5);
+                    } while (optPersonaje != 5);
                 }
                 case 2 -> {
                     if (this.desafiosPendientes.isEmpty()) {
                         terminalTexto.info("No hay desafíos pendientes");
-                    } else{
+                    } else {
                         administrador.validarDesafio(this.desafiosPendientes);
                     }
                 }
@@ -80,9 +81,9 @@ public class GestorJuego implements Serializable {
         terminalTexto.showln("Bienvenido " + jugador.getNick());
         do {
             do {
-                if (Boolean.TRUE.equals(jugador.getDesafioPendiente())){
+                if (Boolean.TRUE.equals(jugador.getDesafioPendiente())) {
                     optDesafio = menuDesafio(jugador);
-                    switch (optDesafio){
+                    switch (optDesafio) {
                         case 1 -> jugador.aceptarDesafio();
                         case 2 -> jugador.rechazarDesafio();
                         default -> terminalTexto.error("Opción incorrecta");
@@ -116,7 +117,7 @@ public class GestorJuego implements Serializable {
         } while (opt != 9);
     }
 
-    public int menuAdmin(){
+    public int menuAdmin() {
         terminalTexto.showln(" ____________________________");
         terminalTexto.showln("|___________Menu_admin_______|");
         terminalTexto.showln("| 1. Acciones personaje      |");
@@ -157,7 +158,7 @@ public class GestorJuego implements Serializable {
         return terminalTexto.readInt();
     }
 
-    public int menuDesafio(Jugador jugador){
+    public int menuDesafio(Jugador jugador) {
         terminalTexto.showln("---Desafio_Pendiente---");
         terminalTexto.showln(" - Desafiado por: " + jugador.getDesafio().getJugadorDesafiante().getNick());
         terminalTexto.showln(" - Oro apostado: " + jugador.getDesafio().getOroApostado());

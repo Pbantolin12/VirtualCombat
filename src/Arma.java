@@ -18,11 +18,11 @@ public class Arma extends Equipo implements Serializable {
         return tipo;
     }
 
-    public void setTipo(TipoArma tipo){
+    public void setTipo(TipoArma tipo) {
         this.tipo = tipo;
     }
 
-    public void mostrarCaracteristicas(){
+    public void mostrarCaracteristicas() {
         terminalTexto.showln("|---Características del arma---|");
         terminalTexto.showln("| Arma: " + this.getNombre());
         terminalTexto.showln("| Tipo: " + this.getTipo());

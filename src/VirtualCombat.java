@@ -6,6 +6,6 @@ public class VirtualCombat {
             gestorUsuarios = GestorUsuarios.getInstance();
         }
         gestorUsuarios.iniciar();
-        GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", gestorUsuarios);
+        GestorPersistencia.guardarObjeto("gestorUsuarios.dat", gestorUsuarios);
     }
 }

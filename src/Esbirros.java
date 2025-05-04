@@ -7,7 +7,7 @@ public class Esbirros implements Serializable {
     private int ataque;
 
     //Constructor
-    public Esbirros(String nombre){
+    public Esbirros(String nombre) {
         this.nombre = nombre;
         this.salud = 3;
     }

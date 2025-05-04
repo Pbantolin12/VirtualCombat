@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-public class Vampiro extends Personaje{
+public class Vampiro extends Personaje {
     //Atributos
     private int puntosSangre;
     private int edad;
@@ -17,35 +17,35 @@ public class Vampiro extends Personaje{
     }
 
     //Métodos
-    public int getPuntosSangre(){
+    public int getPuntosSangre() {
         return puntosSangre;
     }
 
-    public void setPuntosSangre(int puntosSangre){
-        if (puntosSangre < 0){
+    public void setPuntosSangre(int puntosSangre) {
+        if (puntosSangre < 0) {
             this.puntosSangre = 0;
-        } else if (puntosSangre > 10){
+        } else if (puntosSangre > 10) {
             this.puntosSangre = 10;
         } else {
             this.puntosSangre = puntosSangre;
         }
     }
 
-    public int getEdad(){
+    public int getEdad() {
         return edad;
     }
 
-    public void setEdad(int edad){
+    public void setEdad(int edad) {
         if (edad < 0) {
             terminalTexto.error("La edad no puede ser negativa");
-        } else  {
+        } else {
             this.edad = edad;
         }
     }
 
     public int calcularAtaque() {
-        if(this.puntosSangre >= 5){
-            if(this.puntosSangre > this.getHabilidad()) {
+        if (this.puntosSangre >= 5) {
+            if (this.puntosSangre > this.getHabilidad()) {
                 this.puntosSangre -= this.getHabilidad();
                 return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
                         this.getArmaduraActiva().getModificadorAtaque() + this.getHabilidad() + 2 +
@@ -56,7 +56,7 @@ public class Vampiro extends Personaje{
                         this.getPotencialDebilidades();
             }
         }
-        if(this.puntosSangre > this.getHabilidad()){
+        if (this.puntosSangre > this.getHabilidad()) {
             return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
                     this.getArmaduraActiva().getModificadorAtaque() + this.getHabilidad() +
                     this.getPotencialFortalezas() - this.getPotencialDebilidades();
@@ -65,7 +65,7 @@ public class Vampiro extends Personaje{
                     this.getArmaduraActiva().getModificadorAtaque() + this.getPotencialFortalezas()
                     - this.getPotencialDebilidades();
         }
-    }//TODO: Si el ataque tiene éxito recupera 4 puntos de sangre
+    }
 
     public int calcularDefensa() {
         if (this.puntosSangre >= 5) {

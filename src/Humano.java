@@ -1,7 +1,7 @@
 public class Humano extends Esbirros {
     //Atributos
     private Grado lealtad;
-    
+
     //Constructor
     public Humano(String nombre, Grado lealtad) {
         super(nombre);
@@ -9,11 +9,11 @@ public class Humano extends Esbirros {
     }
 
     //Métodos
-    public Grado getGrado(){
+    public Grado getGrado() {
         return lealtad;
     }
 
-    public void setGrado(Grado lealtad){
+    public void setGrado(Grado lealtad) {
         this.lealtad = lealtad;
     }
 }

@@ -12,7 +12,7 @@ public class Armadura extends Equipo implements Serializable {
     }
 
     //Métodos
-    public void mostrarCaracteristicas(){
+    public void mostrarCaracteristicas() {
         terminalTexto.showln("|---Características de la armadura---|");
         terminalTexto.showln("| Armadura: " + this.getNombre());
         terminalTexto.showln("| Modificador de defensa: " + this.getModificadorDefensa());

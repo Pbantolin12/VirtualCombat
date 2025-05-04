@@ -1,4 +1,4 @@
-public class Licantropo extends Personaje{
+public class Licantropo extends Personaje {
     //Atributos
     private int rabia;
 
@@ -15,9 +15,9 @@ public class Licantropo extends Personaje{
     }
 
     public void setRabia(int rabia) {
-        if (rabia < 0){
+        if (rabia < 0) {
             this.rabia = 0;
-        } else if (rabia > 3){
+        } else if (rabia > 3) {
             this.rabia = 3;
         } else {
             this.rabia = rabia;
@@ -25,7 +25,7 @@ public class Licantropo extends Personaje{
     }
 
     public int calcularAtaque() {
-        if (this.rabia > this.getHabilidad()){
+        if (this.rabia > this.getHabilidad()) {
             return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
                     this.getArmaduraActiva().getModificadorAtaque() + this.getHabilidad() +
                     this.getPotencialFortalezas() - this.getPotencialDebilidades();
@@ -34,7 +34,7 @@ public class Licantropo extends Personaje{
                     this.getArmaduraActiva().getModificadorAtaque() + this.getPotencialFortalezas()
                     - this.getPotencialDebilidades();
         }
-    } //TODO: al perder vida la rabia aumenta 1 punto
+    }
 
     public int calcularDefensa() {
         if (this.rabia > this.getHabilidad()) {

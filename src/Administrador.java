@@ -11,16 +11,16 @@ public class Administrador extends Usuario implements Observador, Serializable {
     private GestorUsuarios gestorUsuarios = GestorUsuarios.getInstance();
 
     //Constructor
-    public Administrador(String nombre, String nick, String contrasena){
+    public Administrador(String nombre, String nick, String contrasena) {
         super(nombre, nick, contrasena);
     }
 
     //Factory Method
-    public static Administrador registrar(String nombre, String nick, String contrasena){
-        if (nombre.isEmpty()){
+    public static Administrador registrar(String nombre, String nick, String contrasena) {
+        if (nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacío");
         }
-        if (nick.isEmpty()){
+        if (nick.isEmpty()) {
             throw new IllegalArgumentException("El nick no puede estar vacío");
         }
         if (contrasena.length() < 8 || contrasena.length() > 12) {
@@ -73,7 +73,7 @@ public class Administrador extends Usuario implements Observador, Serializable {
         } while (opt != 8);
     }
 
-    public int menuModificarPersonaje(){
+    public int menuModificarPersonaje() {
         terminalTexto.showln(" _________________________________");
         terminalTexto.showln("|_____Menu_Modificar_Personaje____|");
         terminalTexto.showln("| 1. Cambiar nombre               |");
@@ -89,11 +89,11 @@ public class Administrador extends Usuario implements Observador, Serializable {
         return terminalTexto.readInt();
     }
 
-    public void validarDesafio(List<Desafio> desafios){
+    public void validarDesafio(List<Desafio> desafios) {
         boolean salir = false;
         int opt;
 
-        while(!desafios.isEmpty() && !salir){
+        while (!desafios.isEmpty() && !salir) {
             Desafio desafio = desafios.get(0);
             desafio.mostrarDesafio();
             do {
@@ -133,7 +133,7 @@ public class Administrador extends Usuario implements Observador, Serializable {
         }
     }
 
-    public int menuValidarDesafio(){
+    public int menuValidarDesafio() {
         terminalTexto.showln(" _________________________________");
         terminalTexto.showln("|_____Menu_Validar_Desafio________|");
         terminalTexto.showln("| 1. Gestionar jugador desafiante |");
@@ -144,8 +144,8 @@ public class Administrador extends Usuario implements Observador, Serializable {
         return terminalTexto.readInt();
     }
 
-    public void bloquearUsuario(Usuario usuario){
-        if (usuario.getBloqueado()){
+    public void bloquearUsuario(Usuario usuario) {
+        if (usuario.getBloqueado()) {
             terminalTexto.error("El usuario " + usuario.getNombre() + "ya está bloqueado");
         } else {
             usuario.setBloqueado(true);
@@ -153,8 +153,8 @@ public class Administrador extends Usuario implements Observador, Serializable {
         }
     }
 
-    public void desbloquearUsuario(Usuario usuario){
-        if (!usuario.getBloqueado()){
+    public void desbloquearUsuario(Usuario usuario) {
+        if (!usuario.getBloqueado()) {
             terminalTexto.error("El usuario " + usuario.getNombre() + " no está bloqueado");
         } else {
             usuario.setBloqueado(false);
@@ -162,8 +162,8 @@ public class Administrador extends Usuario implements Observador, Serializable {
         }
     }
 
-    public void eliminarPersonaje(Jugador jugador){
-        if (jugador.getPersonaje() == null){
+    public void eliminarPersonaje(Jugador jugador) {
+        if (jugador.getPersonaje() == null) {
             terminalTexto.error("El personaje no existe");
         } else {
             terminalTexto.showln("Personaje " + jugador.getPersonaje().getNombre() + " eliminado");
@@ -171,21 +171,21 @@ public class Administrador extends Usuario implements Observador, Serializable {
         }
     }
 
-    public void eliminarArma(){
+    public void eliminarArma() {
         int delArma = this.personajeModificar.mostrarArmas();
         List<Arma> conjunto = this.personajeModificar.getConjuntoArmas();
         conjunto.remove(delArma - 1);
         terminalTexto.info("Arma eliminada");
     }
 
-    public void eliminarArmadura(){
+    public void eliminarArmadura() {
         int delArmadura = this.personajeModificar.mostrarArmaduras();
         List<Armadura> conjunto = this.personajeModificar.getConjuntoArmaduras();
         conjunto.remove(delArmadura - 1);
         terminalTexto.info("Armadura eliminada");
     }
 
-    public void anadirArma(){
+    public void anadirArma() {
         String nombreArma;
         int modificadorAtaque;
         int modificadorDefensa;
@@ -193,30 +193,30 @@ public class Administrador extends Usuario implements Observador, Serializable {
         do {
             terminalTexto.askInfo("Introduce el nombre del arma: ");
             nombreArma = terminalTexto.readStr();
-            if (nombreArma.isEmpty()){
+            if (nombreArma.isEmpty()) {
                 terminalTexto.error("El nombre no puede estar vacío");
             }
         } while (nombreArma.isEmpty());
         do {
             terminalTexto.askInfo("Introduce el modificador de defensa: ");
             modificadorDefensa = terminalTexto.readInt();
-            if (modificadorDefensa < 0 || modificadorDefensa > 3){
+            if (modificadorDefensa < 0 || modificadorDefensa > 3) {
                 terminalTexto.error("El modificador de defensa debe estar entre 1 y 3");
             }
         } while (modificadorDefensa < 0 || modificadorDefensa > 3);
-        do{
+        do {
             terminalTexto.askInfo("Introduce el modificador de ataque: ");
             modificadorAtaque = terminalTexto.readInt();
-            if (modificadorAtaque < 0 || modificadorAtaque > 3){
+            if (modificadorAtaque < 0 || modificadorAtaque > 3) {
                 terminalTexto.error("El modificador de ataque debe estar entre 1 y 3");
             }
         } while (modificadorAtaque < 0 || modificadorAtaque > 3);
         do {
             terminalTexto.askInfo("Introduce el tipo de arma (UNA_MANO/DOS_MANOS): ");
             String tipoArmaStr = terminalTexto.readStr();
-            if (tipoArmaStr.equalsIgnoreCase("UNA_MANO")){
+            if (tipoArmaStr.equalsIgnoreCase("UNA_MANO")) {
                 tipoArma = TipoArma.UNA_MANO;
-            } else if (tipoArmaStr.equalsIgnoreCase("DOS_MANOS")){
+            } else if (tipoArmaStr.equalsIgnoreCase("DOS_MANOS")) {
                 tipoArma = TipoArma.DOS_MANOS;
             } else {
                 terminalTexto.error("El tipo de arma no es válido");
@@ -225,35 +225,35 @@ public class Administrador extends Usuario implements Observador, Serializable {
         this.personajeModificar.setArma(new Arma(nombreArma, modificadorDefensa, modificadorAtaque, tipoArma));
     }
 
-    public void anadirArmadura(){
+    public void anadirArmadura() {
         String nombreArmadura;
         int modificadorAtaque;
         int modificadorDefensa;
         do {
             terminalTexto.askInfo("Introduce el nombre de la armadura: ");
             nombreArmadura = terminalTexto.readStr();
-            if (nombreArmadura.isEmpty()){
+            if (nombreArmadura.isEmpty()) {
                 terminalTexto.error("El nombre no puede estar vacío");
             }
         } while (nombreArmadura.isEmpty());
         do {
             terminalTexto.askInfo("Introduce el modificador de defensa: ");
             modificadorDefensa = terminalTexto.readInt();
-            if (modificadorDefensa < 0 || modificadorDefensa > 3){
+            if (modificadorDefensa < 0 || modificadorDefensa > 3) {
                 terminalTexto.error("El modificador de defensa debe estar entre 1 y 3");
             }
         } while (modificadorDefensa < 0 || modificadorDefensa > 3);
-        do{
+        do {
             terminalTexto.askInfo("Introduce el modificador de ataque: ");
             modificadorAtaque = terminalTexto.readInt();
-            if (modificadorAtaque < 0 || modificadorAtaque > 3){
+            if (modificadorAtaque < 0 || modificadorAtaque > 3) {
                 terminalTexto.error("El modificador de ataque debe estar entre 1 y 3");
             }
         } while (modificadorAtaque < 0 || modificadorAtaque > 3);
         this.personajeModificar.setArmadura(new Armadura(nombreArmadura, modificadorDefensa, modificadorAtaque));
     }
 
-    public void modificarEquipo(){
+    public void modificarEquipo() {
         int optEquipo;
         do {
             optEquipo = menuModificarEquipo();
@@ -267,7 +267,7 @@ public class Administrador extends Usuario implements Observador, Serializable {
         } while (optEquipo != 5);
     }
 
-    public int menuModificarEquipo(){
+    public int menuModificarEquipo() {
         terminalTexto.showln(" _________________________________");
         terminalTexto.showln("|_____Menu_Modificar_Equipo_______|");
         terminalTexto.showln("| 1. Añadir arma                  |");

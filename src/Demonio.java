@@ -17,7 +17,7 @@ public class Demonio extends Esbirros {
         terminalTexto.askInfo("Elige una opción: ");
         int opcion = terminalTexto.readInt();
         if (opcion == 1) {
-           this.anadirEsbirros();
+            this.anadirEsbirros();
         } else {
             this.conjuntoEsbirros = null;
         }
@@ -41,20 +41,20 @@ public class Demonio extends Esbirros {
         this.conjuntoEsbirros = conjuntoEsbirros;
     }
 
-    public void anadirEsbirros(){
+    public void anadirEsbirros() {
         int opt;
         String nombre;
         do {
             opt = menuEsbirros();
-            if (opt == 4 && this.conjuntoEsbirros == null){
+            if (opt == 4 && this.conjuntoEsbirros == null) {
                 terminalTexto.error("No has añadido ningun esbirro");
             }
-            switch (opt){
+            switch (opt) {
                 case 1 -> {
                     do {
                         terminalTexto.askInfo("Introduce el nombre del esbirro: ");
                         nombre = terminalTexto.readStr();
-                        if (nombre.isEmpty()){
+                        if (nombre.isEmpty()) {
                             terminalTexto.error("El nombre no puede ser vacío");
                         }
                     } while (nombre.isEmpty());
@@ -62,7 +62,7 @@ public class Demonio extends Esbirros {
                     do {
                         terminalTexto.askInfo("Introduce la dependencia del esbirro (entre 1 y 5): ");
                         dependencia = terminalTexto.readInt();
-                        if (dependencia < 1 || dependencia > 3){
+                        if (dependencia < 1 || dependencia > 3) {
                             terminalTexto.error("Valor incorrecto");
                         }
                     } while (opt < 1 || opt > 3);
@@ -72,7 +72,7 @@ public class Demonio extends Esbirros {
                     do {
                         terminalTexto.askInfo("Introduce el nombre del esbirro: ");
                         nombre = terminalTexto.readStr();
-                        if (nombre.isEmpty()){
+                        if (nombre.isEmpty()) {
                             terminalTexto.error("El nombre no puede estar vacío");
                         }
                     } while (nombre.isEmpty());
@@ -80,7 +80,7 @@ public class Demonio extends Esbirros {
                     do {
                         terminalTexto.askInfo("Introduce la descripción el pacto del demonio con el amo: ");
                         pacto = terminalTexto.readStr();
-                        if (pacto.isEmpty()){
+                        if (pacto.isEmpty()) {
                             terminalTexto.error("El pacto no puede estar vacío");
                         }
                     } while (pacto.isEmpty());
@@ -90,7 +90,7 @@ public class Demonio extends Esbirros {
                     do {
                         terminalTexto.askInfo("Introduce el nombre del esbirro: ");
                         nombre = terminalTexto.readStr();
-                        if (nombre.isEmpty()){
+                        if (nombre.isEmpty()) {
                             terminalTexto.error("El nombre no puede estar vacío");
                         }
                     } while (nombre.isEmpty());
@@ -102,15 +102,15 @@ public class Demonio extends Esbirros {
                     do {
                         terminalTexto.askInfo("Introduce la lealtad del esbirro: ");
                         grado = terminalTexto.readStr();
-                        if (grado.isEmpty()){
+                        if (grado.isEmpty()) {
                             terminalTexto.error("El grado no puede estar vacío");
                         }
                         for (Grado g : Grado.values()) {
-                            if (g.name().equals(grado)){
+                            if (g.name().equals(grado)) {
                                 gradoAux = true;
                             }
                         }
-                        if (Boolean.FALSE.equals(gradoAux)){
+                        if (Boolean.FALSE.equals(gradoAux)) {
                             terminalTexto.error("El grado introducido no es correcto");
                         }
                     } while (grado.isEmpty() && Boolean.TRUE.equals(!gradoAux));
@@ -121,7 +121,7 @@ public class Demonio extends Esbirros {
         } while (this.conjuntoEsbirros != null);
     }
 
-    private int menuEsbirros(){
+    private int menuEsbirros() {
         terminalTexto.showln(" __________________________");
         terminalTexto.showln("|____Escoger esbirros______|");
         terminalTexto.showln("| 1. Ghoul                 |");

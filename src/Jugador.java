@@ -70,7 +70,7 @@ public class Jugador extends Usuario implements Observador {
         }
     }
 
-    private int menuPersonaje(){
+    private int menuPersonaje() {
         terminalTexto.showln(" ________________________________");
         terminalTexto.showln("|_____Personajes_disponibles_____|");
         terminalTexto.showln("| 1. Vampiro                     |");
@@ -98,10 +98,10 @@ public class Jugador extends Usuario implements Observador {
         if (jugadorDesafiado != null) {
             if (jugadorDesafiado.equals(this.personaje)) {
                 terminalTexto.error("No puedes desafiarte a ti mismo");
-            } else{
+            } else {
                 if (Boolean.TRUE.equals(jugadorDesafiado.getDesafioPendiente())) {
                     terminalTexto.error("El jugador [" + jugadorDesafiado.getNombre() + " ya tiene un desafío pendiente");
-                } else if (jugadorDesafiado.getPersonaje() == null){
+                } else if (jugadorDesafiado.getPersonaje() == null) {
                     terminalTexto.error("El jugador [" + jugadorDesafiado.getNombre() + " no tiene personaje creado");
                 } else if (this.personaje == null) {
                     terminalTexto.error("No tienes un personaje creado");
@@ -155,7 +155,7 @@ public class Jugador extends Usuario implements Observador {
         }
     }
 
-    private int menuDesafio(){
+    private int menuDesafio() {
         terminalTexto.showln(" __________________________");
         terminalTexto.showln("|_______Menu_Desafio_______|");
         terminalTexto.showln("| 1. Mostrar equipo activo |");
@@ -226,7 +226,7 @@ public class Jugador extends Usuario implements Observador {
         } while (opt != 5);
     }
 
-    private void cambiarArma(){
+    private void cambiarArma() {
         int i = 0;
         terminalTexto.showln("Arma activa: " + getPersonaje().getArmaActiva().getNombre());
         terminalTexto.show("Armas disponibles: ");
@@ -240,7 +240,7 @@ public class Jugador extends Usuario implements Observador {
         personaje.setArmaActiva(personaje.getConjuntoArmas().get(armaEquipar));
     }
 
-    private void cambiarArmadura(){
+    private void cambiarArmadura() {
         int i = 0;
         terminalTexto.showln("Armadura activa: " + getPersonaje().getArmaduraActiva().getNombre());
         terminalTexto.show("Armaduras disponibles: ");
@@ -254,7 +254,7 @@ public class Jugador extends Usuario implements Observador {
         personaje.setArmaduraActiva(personaje.getConjuntoArmaduras().get(armaduraEquipar));
     }
 
-    public int menuModificarEquipo(){
+    public int menuModificarEquipo() {
         terminalTexto.showln(" _________________________________");
         terminalTexto.showln("|_____Menu_Modificar_Equipo_______|");
         terminalTexto.showln("| 1. Ver arma activa              |");
@@ -277,7 +277,7 @@ public class Jugador extends Usuario implements Observador {
                 this.gestorUsuarios.getGestorJuego().getUsuarioLogeado().equals(this)) {
             terminalTexto.info("Tu desafío a " + desafio.getJugadorDesafiado().getNick() + " ha sido " +
                     (desafio.getDesafioAceptado() ? "aceptado" : "enviado"));
-        } else if(desafio.getDesafioAceptado() && desafio.getGanador() != null &&
+        } else if (desafio.getDesafioAceptado() && desafio.getGanador() != null &&
                 this.gestorUsuarios.getGestorJuego().getUsuarioLogeado().equals(this)) {
             terminalTexto.info("El desafío finalizado --> Ganador: " + desafio.getGanador().getNick());
         }
@@ -331,7 +331,7 @@ public class Jugador extends Usuario implements Observador {
         this.partidasGanadas = partidasGanadas;
     }
 
-    public int menuModificarPersonaje(){
+    public int menuModificarPersonaje() {
         terminalTexto.showln(" _________________________________");
         terminalTexto.showln("|_____Menu_Modificar_Personaje____|");
         terminalTexto.showln("| 1. Cambiar nombre               |");

@@ -1,7 +1,7 @@
-public class Ghoul extends Esbirros{
+public class Ghoul extends Esbirros {
     //Atributos
     private int dependencia;
-    
+
     //Constructor
     public Ghoul(String nombre, int dependencia) {
         super(nombre);

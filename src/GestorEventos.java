@@ -9,17 +9,17 @@ public class GestorEventos implements Serializable {
     private Map<String, List<Observador>> observadores;
 
     //Constructor
-    public GestorEventos(){
+    public GestorEventos() {
         this.observadores = new HashMap<>();
     }
 
     //Métodos
-    public void anadirObservador(String tipoEvento, Observador observador){
+    public void anadirObservador(String tipoEvento, Observador observador) {
         this.observadores.putIfAbsent(tipoEvento, new ArrayList<>());
         this.observadores.get(tipoEvento).add(observador);
     }
 
-    public void eliminarObservador(String tipoEvento, Observador observador){
+    public void eliminarObservador(String tipoEvento, Observador observador) {
         if (this.observadores.containsKey(tipoEvento)) {
             this.observadores.get(tipoEvento).remove(observador);
         }

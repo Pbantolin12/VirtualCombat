@@ -1,4 +1,4 @@
-public class Cazador extends Personaje{
+public class Cazador extends Personaje {
     //Atributos
     private int voluntad;
 
@@ -10,14 +10,14 @@ public class Cazador extends Personaje{
     }
 
     //Métodos
-    public int getVoluntad(){
+    public int getVoluntad() {
         return voluntad;
     }
 
-    public void setVoluntad(int voluntad){
-        if (voluntad < 0){
+    public void setVoluntad(int voluntad) {
+        if (voluntad < 0) {
             this.voluntad = 0;
-        } else if (voluntad > 3){
+        } else if (voluntad > 3) {
             this.voluntad = 3;
         } else {
             this.voluntad = voluntad;
@@ -28,7 +28,7 @@ public class Cazador extends Personaje{
         return this.getPoder() + this.getArmaActiva().getModificadorAtaque() +
                 this.getArmaActiva().getModificadorAtaque() + this.getHabilidad() + this.voluntad +
                 this.getPotencialFortalezas() - this.getPotencialDebilidades();
-    } //TODO: voluntad disminuye 1 punto al perder salud
+    }
 
     public int calcularDefensa() {
         return this.getPoder() + this.getArmaActiva().getModificadorDefensa() +
