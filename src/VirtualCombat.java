@@ -9,6 +9,3 @@ public class VirtualCombat {
         GestorPersistencia.guardarObjeto( "gestorUsuarios.dat", gestorUsuarios);
     }
 }
-
-//TODO: Revisar el tema del combate, cuando se quita salud y eso
-

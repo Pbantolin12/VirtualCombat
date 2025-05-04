@@ -99,6 +99,12 @@ public class GestorUsuarios implements Serializable {
             if (nick.isEmpty()) {
                 terminalTexto.error("El nick no puede estar vacío");
             }
+            for (Jugador j : jugadores) {
+                if (j.getNick().equals(nick)) {
+                    terminalTexto.error("El nick ya está registrado");
+                    nick = "";
+                }
+            }
         }
         while (contrasena.length() < 8 || contrasena.length() > 12) {
             terminalTexto.askInfo("Introduzca su contraseña: ");
@@ -112,12 +118,12 @@ public class GestorUsuarios implements Serializable {
 
     //Método para iniciar sesión como jugador
     private void iniciarSesionJugador() {
-        String nombre = "";
+        String nick = "";
         String contrasena = "";
         Boolean encontrado = false;
 
-        terminalTexto.askInfo("Introduzca su nombre: ");
-        nombre = terminalTexto.readStr();
+        terminalTexto.askInfo("Introduzca su nick: ");
+        nick = terminalTexto.readStr();
         terminalTexto.askInfo("Introduzca su contraseña: ");
         contrasena = terminalTexto.readStr();
 
@@ -127,7 +133,7 @@ public class GestorUsuarios implements Serializable {
         }
 
         for (Jugador jugador : jugadores) {
-            if (jugador.getNombre().equals(nombre)) {
+            if (jugador.getNick().equals(nick)) {
                 if (jugador.getContrasena().equals(contrasena)) {
                     if (jugador.getBloqueado()) {
                         terminalTexto.error("El usuario ha sido bloqueado");
@@ -151,12 +157,12 @@ public class GestorUsuarios implements Serializable {
 
     //Método para iniciar sesión como administrador
     private void iniciarSesionAdministrador() {
-        String nombre = "";
+        String nick = "";
         String contrasena = "";
         Boolean encontrado = false;
 
-        terminalTexto.askInfo("Introduzca su nombre: ");
-        nombre = terminalTexto.readStr();
+        terminalTexto.askInfo("Introduzca su nick: ");
+        nick = terminalTexto.readStr();
         terminalTexto.askInfo("Introduzca su contraseña: ");
         contrasena = terminalTexto.readStr();
         if (administradores.isEmpty()) {
@@ -164,7 +170,7 @@ public class GestorUsuarios implements Serializable {
             return;
         }
         for (Administrador admin : administradores) {
-            if (admin.getNombre().equals(nombre)) {
+            if (admin.getNick().equals(nick)) {
                 if (admin.getContrasena().equals(contrasena)) {
                     encontrado = true;
                     terminalTexto.info("Iniciando sesión...");
@@ -200,6 +206,12 @@ public class GestorUsuarios implements Serializable {
             nick = terminalTexto.readStr();
             if (nick.isEmpty()) {
                 terminalTexto.error("El nick no puede estar vacío");
+            }
+            for (Administrador admin : administradores) {
+                if (admin.getNick().equals(nick)) {
+                    terminalTexto.error("El nick ya está registrado");
+                    nick = "";
+                }
             }
         }
         while (contrasena.length() < 8 || contrasena.length() > 12) {
@@ -251,6 +263,15 @@ public class GestorUsuarios implements Serializable {
     public Jugador getJugador(String nombre) {
         for (Jugador jugador : jugadores) {
             if (jugador.getNombre().equals(nombre)) {
+                return jugador;
+            }
+        }
+        return null;
+    }
+
+    public Jugador getJugadorNick(String nick) {
+        for (Jugador jugador : jugadores) {
+            if (jugador.getNick().equals(nick)) {
                 return jugador;
             }
         }

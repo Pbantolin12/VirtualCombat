@@ -16,9 +16,10 @@ public class Desafio implements Serializable {
     private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
     private boolean validado;
     private static final Random rand = new Random();
-    private transient GestorEventos gestorEventos;
+    private GestorEventos gestorEventos;
     private static final String dCreado = "Desafio_Creado";
     private static final String dAceptado = "Desafio_Aceptado";
+    private static final String dValidado = "Desafio_Validado";
     private static final String dTerminado = "Desafio_Terminado";
 
     //Constructor
@@ -31,8 +32,11 @@ public class Desafio implements Serializable {
         this.desafioAceptado = false;
         this.validado = false;
         this.gestorEventos = new GestorEventos();
-        this.gestorEventos.anadirObservador(dCreado, this.jugadorDesafiado);
+        this.gestorEventos.anadirObservador(dValidado, this.jugadorDesafiado);
         this.gestorEventos.anadirObservador(dCreado, this.jugadorDesafiante);
+        this.gestorEventos.anadirObservador(dTerminado, this.jugadorDesafiado);
+        this.gestorEventos.anadirObservador(dTerminado, this.jugadorDesafiante);
+        this.gestorEventos.anadirObservador(dTerminado, GestorJuego.getInstance().getRanking());
         for (Administrador admin : administradores) {
             this.gestorEventos.anadirObservador(dCreado, admin);
         }
@@ -110,6 +114,9 @@ public class Desafio implements Serializable {
 
     public void setValidado(boolean validado) {
         this.validado = validado;
+        this.jugadorDesafiado.setDesafioPendiente(true);
+        this.jugadorDesafiado.setDesafio(this);
+        this.gestorEventos.notificar(dValidado, this);
     }
 
     public boolean getValidado() {
@@ -127,7 +134,7 @@ public class Desafio implements Serializable {
             int saludEsbirrosDesafiante = calcularSaludEsbirros(this.jugadorDesafiante);
             int saludEsbirrosDesafiado = calcularSaludEsbirros(this.jugadorDesafiado);
 
-            terminalTexto.info("|---RONDA " + ronda + "---|");
+            terminalTexto.showln("|---RONDA " + ronda++ + "---|");
             ataqueDesafiante(ataqueDesafiante, defensaDesafiado, saludEsbirrosDesafiante, saludEsbirrosDesafiado);
             ataqueDesafiado(ataqueDesafiado, defensaDesafiante, saludEsbirrosDesafiante, saludEsbirrosDesafiado);
         }
@@ -150,7 +157,7 @@ public class Desafio implements Serializable {
         int res;
         res = ataqueDesafiante - defensaDesafiado;
         if (res >= 0) {
-            terminalTexto.info("Ataque [" + this.jugadorDesafiante.getNombre() + "] exitoso");
+            terminalTexto.showln("Ataque [" + this.jugadorDesafiante.getNombre() + "] exitoso");
             if (saludEsbirrosDesafiado > 0) {
                 saludEsbirrosDesafiado--;
                 this.jugadorDesafiado.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiado);
@@ -158,7 +165,7 @@ public class Desafio implements Serializable {
                 this.jugadorDesafiado.getPersonaje().setSalud(this.jugadorDesafiado.getPersonaje().getSalud() - 1);
             }
         } else if (res < 0) {
-            terminalTexto.info("Ataque [" + this.jugadorDesafiado.getNombre() + "] exitoso");
+            terminalTexto.showln("Ataque [" + this.jugadorDesafiado.getNombre() + "] exitoso");
             if (saludEsbirrosDesafiante > 0) {
                 saludEsbirrosDesafiante--;
                 this.jugadorDesafiante.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiante);
@@ -173,7 +180,7 @@ public class Desafio implements Serializable {
         int res;
         res = ataqueDesafiado - defensaDesafiante;
         if (res >= 0) {
-            terminalTexto.info("Ataque [" + this.jugadorDesafiado.getNombre() + "] exitoso");
+            terminalTexto.showln("Ataque [" + this.jugadorDesafiado.getNombre() + "] exitoso");
             if (saludEsbirrosDesafiante > 0) {
                 saludEsbirrosDesafiante--;
                 this.jugadorDesafiante.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiante);
@@ -181,7 +188,7 @@ public class Desafio implements Serializable {
                 this.jugadorDesafiante.getPersonaje().setSalud(this.jugadorDesafiante.getPersonaje().getSalud() - 1);
             }
         } else if (res < 0) {
-            terminalTexto.info("Ataque [" + this.jugadorDesafiante.getNombre() + "] exitoso");
+            terminalTexto.showln("Ataque [" + this.jugadorDesafiante.getNombre() + "] exitoso");
             if (saludEsbirrosDesafiado > 0) {
                 saludEsbirrosDesafiado--;
                 this.jugadorDesafiado.getPersonaje().getConjuntoEsbirros().setSalud(saludEsbirrosDesafiado);
@@ -192,10 +199,10 @@ public class Desafio implements Serializable {
     }
 
     public void mostrarDesafio() {
-        terminalTexto.info("Desafío: " + this.id);
-        terminalTexto.info("Oro Apostado: " + this.oroApostado);
-        terminalTexto.info("Jugador Desafiado: " + this.jugadorDesafiado.getNombre());
-        terminalTexto.info("Jugador Desafiante: " + this.jugadorDesafiante.getNombre());
+        terminalTexto.showln("Desafío: " + this.id);
+        terminalTexto.showln("Oro Apostado: " + this.oroApostado);
+        terminalTexto.showln("Jugador Desafiado: " + this.jugadorDesafiado.getNick());
+        terminalTexto.showln("Jugador Desafiante: " + this.jugadorDesafiante.getNick());
     }
 
     private int calcularPotencialAtaque(Jugador jugador) {

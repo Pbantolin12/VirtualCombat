@@ -36,7 +36,7 @@ public class GestorJuego implements Serializable {
         int optPersonaje;
         String nombreJugador;
 
-        terminalTexto.showln("Bienvenido " + administrador.getNombre());
+        terminalTexto.showln("Bienvenido " + administrador.getNick());
         do {
             opt = menuAdmin();
             switch (opt) {
@@ -58,7 +58,13 @@ public class GestorJuego implements Serializable {
                         }
                     } while (optPersonaje !=5);
                 }
-                case 2 -> administrador.validarDesafio(this.desafiosPendientes);
+                case 2 -> {
+                    if (this.desafiosPendientes.isEmpty()) {
+                        terminalTexto.info("No hay desafíos pendientes");
+                    } else{
+                        administrador.validarDesafio(this.desafiosPendientes);
+                    }
+                }
                 case 3 -> terminalTexto.info("Cerrando sesión...");
                 default -> terminalTexto.error("Opción incorrecta");
             }
@@ -71,7 +77,7 @@ public class GestorJuego implements Serializable {
         int opt;
         int optDesafio;
 
-        terminalTexto.showln("Bienvenido " + jugador.getNombre());
+        terminalTexto.showln("Bienvenido " + jugador.getNick());
         do {
             do {
                 if (Boolean.TRUE.equals(jugador.getDesafioPendiente())){
@@ -153,7 +159,7 @@ public class GestorJuego implements Serializable {
 
     public int menuDesafio(Jugador jugador){
         terminalTexto.showln("---Desafio_Pendiente---");
-        terminalTexto.showln(" - Desafiado por: " + jugador.getDesafio().getJugadorDesafiante().getNombre());
+        terminalTexto.showln(" - Desafiado por: " + jugador.getDesafio().getJugadorDesafiante().getNick());
         terminalTexto.showln(" - Oro apostado: " + jugador.getDesafio().getOroApostado());
         terminalTexto.showln(" - Penalización por no aceptar: " + jugador.getDesafio().getOroApostado() * 0.1);
         terminalTexto.showln("------------------------");
@@ -193,5 +199,13 @@ public class GestorJuego implements Serializable {
     private Object readResolve() {
         instancia = this;
         return instancia;
+    }
+
+    public Ranking getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(Ranking ranking) {
+        this.ranking = ranking;
     }
 }

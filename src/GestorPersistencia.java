@@ -26,7 +26,7 @@ public class GestorPersistencia {
         String ruta = CONFIG_DIR + GESTOR_USUARIOS_FOLDER + File.separator + nombreArchivo;
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ruta))) {
             oos.writeObject(objeto);
-            System.out.println("Objeto guardado exitosamente en: " + ruta);
+            //System.out.println("Objeto guardado exitosamente en: " + ruta);
         } catch (IOException e) {
             System.err.println("Error al guardar el objeto en " + ruta + ": " + e.getMessage());
         }

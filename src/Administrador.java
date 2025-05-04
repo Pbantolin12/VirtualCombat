@@ -3,7 +3,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
 
-public class Administrador extends Usuario implements Observador {
+public class Administrador extends Usuario implements Observador, Serializable {
 
     //Atributos
     private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
@@ -91,10 +91,11 @@ public class Administrador extends Usuario implements Observador {
 
     public void validarDesafio(List<Desafio> desafios){
         boolean salir = false;
-        while(!desafios.isEmpty() || !salir){
+        int opt;
+
+        while(!desafios.isEmpty() && !salir){
             Desafio desafio = desafios.get(0);
             desafio.mostrarDesafio();
-            int opt;
             do {
                 opt = menuValidarDesafio();
                 switch (opt) {
@@ -112,6 +113,20 @@ public class Administrador extends Usuario implements Observador {
                         desafios.remove(desafio);
                     }
                     default -> terminalTexto.error("Opción incorrecta");
+                }
+                int salirOpt;
+                if (opt == 3) {
+                    do {
+                        terminalTexto.showln("¿Quieres salir? (1. Sí / 2. No)");
+                        salirOpt = terminalTexto.readInt();
+                        if (salirOpt == 1) {
+                            salir = true;
+                        } else if (salirOpt == 2) {
+                            salir = false;
+                        } else {
+                            terminalTexto.error("Opción incorrecta");
+                        }
+                    } while (salirOpt != 1 && salirOpt != 2);
                 }
             } while (opt != 3);
             this.gestorUsuarios.getGestorJuego().setDesafiosPendientes(desafio);

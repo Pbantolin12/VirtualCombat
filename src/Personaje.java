@@ -33,8 +33,8 @@ public class Personaje implements Serializable {
         this.nombre = nombre;
         this.setConjuntoArmas(this.conjuntoArmasInicial());
         this.setConjuntoArmaduras(this.conjuntoArmadurasInicial());
-        this.elegirArmaActiva();
-        this.elegirArmaduraActiva();
+        this.armaActiva = this.elegirArmaActiva();
+        this.armaduraActiva = this.elegirArmaduraActiva();
         this.oro = 1000;
         this.salud = 5;
         this.poder = 2;
@@ -433,10 +433,10 @@ public class Personaje implements Serializable {
         int opt;
         do {
             int i = 1;
-            terminalTexto.showln("|--------Seleccionar debilidades-------|");
+            terminalTexto.showln("|--------Seleccionar debilidades " + this.getNombre() + "-------|");
             for (Map.Entry<String, Integer> debilidad : this.debilidades.entrySet()) {
                 String status = debilidadesActivas.containsKey(debilidad.getKey()) ? "[activa]" : "[inactiva]";
-                terminalTexto.showln(i++ + ". " +  debilidad.getKey() + "Valor: " + debilidad.getValue() + " [" + status + "]");
+                terminalTexto.showln(i++ + ". " +  debilidad.getKey() + " - Valor: " + debilidad.getValue() + " --> " + status);
             }
             opt = menuActivarDesactivarDebFort("debilidad");
             if (opt >= 1 && opt <= this.debilidades.size()){
@@ -458,10 +458,10 @@ public class Personaje implements Serializable {
         int opt;
         do {
             int i = 1;
-            terminalTexto.showln("|--------Seleccionar fortalezas-------|");
+            terminalTexto.showln("|--------Seleccionar fortalezas " + this.getNombre() + "-------|");
             for (Map.Entry<String, Integer> fortaleza : this.fortalezas.entrySet()) {
                 String status = fortalezasActivas.containsKey(fortaleza.getKey()) ? "[activa]" : "[inactiva]";
-                terminalTexto.showln(i++ + ". " +  fortaleza.getKey() + "Valor: " + fortaleza.getValue() + " [" + status + "]");
+                terminalTexto.showln(i++ + ". " +  fortaleza.getKey() + " - Valor: " + fortaleza.getValue() + " --> " + status);
             }
             opt = menuActivarDesactivarDebFort("fortaleza");
             if (opt >= 1 && opt <= this.fortalezas.size()){
