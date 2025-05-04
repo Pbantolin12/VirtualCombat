@@ -9,6 +9,7 @@ public class GestorJuego implements Serializable {
     private GestorUsuarios gestorUsuarios;
     private List<Desafio> desafiosPendientes;
     private Usuario usuarioLogeado;
+    private Ranking ranking = Ranking.getInstance();
 
 
     //Constructor
@@ -89,7 +90,7 @@ public class GestorJuego implements Serializable {
                     case 4 -> jugador.modificarEquipo();
                     case 5 -> jugador.desafiarJugador();
                     case 6 -> jugador.consultarOro();
-                    case 7 -> jugador.consultarRanking();
+                    case 7 -> this.consultarRanking();
                     case 8 -> jugador.consultarHistorialPartidas();
                     case 9 -> terminalTexto.info("Cerrando sesión...");
                     default -> terminalTexto.error("Opción incorrecta");
@@ -156,5 +157,10 @@ public class GestorJuego implements Serializable {
 
     public void setUsuarioLogeado(Usuario usuarioLogeado) {
         this.usuarioLogeado = usuarioLogeado;
+    }
+
+    public void consultarRanking() {
+        Ranking ranking = Ranking.getInstance();
+        ranking.mostrarRanking();
     }
 }

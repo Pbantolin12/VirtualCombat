@@ -120,11 +120,6 @@ public class Jugador extends Usuario implements Observador {
         }
     }
 
-    public void consultarRanking() {
-        Ranking ranking = Ranking.getInstance();
-        ranking.mostrarRanking();
-    }
-
     private boolean apostarOro(int cantidad) {
         if (cantidad > 0 && cantidad <= personaje.getOro()) {
             personaje.setOro(personaje.getOro() - cantidad);
