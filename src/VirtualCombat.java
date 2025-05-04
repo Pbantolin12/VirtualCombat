@@ -5,5 +5,5 @@ public class VirtualCombat {
     }
 }
 
-//TODO: Implementar el patrón Observer y la persistencia (revisar el tema del combate, cuando se quita salud y eso)
+//TODO: Implementar la persistencia (revisar el tema del combate, cuando se quita salud y eso)
 

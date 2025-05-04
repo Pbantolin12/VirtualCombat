@@ -18,12 +18,13 @@ public class Jugador extends Usuario implements Observador {
     public Jugador(String nombre, String nick, String contrasena, GestorUsuarios gestorUsuarios) {
         super(nombre, nick, contrasena);
         setNumeroRegistro(generarNumeroRegistro());
-        crearPersonaje();
+        //crearPersonaje();
         this.desafiosCompletados = new ArrayList<>();
         this.desafioPendiente = false;
         this.desafio = null;
         this.partidasGanadas = 0;
         this.gestorUsuarios = gestorUsuarios;
+        terminalTexto.info("Jugador registrado con éxito");
     }
 
     //Factory Method
@@ -69,12 +70,12 @@ public class Jugador extends Usuario implements Observador {
     }
 
     private int menuPersonaje(){
-        terminalTexto.show(" ________________________________");
-        terminalTexto.show("|_____Personajes_disponibles_____|");
-        terminalTexto.show("| 1. Vampiro                     |");
-        terminalTexto.show("| 2. Licántropo                  |");
-        terminalTexto.show("| 3. Cazador                     |");
-        terminalTexto.show("|________________________________|");
+        terminalTexto.showln(" ________________________________");
+        terminalTexto.showln("|_____Personajes_disponibles_____|");
+        terminalTexto.showln("| 1. Vampiro                     |");
+        terminalTexto.showln("| 2. Licántropo                  |");
+        terminalTexto.showln("| 3. Cazador                     |");
+        terminalTexto.showln("|________________________________|");
         terminalTexto.askInfo("Introduce una opción: ");
         return terminalTexto.readInt();
     }
@@ -158,7 +159,7 @@ public class Jugador extends Usuario implements Observador {
         terminalTexto.showln("| 2. Cambiar equipo        |");
         terminalTexto.showln("| 3. Confirmar             |");
         terminalTexto.showln("|__________________________|");
-        terminalTexto.show("Introduce una opción: ");
+        terminalTexto.askInfo("Introduce una opción: ");
         return terminalTexto.readInt();
     }
 
@@ -264,7 +265,7 @@ public class Jugador extends Usuario implements Observador {
         terminalTexto.showln("| 4. Cambiar armadura activa      |");
         terminalTexto.showln("| 5. Volver                       |");
         terminalTexto.showln("|_________________________________|");
-        terminalTexto.show("Introduce una opción: ");
+        terminalTexto.askInfo("Introduce una opción: ");
         return terminalTexto.readInt();
     }
 
@@ -337,7 +338,7 @@ public class Jugador extends Usuario implements Observador {
         terminalTexto.showln("| 4. Cambiar fortalezas           |");
         terminalTexto.showln("| 5. Volver                       |");
         terminalTexto.showln("|_________________________________|");
-        terminalTexto.show("Introduce una opción: ");
+        terminalTexto.askInfo("Introduce una opción: ");
         return terminalTexto.readInt();
     }
 }

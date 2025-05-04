@@ -8,9 +8,10 @@ public class Demonio extends Esbirros {
     public Demonio(String nombre, String pacto) {
         super(nombre);
         this.pacto = pacto;
-        terminalTexto.showln("¿ Quieres añadir otro conujunto de esbirros ? ");
+        terminalTexto.showln("¿ Quieres añadir otro conjunto de esbirros ? ");
         terminalTexto.showln("1. Si");
         terminalTexto.showln("2. No");
+        terminalTexto.askInfo("Elige una opción: ");
         int opcion = terminalTexto.readInt();
         if (opcion == 1) {
            this.anadirEsbirros();

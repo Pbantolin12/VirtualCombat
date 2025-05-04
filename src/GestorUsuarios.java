@@ -28,7 +28,7 @@ public class GestorUsuarios implements Serializable {
 
     public void iniciar() {
         int opcion = 0;
-        while (opcion < 1 || opcion > 3) {
+        do {
             opcion = menuPrincipal();
             switch (opcion) {
                 case 1 -> {
@@ -38,11 +38,11 @@ public class GestorUsuarios implements Serializable {
                         switch (opcionIni) {
                             case 1 -> {
                                 setAdministradores(registrarAdministrador());
-                                opcion = 0;
+                                opcionIni = 3;
                             }
                             case 2 -> {
                                 setJugadores(registrarJugador());
-                                opcion = 0;
+                                opcionIni = 3;
                             }
                             case 3 -> opcion = 0;
                             default -> terminalTexto.error("Opción incorrecta");
@@ -67,7 +67,7 @@ public class GestorUsuarios implements Serializable {
                 }
                 default -> terminalTexto.error("Opción incorrecta");
             }
-        }
+        } while (opcion != 3);
     }
 
     //Método para registrar un jugador o administrador

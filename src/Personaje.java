@@ -190,29 +190,25 @@ public class Personaje implements Serializable {
     }
 
     public Arma elegirArmaActiva(){
-        this.mostrarArmas();
-        terminalTexto.askInfo("Elige el arma activa: ");
-        return conjuntoArmas.get(terminalTexto.readInt() - 1);
+        return conjuntoArmas.get(this.mostrarArmas() - 1);
     }
 
     public Armadura elegirArmaduraActiva(){
-        this.mostrarArmaduras();
-        terminalTexto.askInfo("Elige la armadura activa: ");
-        return conjuntoArmaduras.get(terminalTexto.readInt() - 1);
+        return conjuntoArmaduras.get(this.mostrarArmaduras() - 1);
     }
 
     public int mostrarArmas(){
         int opt = 0;
-        while (opt < 1 || opt > conjuntoArmas.size()){
-            terminalTexto.show("|---Armas disponibles---|");
+        while (opt < 1 || opt > conjuntoArmas.size() + 1){
+            terminalTexto.showln("|---Armas disponibles---|");
             int j= 0;
             for (int i = 0; i < conjuntoArmas.size(); i++) {
-                terminalTexto.show(++j + ". " + conjuntoArmas.get(i).getNombre());
+                terminalTexto.showln(++j + ". " + conjuntoArmas.get(i).getNombre());
             }
-            terminalTexto.show("-------------------------");
+            terminalTexto.showln("-------------------------");
             terminalTexto.askInfo("Elige un arma: ");
             opt = terminalTexto.readInt();
-            if (opt < 1 || opt > conjuntoArmaduras.size()){
+            if (opt < 1 || opt > conjuntoArmaduras.size() + 1){
                 terminalTexto.error("Opción incorrecta");
             }
         }
@@ -221,16 +217,16 @@ public class Personaje implements Serializable {
 
     public int mostrarArmaduras(){
         int opt = 0;
-        while (opt < 1 || opt > conjuntoArmaduras.size()){
-            terminalTexto.show("|---Armaduras disponibles---|");
+        while (opt < 1 || opt > conjuntoArmaduras.size() + 1){
+            terminalTexto.showln("|---Armaduras disponibles---|");
             int j= 0;
             for (int i = 0; i < conjuntoArmaduras.size(); i++) {
-                terminalTexto.show(++j + ". " + conjuntoArmaduras.get(i).getNombre());
+                terminalTexto.showln(++j + ". " + conjuntoArmaduras.get(i).getNombre());
             }
-            terminalTexto.show("-------------------------------");
+            terminalTexto.showln("-------------------------------");
             terminalTexto.askInfo("Elige una armadura: ");
             opt = terminalTexto.readInt();
-            if (opt < 1 || opt > conjuntoArmaduras.size()){
+            if (opt < 1 || opt > conjuntoArmaduras.size() + 1){
                 terminalTexto.error("Opción incorrecta");
             }
         }
@@ -285,7 +281,59 @@ public class Personaje implements Serializable {
         this.setFortaleza(descripcionFortaleza, valorFortaleza);
     }
 
-    public void modificarEsbirros(){} //TODO: Implementar
+    public void modificarEsbirros() {
+        int opt;
+        do {
+            opt = this.menuModificarEsbirros();
+            switch (opt) {
+                case 1 -> {
+                    if (this.getConjuntoEsbirros() != null) {
+                        terminalTexto.error("El personaje ya tiene esbirros");
+                    } else {
+                        this.anadirEsbirros();
+                    }
+                }
+                case 2 -> this.eliminarEsbirro();
+                case 3 -> this.mostrarEsbirros();
+                default -> terminalTexto.error("Opción incorrecta");
+            }
+        } while (opt != 4);
+    }
+
+    private int menuModificarEsbirros(){
+        terminalTexto.showln(" __________________________");
+        terminalTexto.showln("|____Menú de esbirros______|");
+        terminalTexto.showln("| 1. Añadir esbirro        |");
+        terminalTexto.showln("| 2. Eliminar esbirro      |");
+        terminalTexto.showln("| 3. Mostrar esbirros      |");
+        terminalTexto.showln("| 4. Confirmar             |");
+        terminalTexto.showln("|--------------------------|");
+        terminalTexto.askInfo("Elige una opción: ");
+        return terminalTexto.readInt();
+    }
+
+    private void eliminarEsbirro(){
+        if (this.conjuntoEsbirros != null){
+            terminalTexto.showln("Esbirro: [" + this.conjuntoEsbirros.getNombre() + "] eliminado");
+            if(this.conjuntoEsbirros instanceof Demonio){
+                if (((Demonio) this.conjuntoEsbirros).getConjuntoEsbirros() != null){
+                    ((Demonio) this.conjuntoEsbirros).setConjuntoEsbirros(null);
+                }
+            }
+            this.conjuntoEsbirros = null;
+        } else {
+            terminalTexto.error("El personaje no tiene esbirros");
+        }
+    }
+
+    public void mostrarEsbirros(){
+        if (this.conjuntoEsbirros != null){
+            terminalTexto.showln("Nombre esbirro: " + this.conjuntoEsbirros.getNombre());
+            terminalTexto.showln("Tipo esbirro: " + this.conjuntoEsbirros.getClass().getSimpleName());
+        } else {
+            terminalTexto.error("El personaje no tiene esbirros");
+        }
+    }
 
     public void modificarDebilidades(){
         int opt;
@@ -496,22 +544,24 @@ public class Personaje implements Serializable {
                             grado = terminalTexto.readStr();
                             if (grado.isEmpty()){
                                 terminalTexto.error("El grado no puede estar vacío");
-                            }
-                            for (Grado g : Grado.values()) {
-                                if (g.name().equals(grado)){
-                                    gradoAux = true;
+                            } else{
+                                for (Grado g : Grado.values()) {
+                                    if (g.name().equalsIgnoreCase(grado)){
+                                        gradoAux = true;
+                                        break;
+                                    }
+                                }
+                                if (!gradoAux){
+                                    terminalTexto.error("El grado introducido no es correcto");
                                 }
                             }
-                            if (!gradoAux){
-                                terminalTexto.error("El grado introducido no es correcto");
-                            }
-                        } while (grado.isEmpty() && !gradoAux);
+                        } while (!gradoAux);
                         this.conjuntoEsbirros = new Humano(nombre, Grado.valueOf(grado));
                     }
                 }
                 default -> terminalTexto.error("Opción incorrecta");
             }
-        } while (this.conjuntoEsbirros != null);
+        } while (this.conjuntoEsbirros == null);
     }
 
     private int menuEsbirros(){

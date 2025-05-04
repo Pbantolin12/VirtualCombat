@@ -11,21 +11,21 @@ public class GestorJuego implements Serializable {
 
 
     //Constructor
-    private GestorJuego(GestorUsuarios gestorUsuarios) {
+    private GestorJuego() {
         this.terminalTexto = TerminalTexto.getInstance();
-        this.gestorUsuarios = gestorUsuarios;
         this.desafiosPendientes = new ArrayList<>();
     }
 
     public static GestorJuego getInstance() {
         if (instancia == null) {
-            instancia = new GestorJuego(GestorUsuarios.getInstance());
+            instancia = new GestorJuego();
         }
         return instancia;
     }
 
     //Métodos
     public void modoAdmin(Administrador administrador) {
+        this.gestorUsuarios = GestorUsuarios.getInstance();
         int opt;
         String nombreJugador;
 
@@ -49,6 +49,7 @@ public class GestorJuego implements Serializable {
     }
 
     public void modoJugador(Jugador jugador) {
+        this.gestorUsuarios = GestorUsuarios.getInstance();
         int opt;
         int optDesafio;
 
