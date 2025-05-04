@@ -2,7 +2,7 @@ public class Demonio extends Esbirros {
     //Atributos
     private String pacto;
     private Esbirros conjuntoEsbirros;
-    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
 
     //Constructor
     public Demonio(String nombre, String pacto) {
@@ -107,10 +107,10 @@ public class Demonio extends Esbirros {
                                 gradoAux = true;
                             }
                         }
-                        if (!gradoAux){
+                        if (Boolean.FALSE.equals(gradoAux)){
                             terminalTexto.error("El grado introducido no es correcto");
                         }
-                    } while (grado.isEmpty() && !gradoAux);
+                    } while (grado.isEmpty() && Boolean.TRUE.equals(!gradoAux));
                     this.conjuntoEsbirros = new Humano(nombre, Grado.valueOf(grado));
                 }
                 default -> terminalTexto.error("Opción incorrecta");

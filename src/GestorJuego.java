@@ -5,15 +5,17 @@ import java.util.List;
 public class GestorJuego implements Serializable {
     //Atributos
     private static GestorJuego instancia;
-    private TerminalTexto terminalTexto;
+    private transient TerminalTexto terminalTexto;
     private GestorUsuarios gestorUsuarios;
     private List<Desafio> desafiosPendientes;
+    private Usuario usuarioLogeado;
 
 
     //Constructor
     private GestorJuego() {
         this.terminalTexto = TerminalTexto.getInstance();
         this.desafiosPendientes = new ArrayList<>();
+        this.usuarioLogeado = null;
     }
 
     public static GestorJuego getInstance() {
@@ -25,10 +27,12 @@ public class GestorJuego implements Serializable {
 
     //Métodos
     public void modoAdmin(Administrador administrador) {
+        this.usuarioLogeado = administrador;
         this.gestorUsuarios = GestorUsuarios.getInstance();
         int opt;
         String nombreJugador;
 
+        terminalTexto.showln("Bienvenido " + administrador.getNombre());
         terminalTexto.askInfo("Introduce el nombre del jugador para realizar operaciones: ");
         nombreJugador = terminalTexto.readStr();
         if (gestorUsuarios.getJugador(nombreJugador) == null) {
@@ -43,32 +47,35 @@ public class GestorJuego implements Serializable {
                 case 3 -> administrador.validarDesafio(this.desafiosPendientes);
                 case 4 -> administrador.bloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
                 case 5 -> administrador.desbloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
+                case 6 -> terminalTexto.info("Cerrando sesión...");
                 default -> terminalTexto.error("Opción incorrecta");
             }
         } while (opt !=6);
     }
 
     public void modoJugador(Jugador jugador) {
+        this.usuarioLogeado = jugador;
         this.gestorUsuarios = GestorUsuarios.getInstance();
         int opt;
         int optDesafio;
 
+        terminalTexto.showln("Bienvenido " + jugador.getNombre());
         do {
+            do {
+                if (Boolean.TRUE.equals(jugador.getDesafioPendiente())){
+                    optDesafio = menuDesafio(jugador);
+                    switch (optDesafio){
+                        case 1 -> jugador.aceptarDesafio();
+                        case 2 -> jugador.rechazarDesafio();
+                        default -> terminalTexto.error("Opción incorrecta");
+                    }
+                }
+            } while (Boolean.TRUE.equals(jugador.getDesafioPendiente()));
             opt = menuJugador();
             if (jugador.getPersonaje() == null && opt != 1 && opt != 9) {
                 // Si no tiene personaje y no eligió crear uno o salir
                 terminalTexto.error("Primero debes crear un personaje (opción 1)");
             } else {
-                do {
-                    if (jugador.getDesafioPendiente()){
-                        optDesafio = menuDesafio(jugador);
-                        switch (optDesafio){
-                            case 1 -> jugador.aceptarDesafio();
-                            case 2 -> jugador.rechazarDesafio();
-                            default -> terminalTexto.error("Opción incorrecta");
-                        }
-                    }
-                } while (jugador.getDesafioPendiente());
                 switch (opt) {
                     case 1 -> {
                         if (jugador.getPersonaje() != null) {
@@ -84,6 +91,7 @@ public class GestorJuego implements Serializable {
                     case 6 -> jugador.consultarOro();
                     case 7 -> jugador.consultarRanking();
                     case 8 -> jugador.consultarHistorialPartidas();
+                    case 9 -> terminalTexto.info("Cerrando sesión...");
                     default -> terminalTexto.error("Opción incorrecta");
                 }
             }
@@ -98,7 +106,7 @@ public class GestorJuego implements Serializable {
         terminalTexto.showln("| 3. Validar desafio       |");
         terminalTexto.showln("| 4. Bloquear usuario      |");
         terminalTexto.showln("| 5. Desbloquear usuario   |");
-        terminalTexto.showln("| 6. Volver                |");
+        terminalTexto.showln("| 6. Cerrar sesión         |");
         terminalTexto.showln("|__________________________");
         terminalTexto.show("Introduce una opción: ");
         return terminalTexto.readInt();
@@ -115,22 +123,22 @@ public class GestorJuego implements Serializable {
         terminalTexto.showln("| 6. Consultar oro                |");
         terminalTexto.showln("| 7. Consultar ranking            |");
         terminalTexto.showln("| 8. Consultar historial partidas |");
-        terminalTexto.showln("| 9. Volver                       |");
+        terminalTexto.showln("| 9. Cerrar sesión                |");
         terminalTexto.showln("|_________________________________|");
         terminalTexto.show("Introduce una opción: ");
         return terminalTexto.readInt();
     }
 
     public int menuDesafio(Jugador jugador){
-        terminalTexto.show("|---Desafio_Pendiente---|");
-        terminalTexto.show("| - Desafiado por: " + jugador.getDesafio().getJugadorDesafiante());
-        terminalTexto.show("| - Oro apostado: " + jugador.getDesafio().getOroApostado());
-        terminalTexto.show("| - Penalización por no aceptar: " + jugador.getDesafio().getOroApostado() * 0.1);
-        terminalTexto.show("|------------------------|");
-        terminalTexto.show("| 1. Aceptar desafio     |");
-        terminalTexto.show("| 2. Rechazar desafio    |");
-        terminalTexto.show("|------------------------|");
-        terminalTexto.show("Introduce una opción: ");
+        terminalTexto.showln("|---Desafio_Pendiente---|");
+        terminalTexto.showln("| - Desafiado por: " + jugador.getDesafio().getJugadorDesafiante());
+        terminalTexto.showln("| - Oro apostado: " + jugador.getDesafio().getOroApostado());
+        terminalTexto.showln("| - Penalización por no aceptar: " + jugador.getDesafio().getOroApostado() * 0.1);
+        terminalTexto.showln("|------------------------|");
+        terminalTexto.showln("| 1. Aceptar desafio     |");
+        terminalTexto.showln("| 2. Rechazar desafio    |");
+        terminalTexto.showln("|------------------------|");
+        terminalTexto.showln("Introduce una opción: ");
         return terminalTexto.readInt();
     }
 
@@ -140,5 +148,13 @@ public class GestorJuego implements Serializable {
 
     public void setDesafiosPendientes(Desafio desafio) {
         this.desafiosPendientes.add(desafio);
+    }
+
+    public Usuario getUsuarioLogeado() {
+        return usuarioLogeado;
+    }
+
+    public void setUsuarioLogeado(Usuario usuarioLogeado) {
+        this.usuarioLogeado = usuarioLogeado;
     }
 }

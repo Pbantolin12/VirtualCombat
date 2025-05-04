@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,7 +14,7 @@ public class Desafio implements Serializable {
     private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
     private boolean validado;
     private static final Random rand = new Random();
-    private GestorEventos gestorEventos;
+    private transient GestorEventos gestorEventos;
     private static final String dCreado = "Desafio_Creado";
     private static final String dAceptado = "Desafio_Aceptado";
     private static final String dTerminado = "Desafio_Terminado";

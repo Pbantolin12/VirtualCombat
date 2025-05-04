@@ -1,12 +1,8 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 public class Vampiro extends Personaje{
     //Atributos
     private int puntosSangre;
     private int edad;
-    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
 
     //Constructor
     public Vampiro(String nombre) {

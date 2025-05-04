@@ -22,7 +22,7 @@ public class Personaje implements Serializable {
     private Map<String, Boolean> fortalezasActivas;
     private int potencialAtaque;
     private int potencialDefensa;
-    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
     private int potencialFortalezas;
     private int potencialDebilidades;
     
@@ -208,7 +208,7 @@ public class Personaje implements Serializable {
             terminalTexto.showln("-------------------------");
             terminalTexto.askInfo("Elige un arma: ");
             opt = terminalTexto.readInt();
-            if (opt < 1 || opt > conjuntoArmaduras.size() + 1){
+            if (opt < 1 || opt > conjuntoArmas.size() + 1){
                 terminalTexto.error("Opción incorrecta");
             }
         }
@@ -254,8 +254,11 @@ public class Personaje implements Serializable {
     }
 
     private void anadirDebilidad(){
-        terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
-        String descripcionDebilidad = terminalTexto.readStr();
+        String descripcionDebilidad;
+        do {
+            terminalTexto.askInfo("Introduce la descripción de la debilidad: ");
+            descripcionDebilidad = terminalTexto.readStr();
+        } while (descripcionDebilidad.isEmpty());
         int valorDebilidad = 0;
         while (valorDebilidad > 5 || valorDebilidad < 1){
             terminalTexto.askInfo("Introduce el valor de la debilidad (De 1 a 5): ");
@@ -268,8 +271,11 @@ public class Personaje implements Serializable {
     }
 
     private void anadirFortaleza(){
-        terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
-        String descripcionFortaleza = terminalTexto.readStr();
+        String descripcionFortaleza;
+        do {
+            terminalTexto.askInfo("Introduce la descripción de la fortaleza: ");
+            descripcionFortaleza = terminalTexto.readStr();
+        } while (descripcionFortaleza.isEmpty());
         int valorFortaleza = 0;
         while (valorFortaleza > 5 || valorFortaleza < 1){
             terminalTexto.askInfo("Introduce el valor de la debilidad (De 1 a 5): ");
@@ -499,7 +505,7 @@ public class Personaje implements Serializable {
                     do {
                         terminalTexto.askInfo("Introduce la dependencia del esbirro (entre 1 y 5): ");
                         dependencia = terminalTexto.readInt();
-                        if (dependencia < 1 || dependencia > 3){
+                        if (dependencia < 1 || dependencia > 5){
                             terminalTexto.error("Valor incorrecto");
                         }
                     } while (opt < 1 || opt > 3);
@@ -527,9 +533,10 @@ public class Personaje implements Serializable {
                     if (this instanceof Vampiro){
                         terminalTexto.error("Los vampiros no pueden tener esbirros humanos");
                     } else {
+                        String nombre;
                         do {
                             terminalTexto.askInfo("Introduce el nombre del esbirro: ");
-                            String nombre = terminalTexto.readStr();
+                            nombre = terminalTexto.readStr();
                             if (nombre.isEmpty()){
                                 terminalTexto.error("El nombre no puede estar vacío");
                             }
@@ -537,26 +544,27 @@ public class Personaje implements Serializable {
                         for (Grado grado : Grado.values()) {
                             terminalTexto.showln(grado.toString());
                         }
-                        String grado;
+                        Grado gradoSeleccionado = null;
                         Boolean gradoAux = false;
                         do {
                             terminalTexto.askInfo("Introduce la lealtad del esbirro: ");
-                            grado = terminalTexto.readStr();
+                            String grado = terminalTexto.readStr().toUpperCase();
                             if (grado.isEmpty()){
                                 terminalTexto.error("El grado no puede estar vacío");
                             } else{
                                 for (Grado g : Grado.values()) {
-                                    if (g.name().equalsIgnoreCase(grado)){
+                                    if (g.name().equals(grado)){
                                         gradoAux = true;
+                                        gradoSeleccionado = g;
                                         break;
                                     }
                                 }
-                                if (!gradoAux){
+                                if (Boolean.FALSE.equals(gradoAux)){
                                     terminalTexto.error("El grado introducido no es correcto");
                                 }
                             }
-                        } while (!gradoAux);
-                        this.conjuntoEsbirros = new Humano(nombre, Grado.valueOf(grado));
+                        } while (Boolean.FALSE.equals(gradoAux));
+                        this.conjuntoEsbirros = new Humano(nombre, gradoSeleccionado);
                     }
                 }
                 default -> terminalTexto.error("Opción incorrecta");

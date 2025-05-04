@@ -8,7 +8,7 @@ public class Jugador extends Usuario implements Observador {
     private String numeroRegistro;
     private Personaje personaje;
     private List<Desafio> desafiosCompletados;
-    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
     private Boolean desafioPendiente;
     private Desafio desafio;
     private int partidasGanadas;
@@ -18,7 +18,6 @@ public class Jugador extends Usuario implements Observador {
     public Jugador(String nombre, String nick, String contrasena, GestorUsuarios gestorUsuarios) {
         super(nombre, nick, contrasena);
         setNumeroRegistro(generarNumeroRegistro());
-        //crearPersonaje();
         this.desafiosCompletados = new ArrayList<>();
         this.desafioPendiente = false;
         this.desafio = null;
@@ -95,17 +94,25 @@ public class Jugador extends Usuario implements Observador {
         nombreDesafiado = terminalTexto.readStr();
         Jugador jugadorDesafiado = gestorUsuarios.getJugador(nombreDesafiado);
         if (jugadorDesafiado != null) {
-            if (jugadorDesafiado.getDesafioPendiente()) {
-                terminalTexto.error("El jugador ya tiene un desafío pendiente");
-            } else {
-                terminalTexto.askInfo("Introduce la cantidad de oro a apostar: ");
-                int oroApostado = terminalTexto.readInt();
+            if (jugadorDesafiado.equals(this.personaje)) {
+                terminalTexto.error("No puedes desafiarte a ti mismo");
+            } else{
+                if (Boolean.TRUE.equals(jugadorDesafiado.getDesafioPendiente())) {
+                    terminalTexto.error("El jugador [" + jugadorDesafiado.getNombre() + " ya tiene un desafío pendiente");
+                } else if (jugadorDesafiado.getPersonaje() == null){
+                    terminalTexto.error("El jugador [" + jugadorDesafiado.getNombre() + " no tiene personaje creado");
+                } else if (this.personaje == null) {
+                    terminalTexto.error("No tienes un personaje creado");
+                } else {
+                    terminalTexto.askInfo("Introduce la cantidad de oro a apostar: ");
+                    int oroApostado = terminalTexto.readInt();
 
-                if (this.apostarOro(oroApostado)) {
-                    this.desafio = new Desafio(oroApostado, jugadorDesafiado, this, this.gestorUsuarios.getAdministradores());
-                    this.desafioPendiente = false;
-                    jugadorDesafiado.setDesafioPendiente(true);
-                    jugadorDesafiado.setDesafio(desafio);
+                    if (this.apostarOro(oroApostado)) {
+                        this.desafio = new Desafio(oroApostado, jugadorDesafiado, this, this.gestorUsuarios.getAdministradores());
+                        this.desafioPendiente = false;
+                        jugadorDesafiado.setDesafioPendiente(true);
+                        jugadorDesafiado.setDesafio(desafio);
+                    }
                 }
             }
         } else {
@@ -271,12 +278,12 @@ public class Jugador extends Usuario implements Observador {
 
     @Override
     public void actualizar(Desafio desafio) {
-        if (desafio.getJugadorDesafiado() == this) {
+        if (desafio.getJugadorDesafiado() == this && this.gestorUsuarios.getGestorJuego().getUsuarioLogeado().equals(this)) {
             terminalTexto.info("Has sido desafiado por " + desafio.getJugadorDesafiante().getNombre());
-        } else if (desafio.getJugadorDesafiante() == this) {
+        } else if (desafio.getJugadorDesafiante() == this && this.gestorUsuarios.getGestorJuego().getUsuarioLogeado().equals(this)) {
             terminalTexto.info("Tu desafío a " + desafio.getJugadorDesafiado().getNombre() + " ha sido " +
                     (desafio.getDesafioAceptado() ? "aceptado" : "enviado"));
-        } else if(desafio.getDesafioAceptado() && desafio.getGanador() != null) {
+        } else if(desafio.getDesafioAceptado() && desafio.getGanador() != null && this.gestorUsuarios.getGestorJuego().getUsuarioLogeado().equals(this)) {
             terminalTexto.info("El desafío finalizado --> Ganador: " + desafio.getGanador().getNombre());
         }
     }

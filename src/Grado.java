@@ -1,5 +1,5 @@
 public enum Grado {
-    Alto,
-    Normal,
-    Bajo;
+    ALTO,
+    NORMAL,
+    BAJO;
 }

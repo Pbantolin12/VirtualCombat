@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.List;
-
 public class Licantropo extends Personaje{
     //Atributos
     private int rabia;

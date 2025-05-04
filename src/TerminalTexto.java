@@ -52,15 +52,13 @@ public class TerminalTexto {
     //Lee lo que el usuario introduce (int)
     public int readInt(){
         Scanner scan = new Scanner(System.in);
-        int n = scan.nextInt();
-        return n;
+        return scan.nextInt();
     }
 
     //Lee lo que el usuario introduce (string)
     public String readStr(){
         Scanner scan = new Scanner(System.in);
-        String s = scan.nextLine();
-        return s;
+        return scan.nextLine();
     }
 
     //Muestra un "prompt" para pedir al usuario que introduzca información

@@ -9,7 +9,7 @@ public class GestorUsuarios implements Serializable {
     private List<Administrador> administradores;
     private transient TerminalTexto terminal = TerminalTexto.getInstance();
     private GestorJuego gestorJuego = GestorJuego.getInstance();
-    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
 
     //Constructor
     private GestorUsuarios() {
@@ -27,39 +27,44 @@ public class GestorUsuarios implements Serializable {
     //Métodos
 
     public void iniciar() {
-        int opcion = 0;
+        int opcion;
         do {
             opcion = menuPrincipal();
             switch (opcion) {
                 case 1 -> {
-                    int opcionIni;
+                    int opcionReg;
                     do {
-                        opcionIni = menuRegistro();
-                        switch (opcionIni) {
+                        opcionReg = menuRegistro();
+                        switch (opcionReg) {
                             case 1 -> {
                                 setAdministradores(registrarAdministrador());
-                                opcionIni = 3;
+                                opcionReg = 3;
                             }
                             case 2 -> {
                                 setJugadores(registrarJugador());
-                                opcionIni = 3;
+                                opcionReg = 3;
                             }
                             case 3 -> opcion = 0;
                             default -> terminalTexto.error("Opción incorrecta");
                         }
-                    } while (opcionIni != 3);
+                    } while (opcionReg != 3);
                 }
                 case 2 -> {
-                    int opcionReg = 0;
-                    while (opcionReg != 3) {
-                        opcionReg = menuInicioSesion();
-                        switch (opcionReg) {
-                            case 1 -> iniciarSesionAdministrador();
-                            case 2 -> iniciarSesionJugador();
-                            case 3 -> opcion = 0;
+                    int opcionIni;
+                    do {
+                        opcionIni = menuInicioSesion();
+                        switch (opcionIni) {
+                            case 1 -> {
+                                iniciarSesionAdministrador();
+                                opcionIni = 3;
+                            }
+                            case 2 ->{
+                                iniciarSesionJugador();
+                                opcionIni = 3;
+                            }
                             default -> terminalTexto.error("Opción incorrecta");
                         }
-                    }
+                    } while (opcionIni != 3);
                 }
                 case 3 -> {
                     terminal.showln("Saliendo...");
@@ -124,7 +129,8 @@ public class GestorUsuarios implements Serializable {
                         return;
                     } else {
                         terminal.info("Iniciando sesión...");
-                        gestorJuego.modoJugador(jugador);
+                        this.gestorJuego.modoJugador(jugador);
+                        this.getGestorJuego().setUsuarioLogeado(null);
                     }
                 } else {
                     terminal.error("Contraseña incorrecta: ");
@@ -152,7 +158,8 @@ public class GestorUsuarios implements Serializable {
             if (admin.getNombre().equals(nombre)) {
                 if (admin.getContrasena().equals(contrasena)) {
                     terminal.info("Iniciando sesión...");
-                    gestorJuego.modoAdmin(admin);
+                    this.gestorJuego.modoAdmin(admin);
+                    this.getGestorJuego().setUsuarioLogeado(null);
                 } else {
                     terminal.error("Contraseña incorrecta");
                 }

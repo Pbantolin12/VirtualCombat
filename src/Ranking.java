@@ -7,7 +7,7 @@ public class Ranking implements Observador, Serializable {
     //Atributos
     private List<Jugador> jugadores;
     private static Ranking instancia = null;
-    private TerminalTexto terminalTexto = TerminalTexto.getInstance();
+    private transient TerminalTexto terminalTexto = TerminalTexto.getInstance();
 
     //Constructor
     private Ranking() {
