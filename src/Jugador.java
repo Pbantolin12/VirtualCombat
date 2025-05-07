@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -96,7 +95,7 @@ public class Jugador extends Usuario implements Observador {
         nickDesafiado = terminalTexto.readStr();
         Jugador jugadorDesafiado = gestorUsuarios.getJugadorNick(nickDesafiado);
         if (jugadorDesafiado != null) {
-            if (jugadorDesafiado.equals(this.personaje)) {
+            if (jugadorDesafiado.equals(this)) {
                 terminalTexto.error("No puedes desafiarte a ti mismo");
             } else {
                 if (Boolean.TRUE.equals(jugadorDesafiado.getDesafioPendiente())) {

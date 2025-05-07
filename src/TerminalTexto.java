@@ -66,4 +66,9 @@ public class TerminalTexto {
     public void askInfo(String text) {
         System.out.print(">>" + text);
     }
+
+    // Añade este método a la clase TerminalTexto
+    public static void setInstanceForTesting(TerminalTexto mockTerminal) {
+        instance = mockTerminal;
+    }
 }

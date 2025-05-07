@@ -498,9 +498,10 @@ public class Personaje implements Serializable {
             }
             switch (opt) {
                 case 1 -> {
+                    String nombre;
                     do {
                         terminalTexto.askInfo("Introduce el nombre del esbirro: ");
-                        String nombre = terminalTexto.readStr();
+                        nombre = terminalTexto.readStr();
                         if (nombre.isEmpty()) {
                             terminalTexto.error("El nombre no puede ser vacío");
                         }
