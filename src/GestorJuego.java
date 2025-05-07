@@ -50,8 +50,7 @@ public class GestorJuego implements Serializable {
                     do {
                         optPersonaje = menuAdminPersonaje();
                         switch (optPersonaje) {
-                            case 1 ->
-                                    administrador.modificarPersonaje(gestorUsuarios.getJugador(nombreJugador).getPersonaje());
+                            case 1 -> administrador.modificarPersonaje(gestorUsuarios.getJugador(nombreJugador).getPersonaje());
                             case 2 -> administrador.eliminarPersonaje(gestorUsuarios.getJugador(nombreJugador));
                             case 3 -> administrador.bloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
                             case 4 -> administrador.desbloquearUsuario(gestorUsuarios.getJugador(nombreJugador));
@@ -66,10 +65,15 @@ public class GestorJuego implements Serializable {
                         administrador.validarDesafio(this.desafiosPendientes);
                     }
                 }
-                case 3 -> terminalTexto.info("Cerrando sesión...");
+                case 3 -> {
+                    this.gestorUsuarios.darBajaAdministrador(administrador);
+                    terminalTexto.info("Usuario dado de baja");
+                    opt = 4;
+                }
+                case 4 -> terminalTexto.info("Cerrando sesión...");
                 default -> terminalTexto.error("Opción incorrecta");
             }
-        } while (opt != 3);
+        } while (opt != 4);
     }
 
     public void modoJugador(Jugador jugador) {
@@ -110,11 +114,16 @@ public class GestorJuego implements Serializable {
                     case 6 -> jugador.consultarOro();
                     case 7 -> this.consultarRanking();
                     case 8 -> jugador.consultarHistorialPartidas();
-                    case 9 -> terminalTexto.info("Cerrando sesión...");
+                    case 9 -> {
+                        this.gestorUsuarios.darBajaJugador(jugador);
+                        terminalTexto.info("Usuario dado de baja");
+                        opt = 10;
+                    }
+                    case 10 -> terminalTexto.info("Cerrando sesión...");
                     default -> terminalTexto.error("Opción incorrecta");
                 }
             }
-        } while (opt != 9);
+        } while (opt != 10);
     }
 
     public int menuAdmin() {
@@ -122,7 +131,8 @@ public class GestorJuego implements Serializable {
         terminalTexto.showln("|___________Menu_admin_______|");
         terminalTexto.showln("| 1. Acciones personaje      |");
         terminalTexto.showln("| 2. Validar desafíos        |");
-        terminalTexto.showln("| 3. Cerrar sesión           |");
+        terminalTexto.showln("| 3. Dar de baja usuario     |");
+        terminalTexto.showln("| 4. Cerrar sesión           |");
         terminalTexto.showln("|____________________________|");
         terminalTexto.show("Introduce una opción: ");
         return terminalTexto.readInt();
@@ -152,7 +162,8 @@ public class GestorJuego implements Serializable {
         terminalTexto.showln("| 6. Consultar oro                |");
         terminalTexto.showln("| 7. Consultar ranking            |");
         terminalTexto.showln("| 8. Consultar historial partidas |");
-        terminalTexto.showln("| 9. Cerrar sesión                |");
+        terminalTexto.showln("| 9. Dar de baja usuario          |");
+        terminalTexto.showln("| 10. Cerrar sesión               |");
         terminalTexto.showln("|_________________________________|");
         terminalTexto.show("Introduce una opción: ");
         return terminalTexto.readInt();

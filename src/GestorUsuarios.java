@@ -231,34 +231,40 @@ public class GestorUsuarios implements Serializable {
 
     //Método para dar de baja a un jugador
     public void darBajaJugador(Jugador jugador) {
+        Jugador jugadorBaja = null;
         if (jugadores.isEmpty()) {
             terminalTexto.error("No hay jugadores registrados");
             return;
         }
         for (Jugador j : jugadores) {
             if (j.getNumeroRegistro().equals(jugador.getNumeroRegistro())) {
-                terminalTexto.info("Jugador" + jugador.getNombre() + "dado de baja");
-                jugadores.remove(j);
+                terminalTexto.info("Jugador " + jugador.getNick() + " dado de baja");
+                this.gestorJuego.setUsuarioLogeado(null);
+                jugadorBaja = j;
             } else {
                 terminalTexto.error("Jugador no encontrado");
             }
         }
+        jugadores.remove(jugadorBaja);
     }
 
     //Método para dar de baja a un administrador
     public void darBajaAdministrador(Administrador admin) {
+        Administrador adminBaja = null;
         if (administradores.isEmpty()) {
             terminalTexto.error("No hay administradores registrados");
             return;
         }
         for (Administrador a : administradores) {
             if (a.getNombre().equals(admin.getNombre())) {
-                terminalTexto.info("Administrador" + admin.getNombre() + "dado de baja");
-                administradores.remove(a);
+                terminalTexto.info("Administrador " + admin.getNick() + " dado de baja");
+                this.gestorJuego.setUsuarioLogeado(null);
+                adminBaja = a;
             } else {
                 terminalTexto.error("Administrador no encontrado");
             }
         }
+        administradores.remove(adminBaja);
     }
 
     public List<Jugador> getJugadores() {
