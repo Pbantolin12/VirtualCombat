@@ -202,8 +202,7 @@ public class GestorJuego implements Serializable {
     }
 
     public void consultarRanking() {
-        Ranking ranking = Ranking.getInstance();
-        ranking.mostrarRanking();
+        this.ranking.mostrarRanking();
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {

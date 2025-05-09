@@ -43,9 +43,9 @@ public class Ranking implements Observador, Serializable {
     public void mostrarRanking() {
         int pos;
         terminalTexto.showln("Ranking de jugadores:");
-        for (int i = 0; i < jugadores.size() && i < 10; i++) {
+        for (int i = 0; i < this.jugadores.size() && i < 10; i++) {
             pos = i;
-            Jugador jugador = jugadores.get(i);
+            Jugador jugador = this.jugadores.get(i);
             terminalTexto.showln(++pos + ". " + jugador.getNombre() + " - Partidas ganadas: " + jugador.getPartidasGanadas());
         }
     }
