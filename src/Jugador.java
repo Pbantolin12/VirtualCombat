@@ -175,6 +175,10 @@ public class Jugador extends Usuario implements Observador {
     }
 
     public void consultarHistorialPartidas() {
+        if (this.desafiosCompletados.isEmpty()) {
+            terminalTexto.info("No hay partidas guardadas");
+            return;
+        }
         terminalTexto.showln("Historial de partidas:");
         for (Desafio desafioC : this.desafiosCompletados) {
             terminalTexto.showln("Desafío: " + desafioC.getId() + " - Ganador: " + desafioC.getGanador().getNick() +

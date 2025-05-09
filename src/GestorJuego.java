@@ -189,6 +189,10 @@ public class GestorJuego implements Serializable {
         this.desafiosPendientes.add(desafio);
     }
 
+    public void eliminarDesafioPendiente(Desafio desafio) {
+        this.desafiosPendientes.remove(desafio);
+    }
+
     public Usuario getUsuarioLogeado() {
         return usuarioLogeado;
     }

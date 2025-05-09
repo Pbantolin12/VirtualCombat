@@ -117,7 +117,7 @@ public class Administrador extends Usuario implements Observador, Serializable {
                 int salirOpt;
                 if (opt == 3) {
                     do {
-                        terminalTexto.showln("¿Quieres salir? (1. Sí / 2. No)");
+                        terminalTexto.showln("¿Quieres dejar de validar desafíos? (1. Sí / 2. No)");
                         salirOpt = terminalTexto.readInt();
                         if (salirOpt == 1) {
                             salir = true;
@@ -129,7 +129,10 @@ public class Administrador extends Usuario implements Observador, Serializable {
                     } while (salirOpt != 1 && salirOpt != 2);
                 }
             } while (opt != 3);
-            this.gestorUsuarios.getGestorJuego().setDesafiosPendientes(desafio);
+            this.gestorUsuarios.getGestorJuego().eliminarDesafioPendiente(desafio);
+            if (desafios.isEmpty() && !salir) {
+                terminalTexto.info("No hay más desafíos pendientes");
+            }
         }
     }
 

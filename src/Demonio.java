@@ -47,7 +47,7 @@ public class Demonio extends Esbirros {
         do {
             opt = menuEsbirros();
             if (opt == 4 && this.conjuntoEsbirros == null) {
-                terminalTexto.error("No has añadido ningun esbirro");
+                terminalTexto.error("No has añadido ningún esbirro");
             }
             switch (opt) {
                 case 1 -> {
@@ -118,7 +118,7 @@ public class Demonio extends Esbirros {
                 }
                 default -> terminalTexto.error("Opción incorrecta");
             }
-        } while (this.conjuntoEsbirros != null);
+        } while (this.conjuntoEsbirros == null);
     }
 
     private int menuEsbirros() {

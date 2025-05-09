@@ -494,7 +494,7 @@ public class Personaje implements Serializable {
         do {
             opt = menuEsbirros();
             if (opt == 4 && this.conjuntoEsbirros == null) {
-                terminalTexto.error("No has añadido ningun esbirro");
+                terminalTexto.error("No has añadido ningún esbirro");
             }
             switch (opt) {
                 case 1 -> {
